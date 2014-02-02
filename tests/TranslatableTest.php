@@ -77,4 +77,42 @@ class TranslatableTests extends TestsBase {
         $country = Country::where('iso', '=', 'gr')->first();
         $this->assertEquals('1234', $country->name);
     }
+
+    public function testCreatingInstanceWithoutTranslation() {
+        $this->app->setLocale('en');
+        $country = new Country;
+        $country->iso = 'be';
+        $country->save();
+
+        $country = Country::where('iso', '=', 'be')->first();
+        $country->name = 'Belgium';
+        $country->save();
+
+        $country = Country::where('iso', '=', 'be')->first();
+        $this->assertEquals('Belgium', $country->name);
+
+    }
+
+    public function testCreatingInstanceWithTranslation() {
+        $this->app->setLocale('en');
+        $country = new Country;
+        $country->iso = 'be';
+        $country->name = 'Belgium';
+        $country->save();
+
+        $country = Country::where('iso', '=', 'be')->first();
+        $this->assertEquals('Belgium', $country->name);
+    }
+
+    public function testCreatingInstanceUsingMassAssignment() {
+        $this->app->setLocale('en');
+        $data = array(
+            'iso' => 'be',
+            'name' => 'Belgium',
+        );
+        $country = Country::create($data);
+        $this->assertEquals('be', $country->iso);
+        $this->assertEquals('Belgium', $country->name);
+    }
+
 }

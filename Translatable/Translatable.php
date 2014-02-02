@@ -29,10 +29,14 @@ abstract class Translatable extends Eloquent {
         if (isset ($this->translationModels[$locale])) {
             return $this->translationModels[$locale];
         }
-
         $translation = $this->hasMany($this->getTranslationModelName())
             ->where($this->localeKey, '=', $locale)
             ->first();
+        if ( ! $translation) {
+            $modelName = $this->getTranslationModelName();
+            $translation = new $modelName;
+            $translation->setAttribute($this->localeKey, $locale);
+        }
         return $this->translationModels[$locale] = $translation;
     }
 
@@ -53,6 +57,7 @@ abstract class Translatable extends Eloquent {
 
     public function saveTranslations() {
         foreach ($this->translationModels as $translation) {
+            $translation->setAttribute($this->getRelationKey(), $this->getKey());
             $translation->save();
         }
     }
