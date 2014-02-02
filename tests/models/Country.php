@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Dimsav\Translatable\Translatable;
 
-class Country extends Eloquent {
+class Country extends Translatable {
     public $timestamps = false;
     public $fillable = array('id','iso');
 } 

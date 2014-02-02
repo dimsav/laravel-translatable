@@ -27,7 +27,6 @@ class CreateTables extends Migration {
             $table->foreign('country_id')->references('id')->on('countries');
         });
 
-        Country::create(array('id'=>1, 'iso'=>'gr'));
 	}
 
 
