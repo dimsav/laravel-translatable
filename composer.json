@@ -12,7 +12,8 @@
         "illuminate/support": "4.1.*"
     },
     "require-dev": {
-        "orchestra/testbench": "2.1.*"
+        "orchestra/testbench": "2.1.*",
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
         "psr-4": {

@@ -1,6 +1,7 @@
 <?php
 
 use Orchestra\Testbench\TestCase;
+use Dimsav\Translatable\Test\Model\Country;
 
 class TestsBase extends TestCase {
 

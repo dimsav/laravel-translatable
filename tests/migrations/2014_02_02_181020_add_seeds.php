@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\CountryTranslation;
 
 class AddSeeds extends Migration {
 
