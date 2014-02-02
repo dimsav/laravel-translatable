@@ -35,13 +35,20 @@ class AddSeeds extends Migration {
 
     private function createCountries($countries) {
         foreach ($countries as $data) {
-            Country::create($data);
+            $country = new Country;
+            $country->id = $data['id'];
+            $country->iso = $data['iso'];
+            $country->save();
         }
     }
 
     private function createCountryTranslations($translations) {
         foreach ($translations as $data) {
-            CountryTranslation::create($data);
+            $translation = new CountryTranslation;
+            $translation->country_id = $data['country_id'];
+            $translation->locale = $data['locale'];
+            $translation->name = $data['name'];
+            $translation->save();
         }
     }
 

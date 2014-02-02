@@ -15,6 +15,7 @@ class CreateTables extends Migration {
 		Schema::create('countries', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('iso');
+            $table->timestamps();
 		});
 
         Schema::create('country_translations', function(Blueprint $table) {
@@ -37,8 +38,8 @@ class CreateTables extends Migration {
 	 */
 	public function down()
 	{
-        Schema::drop('language_translations');
-		Schema::drop('languages');
+        Schema::drop('country_translations');
+		Schema::drop('countries');
 	}
 
 }
