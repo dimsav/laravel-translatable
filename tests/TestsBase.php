@@ -30,6 +30,8 @@ class TestsBase extends TestCase {
             'database' => ':memory:',
             'prefix'   => '',
         ));
+        $app['config']->set('app.locale', 'en');
+        $app['config']->set('app.locales', array('el', 'en', 'fr', 'de'));
     }
 
     protected function getPackageAliases() {

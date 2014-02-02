@@ -32,18 +32,28 @@ abstract class Translatable extends Eloquent {
         $translation = $this->hasMany($this->getTranslationModelName())
             ->where($this->localeKey, '=', $locale)
             ->first();
-        if ( ! $translation) {
-            $modelName = $this->getTranslationModelName();
-            $translation = new $modelName;
-            $translation->setAttribute($this->localeKey, $locale);
-        }
+        $translation = $translation ?: $this->getNewTranslationInsstance($locale);
         return $this->translationModels[$locale] = $translation;
     }
 
     public function getAttribute($key) {
-        return in_array($key, $this->translatedAttributes) ?
-            $this->getTranslationModel()->$key :
-            parent::getAttribute($key);
+        if ($this->isKeyReturningTranslationText($key)) {
+            return $this->getTranslationModel()->$key;
+        }
+        elseif ($this->isKeyALocale($key)) {
+            return $this->getTranslationModel($key);
+        }
+       return parent::getAttribute($key);
+    }
+
+    private function isKeyReturningTranslationText($key) {
+        return in_array($key, $this->translatedAttributes);
+    }
+
+    private function isKeyALocale($key) {
+        $config = \App::make('config');
+        $locales = $config->get('app.locales', array());
+        return in_array($key, $locales);
     }
 
     public function setAttribute($key, $value) {
@@ -60,6 +70,13 @@ abstract class Translatable extends Eloquent {
             $translation->setAttribute($this->getRelationKey(), $this->getKey());
             $translation->save();
         }
+    }
+
+    private function getNewTranslationInsstance($locale) {
+        $modelName = $this->getTranslationModelName();
+        $translation = new $modelName;
+        $translation->setAttribute($this->localeKey, $locale);
+        return $translation;
     }
 
 }
