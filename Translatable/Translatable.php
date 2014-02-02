@@ -42,4 +42,19 @@ abstract class Translatable extends Eloquent {
             parent::getAttribute($key);
     }
 
+    public function setAttribute($key, $value) {
+        if (in_array($key, $this->translatedAttributes)) {
+            $this->getTranslationModel()->$key = $value;
+        }
+        else {
+            parent::setAttribute($key, $value);
+        }
+    }
+
+    public function saveTranslations() {
+        foreach ($this->translationModels as $translation) {
+            $translation->save();
+        }
+    }
+
 }

@@ -1,7 +1,6 @@
 <?php namespace Dimsav\Translatable;
 
 use Illuminate\Support\ServiceProvider;
-use Dimsav\Translatable\Translatable;
 
 class TranslatableServiceProvider extends ServiceProvider {
 
@@ -17,8 +16,7 @@ class TranslatableServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot()
-	{
+	public function boot() {
 		$this->package('dimsav/translatable');
 	}
 
@@ -27,9 +25,13 @@ class TranslatableServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register()
-	{
-
+	public function register() {
+        $this->app['events']->listen('eloquent.saved*', function($model)
+        {
+            if ($model instanceof Translatable) {
+                $model->saveTranslations();
+            }
+        });
 	}
 
 	/**
@@ -37,8 +39,7 @@ class TranslatableServiceProvider extends ServiceProvider {
 	 *
 	 * @return array
 	 */
-	public function provides()
-	{
+	public function provides() {
 		return array();
 	}
 

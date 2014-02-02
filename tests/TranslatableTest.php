@@ -55,9 +55,26 @@ class TranslatableTests extends TestsBase {
     }
 
     public function testGettingAttributeFromTranslation() {
+        $country = Country::where('iso', '=', 'gr')->first();
+        $this->app->setLocale('en');
+        $this->assertEquals('Greece', $country->name);
+
+        $this->app->setLocale('el');
+        $this->assertEquals('Ελλάδα', $country->name);
+    }
+
+    public function testSavingTranslation() {
         $this->app->setLocale('en');
         $country = Country::where('iso', '=', 'gr')->first();
 
-        $this->assertEquals('Greece', $country->name);
+        $country->setAttribute('name', 'abcd');
+        $this->assertEquals('abcd', $country->name);
+
+        $country->name = '1234';
+        $this->assertEquals('1234', $country->name);
+        $country->save();
+
+        $country = Country::where('iso', '=', 'gr')->first();
+        $this->assertEquals('1234', $country->name);
     }
 }
