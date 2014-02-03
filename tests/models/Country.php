@@ -3,6 +3,7 @@
 use Dimsav\Translatable\Translatable;
 
 class Country extends Translatable {
+
     public $translatedAttributes = array('name');
 
     /**

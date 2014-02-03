@@ -5,7 +5,8 @@ use Dimsav\Translatable\Test\Model\Country;
 
 class TestsBase extends TestCase {
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $artisan = $this->app->make('artisan');
         $artisan->call('migrate', [
@@ -34,11 +35,13 @@ class TestsBase extends TestCase {
         $app['config']->set('app.locales', array('el', 'en', 'fr', 'de'));
     }
 
-    protected function getPackageAliases() {
+    protected function getPackageAliases()
+    {
         return array('Eloquent' => 'Illuminate\Database\Eloquent\Model');
     }
 
-    protected function getPackageProviders() {
+    protected function getPackageProviders()
+    {
         return array('Dimsav\Translatable\TranslatableServiceProvider');
     }
 }

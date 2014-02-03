@@ -16,7 +16,8 @@ class TranslatableServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot()
+    {
 		$this->package('dimsav/translatable');
 	}
 
@@ -32,7 +33,8 @@ class TranslatableServiceProvider extends ServiceProvider {
 	 *
 	 * @return array
 	 */
-	public function provides() {
+	public function provides()
+    {
 		return array();
 	}
 

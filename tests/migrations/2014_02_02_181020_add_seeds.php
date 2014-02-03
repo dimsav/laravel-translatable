@@ -33,7 +33,8 @@ class AddSeeds extends Migration {
         $this->createCountryTranslations($countryTranslations);
 	}
 
-    private function createCountries($countries) {
+    private function createCountries($countries)
+    {
         foreach ($countries as $data) {
             $country = new Country;
             $country->id = $data['id'];
@@ -42,7 +43,8 @@ class AddSeeds extends Migration {
         }
     }
 
-    private function createCountryTranslations($translations) {
+    private function createCountryTranslations($translations)
+    {
         foreach ($translations as $data) {
             $translation = new CountryTranslation;
             $translation->country_id = $data['country_id'];

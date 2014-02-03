@@ -12,14 +12,16 @@ class CreateTables extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('countries', function(Blueprint $table) {
+		Schema::create('countries', function(Blueprint $table)
+        {
 			$table->increments('id');
 			$table->string('iso');
             $table->timestamps();
             $table->softDeletes();
 		});
 
-        Schema::create('country_translations', function(Blueprint $table) {
+        Schema::create('country_translations', function(Blueprint $table)
+        {
             $table->increments('id');
             $table->integer('country_id')->unsigned();
             $table->string('name');

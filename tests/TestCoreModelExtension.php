@@ -12,7 +12,8 @@ class TestCoreModelExtension extends TestsBase {
     /**
      * @expectedException Illuminate\Database\QueryException
      */
-    public function testSaveTranslatableThrowsException() {
+    public function testSaveTranslatableThrowsException()
+    {
         $country = new Country();
         $country->name = 'Belgium';
         $country->save();
@@ -21,7 +22,8 @@ class TestCoreModelExtension extends TestsBase {
     /**
      * @expectedException Illuminate\Database\QueryException
      */
-    public function testSaveTranslationThrowsException() {
+    public function testSaveTranslationThrowsException()
+    {
         $country = new Country();
         $country->iso = 'Belgium';
         $country->name = null;
@@ -30,7 +32,8 @@ class TestCoreModelExtension extends TestsBase {
 
     // Deleting
 
-    public function testDeleting() {
+    public function testDeleting()
+    {
         $country = Country::find(1);
         $countryId = $country->id;
         $translation = $country->en;
@@ -43,7 +46,8 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(0, count($translations));
     }
 
-    public function testDeletingWithSoftDeleteDoesNotDeleteTranslations() {
+    public function testDeletingWithSoftDeleteDoesNotDeleteTranslations()
+    {
         $country = CountryStrict::find(1);
         $before = CountryTranslation::where('country_id', '=', 1)->get();
         $country->delete();

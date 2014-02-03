@@ -12,31 +12,38 @@ abstract class Translatable extends Eloquent {
     protected $translatedAttributes = array();
     protected $translationModels = array();
 
-    public function getTranslationModelName() {
+    public function getTranslationModelName()
+    {
         return $this->translationModel ?: $this->getTranslationModelNameDefault();
     }
 
-    public function getTranslationModelNameDefault() {
+    public function getTranslationModelNameDefault()
+    {
         return get_class($this) . 'Translation';
     }
 
-    public function getRelationKey() {
+    public function getRelationKey()
+    {
         return $this->translationForeignKey ?: $this->getForeignKey();
     }
 
-    public function getTranslationModels() {
+    public function getTranslationModels()
+    {
         $modelsFromDb = $this->hasMany($this->getTranslationModelName(), $this->getRelationKey())
             ->whereNotIn($this->localeKey, $this->getInstanciatedTranslationLocales())->get();
-        foreach ($modelsFromDb as $modelFromDb) {
+        foreach ($modelsFromDb as $modelFromDb)
+        {
             $this->translationModels[$modelFromDb->getAttribute($this->localeKey)] = $modelFromDb;
         }
         return $this->translationModels;
     }
 
-    public function getTranslationModel($locale = null) {
+    public function getTranslationModel($locale = null)
+    {
         $locale = $locale ?: \App::getLocale();
 
-        if (isset ($this->translationModels[$locale])) {
+        if (isset ($this->translationModels[$locale]))
+        {
             return $this->translationModels[$locale];
         }
         $translation = $this->hasMany($this->getTranslationModelName(), $this->getRelationKey())
@@ -46,27 +53,35 @@ abstract class Translatable extends Eloquent {
         return $this->translationModels[$locale] = $translation;
     }
 
-    public function getAttribute($key) {
-        if ($this->isKeyReturningTranslationText($key)) {
+    public function getAttribute($key)
+    {
+        if ($this->isKeyReturningTranslationText($key))
+        {
             return $this->getTranslationModel()->$key;
         }
-        elseif ($this->isKeyALocale($key)) {
+        elseif ($this->isKeyALocale($key))
+        {
             return $this->getTranslationModel($key);
         }
        return parent::getAttribute($key);
     }
 
-    public function setAttribute($key, $value) {
-        if (in_array($key, $this->translatedAttributes)) {
+    public function setAttribute($key, $value)
+    {
+        if (in_array($key, $this->translatedAttributes))
+        {
             $this->getTranslationModel()->$key = $value;
         }
-        else {
+        else
+        {
             parent::setAttribute($key, $value);
         }
     }
 
-    public function save(array $options = array()) {
-        if (parent::save($options)) {
+    public function save(array $options = array())
+    {
+        if (parent::save($options))
+        {
             return $this->saveTranslations();
         }
         return false;
@@ -76,15 +91,20 @@ abstract class Translatable extends Eloquent {
     {
         $totallyGuarded = $this->totallyGuarded();
 
-        foreach ($attributes as $key => $values) {
-            if ($this->isKeyALocale($key)) {
+        foreach ($attributes as $key => $values)
+        {
+            if ($this->isKeyALocale($key))
+            {
                 $translation = $this->getTranslationModel($key);
-                foreach ($values as $translationAttribute => $translationValue) {
-                    if ($this->isFillable($translationAttribute)) {
+                foreach ($values as $translationAttribute => $translationValue)
+                {
+                    if ($this->isFillable($translationAttribute))
+                    {
                         $translation->$translationAttribute = $translationValue;
                         unset($attributes[$key]);
                     }
-                    elseif ($totallyGuarded) {
+                    elseif ($totallyGuarded)
+                    {
                         throw new MassAssignmentException($key);
                     }
                 }
@@ -94,33 +114,41 @@ abstract class Translatable extends Eloquent {
         return parent::fill($attributes);
     }
 
-    public function forceDelete() {
+    public function forceDelete()
+    {
         $this->deleteTranslations();
         parent::forceDelete();
     }
 
-    protected function isKeyReturningTranslationText($key) {
+    protected function isKeyReturningTranslationText($key)
+    {
         return in_array($key, $this->translatedAttributes);
     }
 
-    protected function getInstanciatedTranslationLocales() {
+    protected function getInstanciatedTranslationLocales()
+    {
         return array_keys($this->translationModels);
     }
 
-    protected function isKeyALocale($key) {
+    protected function isKeyALocale($key)
+    {
         $locales = $this->getLocales();
         return in_array($key, $locales);
     }
 
-    protected function getLocales() {
+    protected function getLocales()
+    {
         $config = \App::make('config');
         return $config->get('app.locales', array());
     }
 
-    protected function saveTranslations() {
+    protected function saveTranslations()
+    {
         $saved = true;
-        foreach ($this->translationModels as $translation) {
-            if ($saved && $this->isTranslationDirty($translation)){
+        foreach ($this->translationModels as $translation)
+        {
+            if ($saved && $this->isTranslationDirty($translation))
+            {
                 $translation->setAttribute($this->getRelationKey(), $this->getKey());
                 $saved = $translation->save();
             }
@@ -128,28 +156,34 @@ abstract class Translatable extends Eloquent {
         return $saved;
     }
 
-    protected function isTranslationDirty($translation) {
+    protected function isTranslationDirty($translation)
+    {
         $dirtyAttributes = $translation->getDirty();
         unset($dirtyAttributes[$this->localeKey]);
         return count($dirtyAttributes) > 0;
     }
 
-    protected function getNewTranslationInsstance($locale) {
+    protected function getNewTranslationInsstance($locale)
+    {
         $modelName = $this->getTranslationModelName();
         $translation = new $modelName;
         $translation->setAttribute($this->localeKey, $locale);
         return $translation;
     }
 
-    protected function performDeleteOnModel() {
-        if ( ! $this->softDelete) {
+    protected function performDeleteOnModel()
+    {
+        if ( ! $this->softDelete)
+        {
             $this->deleteTranslations();
         }
         parent::performDeleteOnModel();
     }
 
-    protected function deleteTranslations() {
-        foreach ($this->getTranslationModels() as $translation) {
+    protected function deleteTranslations()
+    {
+        foreach ($this->getTranslationModels() as $translation)
+        {
             $translation->delete();
         }
     }
