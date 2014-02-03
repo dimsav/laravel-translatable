@@ -16,6 +16,7 @@ class CreateTables extends Migration {
 			$table->increments('id');
 			$table->string('iso');
             $table->timestamps();
+            $table->softDeletes();
 		});
 
         Schema::create('country_translations', function(Blueprint $table) {

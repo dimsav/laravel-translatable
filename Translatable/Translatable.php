@@ -24,6 +24,19 @@ abstract class Translatable extends Eloquent {
         return $this->translationForeignKey ?: $this->getForeignKey();
     }
 
+    public function getTranslationModels() {
+        $modelsFromDb = $this->hasMany($this->getTranslationModelName(), $this->getRelationKey())
+            ->whereNotIn($this->localeKey, $this->getInstanciatedTranslationLocales())->get();
+        foreach ($modelsFromDb as $modelFromDb) {
+            $this->translationModels[$modelFromDb->getAttribute($this->localeKey)] = $modelFromDb;
+        }
+        return $this->translationModels;
+    }
+
+    protected function getInstanciatedTranslationLocales() {
+        return array_keys($this->translationModels);
+    }
+
     public function getTranslationModel($locale = null) {
         $locale = $locale ?: \App::getLocale();
 
@@ -121,6 +134,24 @@ abstract class Translatable extends Eloquent {
         }
 
         return parent::fill($attributes);
+    }
+
+    protected function performDeleteOnModel() {
+        if ( ! $this->softDelete) {
+            $this->deleteTranslations();
+        }
+        parent::performDeleteOnModel();
+    }
+
+    public function forceDelete() {
+        $this->deleteTranslations();
+        parent::forceDelete();
+    }
+
+    protected function deleteTranslations() {
+        foreach ($this->getTranslationModels() as $translation) {
+            $translation->delete();
+        }
     }
 
 }
