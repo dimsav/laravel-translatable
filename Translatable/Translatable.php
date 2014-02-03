@@ -33,10 +33,6 @@ abstract class Translatable extends Eloquent {
         return $this->translationModels;
     }
 
-    protected function getInstanciatedTranslationLocales() {
-        return array_keys($this->translationModels);
-    }
-
     public function getTranslationModel($locale = null) {
         $locale = $locale ?: \App::getLocale();
 
@@ -60,20 +56,6 @@ abstract class Translatable extends Eloquent {
        return parent::getAttribute($key);
     }
 
-    protected function isKeyReturningTranslationText($key) {
-        return in_array($key, $this->translatedAttributes);
-    }
-
-    protected function isKeyALocale($key) {
-        $locales = $this->getLocales();
-        return in_array($key, $locales);
-    }
-
-    protected function getLocales() {
-        $config = \App::make('config');
-        return $config->get('app.locales', array());
-    }
-
     public function setAttribute($key, $value) {
         if (in_array($key, $this->translatedAttributes)) {
             $this->getTranslationModel()->$key = $value;
@@ -88,6 +70,51 @@ abstract class Translatable extends Eloquent {
             return $this->saveTranslations();
         }
         return false;
+    }
+
+    public function fill(array $attributes)
+    {
+        $totallyGuarded = $this->totallyGuarded();
+
+        foreach ($attributes as $key => $values) {
+            if ($this->isKeyALocale($key)) {
+                $translation = $this->getTranslationModel($key);
+                foreach ($values as $translationAttribute => $translationValue) {
+                    if ($this->isFillable($translationAttribute)) {
+                        $translation->$translationAttribute = $translationValue;
+                        unset($attributes[$key]);
+                    }
+                    elseif ($totallyGuarded) {
+                        throw new MassAssignmentException($key);
+                    }
+                }
+            }
+        }
+
+        return parent::fill($attributes);
+    }
+
+    public function forceDelete() {
+        $this->deleteTranslations();
+        parent::forceDelete();
+    }
+
+    protected function isKeyReturningTranslationText($key) {
+        return in_array($key, $this->translatedAttributes);
+    }
+
+    protected function getInstanciatedTranslationLocales() {
+        return array_keys($this->translationModels);
+    }
+
+    protected function isKeyALocale($key) {
+        $locales = $this->getLocales();
+        return in_array($key, $locales);
+    }
+
+    protected function getLocales() {
+        $config = \App::make('config');
+        return $config->get('app.locales', array());
     }
 
     protected function saveTranslations() {
@@ -114,38 +141,11 @@ abstract class Translatable extends Eloquent {
         return $translation;
     }
 
-    public function fill(array $attributes)
-    {
-        $totallyGuarded = $this->totallyGuarded();
-
-        foreach ($attributes as $key => $values) {
-            if ($this->isKeyALocale($key)) {
-                $translation = $this->getTranslationModel($key);
-                foreach ($values as $translationAttribute => $translationValue) {
-                    if ($this->isFillable($translationAttribute)) {
-                        $translation->$translationAttribute = $translationValue;
-                        unset($attributes[$key]);
-                    }
-                    elseif ($totallyGuarded) {
-                        throw new MassAssignmentException($key);
-                    }
-                }
-            }
-        }
-
-        return parent::fill($attributes);
-    }
-
     protected function performDeleteOnModel() {
         if ( ! $this->softDelete) {
             $this->deleteTranslations();
         }
         parent::performDeleteOnModel();
-    }
-
-    public function forceDelete() {
-        $this->deleteTranslations();
-        parent::forceDelete();
     }
 
     protected function deleteTranslations() {
