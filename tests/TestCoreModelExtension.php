@@ -10,7 +10,7 @@ class TestCoreModelExtension extends TestsBase {
     // Failing saving
 
     /**
-     * @expectedException Illuminate\Database\QueryException
+     * @expectedException \Exception
      */
     public function testSaveTranslatableThrowsException()
     {
@@ -20,7 +20,7 @@ class TestCoreModelExtension extends TestsBase {
     }
 
     /**
-     * @expectedException Illuminate\Database\QueryException
+     * @expectedException \Exception
      */
     public function testSaveTranslationThrowsException()
     {
