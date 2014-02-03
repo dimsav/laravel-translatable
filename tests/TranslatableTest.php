@@ -1,6 +1,7 @@
 <?php
 
 use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\CountryStrict;
 
 class TranslatableTests extends TestsBase {
 
@@ -76,6 +77,20 @@ class TranslatableTests extends TestsBase {
         $this->assertEquals('1234', $country->name);
     }
 
+    public function testSavingTranslationProvidingLocale() {
+        $country = Country::where('iso', '=', 'gr')->first();
+
+        $country->el->name = 'abcd';
+        $this->assertEquals('abcd', $country->el->name);
+
+        $this->app->setLocale('el');
+        $this->assertEquals('abcd', $country->name);
+        $country->save();
+
+        $country = Country::where('iso', '=', 'gr')->first();
+        $this->assertEquals('abcd', $country->el->name);
+    }
+
     public function testCreatingInstanceWithoutTranslation() {
         $country = new Country;
         $country->iso = 'be';
@@ -108,6 +123,34 @@ class TranslatableTests extends TestsBase {
         $country = Country::create($data);
         $this->assertEquals('be', $country->iso);
         $this->assertEquals('Belgium', $country->name);
+    }
+
+    public function testCreatingInstanceUsingMassAssignmentAndLocales() {
+        $data = array(
+            'iso' => 'be',
+            'en' => array('name' => 'Belgium'),
+            'fr' => array('name' => 'Belgique')
+        );
+        $country = Country::create($data);
+        $this->assertEquals('be', $country->iso);
+        $this->assertEquals('Belgium', $country->en->name);
+        $this->assertEquals('Belgique', $country->fr->name);
+
+        $country = Country::where('iso', '=', 'be')->first();
+        $this->assertEquals('Belgium', $country->en->name);
+        $this->assertEquals('Belgique', $country->fr->name);
+    }
+
+    public function testMassAssignmentWithNonFillable() {
+        $data = array(
+            'iso' => 'be',
+            'en' => array('name' => 'Belgium'),
+            'fr' => array('name' => 'Belgique')
+        );
+        $country = CountryStrict::create($data);
+        $this->assertEquals('be', $country->iso);
+        $this->assertNull($country->en->name);
+        $this->assertNull($country->fr->name);
     }
 
     public function testGettingTranslationFromSpecificLocale() {

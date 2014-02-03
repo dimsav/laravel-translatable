@@ -1,6 +1,7 @@
 <?php namespace Dimsav\Translatable;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\MassAssignmentException;
 
 abstract class Translatable extends Eloquent {
 
@@ -29,7 +30,7 @@ abstract class Translatable extends Eloquent {
         if (isset ($this->translationModels[$locale])) {
             return $this->translationModels[$locale];
         }
-        $translation = $this->hasMany($this->getTranslationModelName())
+        $translation = $this->hasMany($this->getTranslationModelName(), $this->getRelationKey())
             ->where($this->localeKey, '=', $locale)
             ->first();
         $translation = $translation ?: $this->getNewTranslationInsstance($locale);
@@ -51,9 +52,13 @@ abstract class Translatable extends Eloquent {
     }
 
     private function isKeyALocale($key) {
-        $config = \App::make('config');
-        $locales = $config->get('app.locales', array());
+        $locales = $this->getLocales();
         return in_array($key, $locales);
+    }
+
+    private function getLocales() {
+        $config = \App::make('config');
+        return $config->get('app.locales', array());
     }
 
     public function setAttribute($key, $value) {
@@ -67,9 +72,17 @@ abstract class Translatable extends Eloquent {
 
     public function saveTranslations() {
         foreach ($this->translationModels as $translation) {
-            $translation->setAttribute($this->getRelationKey(), $this->getKey());
-            $translation->save();
+            if ( $this->isTranslationDirty($translation)){
+                $translation->setAttribute($this->getRelationKey(), $this->getKey());
+                $translation->save();
+            }
         }
+    }
+
+    private function isTranslationDirty($translation) {
+        $dirtyAttributes = $translation->getDirty();
+        unset($dirtyAttributes[$this->localeKey]);
+        return count($dirtyAttributes) > 0;
     }
 
     private function getNewTranslationInsstance($locale) {
@@ -77,6 +90,28 @@ abstract class Translatable extends Eloquent {
         $translation = new $modelName;
         $translation->setAttribute($this->localeKey, $locale);
         return $translation;
+    }
+
+    public function fill(array $attributes)
+    {
+        $totallyGuarded = $this->totallyGuarded();
+
+        foreach ($attributes as $key => $values) {
+            if ($this->isKeyALocale($key)) {
+                $translation = $this->getTranslationModel($key);
+                foreach ($values as $translationAttribute => $translationValue) {
+                    if ($this->isFillable($translationAttribute)) {
+                        $translation->$translationAttribute = $translationValue;
+                        unset($attributes[$key]);
+                    }
+                    elseif ($totallyGuarded) {
+                        throw new MassAssignmentException($key);
+                    }
+                }
+            }
+        }
+
+        return parent::fill($attributes);
     }
 
 }
