@@ -25,14 +25,7 @@ class TranslatableServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
-        $this->app['events']->listen('eloquent.saved*', function($model)
-        {
-            if ($model instanceof Translatable) {
-                $model->saveTranslations();
-            }
-        });
-	}
+	public function register() {}
 
 	/**
 	 * Get the services provided by the provider.

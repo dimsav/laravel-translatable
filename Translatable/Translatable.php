@@ -47,16 +47,16 @@ abstract class Translatable extends Eloquent {
        return parent::getAttribute($key);
     }
 
-    private function isKeyReturningTranslationText($key) {
+    protected function isKeyReturningTranslationText($key) {
         return in_array($key, $this->translatedAttributes);
     }
 
-    private function isKeyALocale($key) {
+    protected function isKeyALocale($key) {
         $locales = $this->getLocales();
         return in_array($key, $locales);
     }
 
-    private function getLocales() {
+    protected function getLocales() {
         $config = \App::make('config');
         return $config->get('app.locales', array());
     }
@@ -70,22 +70,31 @@ abstract class Translatable extends Eloquent {
         }
     }
 
-    public function saveTranslations() {
-        foreach ($this->translationModels as $translation) {
-            if ( $this->isTranslationDirty($translation)){
-                $translation->setAttribute($this->getRelationKey(), $this->getKey());
-                $translation->save();
-            }
+    public function save(array $options = array()) {
+        if (parent::save($options)) {
+            return $this->saveTranslations();
         }
+        return false;
     }
 
-    private function isTranslationDirty($translation) {
+    protected function saveTranslations() {
+        $saved = true;
+        foreach ($this->translationModels as $translation) {
+            if ($saved && $this->isTranslationDirty($translation)){
+                $translation->setAttribute($this->getRelationKey(), $this->getKey());
+                $saved = $translation->save();
+            }
+        }
+        return $saved;
+    }
+
+    protected function isTranslationDirty($translation) {
         $dirtyAttributes = $translation->getDirty();
         unset($dirtyAttributes[$this->localeKey]);
         return count($dirtyAttributes) > 0;
     }
 
-    private function getNewTranslationInsstance($locale) {
+    protected function getNewTranslationInsstance($locale) {
         $modelName = $this->getTranslationModelName();
         $translation = new $modelName;
         $translation->setAttribute($this->localeKey, $locale);
