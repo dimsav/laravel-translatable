@@ -43,7 +43,7 @@ Filling multiple translations
     'iso' => 'gr',
     'en'  => array('name'=>'Greece'),
     'fr'  => array('name'=>'Grèce'),
-    );
+  );
 
   $country = Country::create($data);
   
@@ -54,5 +54,5 @@ Please note that deleting an instance will delete the translations, while soft-d
 
 ## Compatible laravel versions
 
-Both versions 4.0 and 4.1 play nice with the package.
+Both laravel versions `4.0` and `4.1` play nice with the package.
 
