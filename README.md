@@ -6,7 +6,7 @@ This package offers easy management of models containing attributes in many lang
 
 * [Demo](#what-is-this-package-doing)
 * [Installation](#installation)
-* [Compatible Laravel versions](#compatible-laravel-versions)
+* [Laravel versions](#laravel-versions)
 
 
 ## Demo
@@ -55,7 +55,9 @@ Please note that deleting an instance will delete the translations, while soft-d
 
 ## Installation
 
-## Compatible Laravel versions
+Todo
+
+## Laravel versions
 
 Both Laravel versions `4.0` and `4.1` play nice with the package.
 
