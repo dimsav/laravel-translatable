@@ -2,13 +2,15 @@ Laravel-Translatable
 ====================
 
 A Laravel package for translatable models.
-
-
-## What is this package doing
-
 This package offers easy management of models containing attributes in many languages.
 
-### Demo
+* [Demo](#what-is-this-package-doing)
+* [Installation](#installation)
+* [Laravel versions](#laravel-versions)
+* [Support](#support)
+
+
+## Demo
 
 Getting translated attributes
 
@@ -52,7 +54,23 @@ Filling multiple translations
 
 Please note that deleting an instance will delete the translations, while soft-deleting the instance will not delete the translations.
 
-## Compatible laravel versions
+## Installation
 
-Both laravel versions `4.0` and `4.1` play nice with the package.
+Add the package in your composer.json file
 
+```json
+{
+    "require": {
+        "dimsav/laravel-translatable": "1.*"
+    },
+}
+
+```
+
+## Laravel versions
+
+Both Laravel versions `4.0` and `4.1` play nice with the package.
+
+## Support
+
+Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
