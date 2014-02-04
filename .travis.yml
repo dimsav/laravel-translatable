@@ -11,8 +11,8 @@ env:
 
 before_script:
   - composer self-update
-  - composer require orchestra/testbench:$TESTBENCH_VERSION
-  - composer require illuminate/support:$LARAVEL_VERSION
+  - composer require orchestra/testbench:"$TESTBENCH_VERSION"
+  - composer require illuminate/support:"$LARAVEL_VERSION"
   - composer install
 
 script: phpunit --coverage-text
