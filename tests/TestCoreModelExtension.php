@@ -25,7 +25,7 @@ class TestCoreModelExtension extends TestsBase {
     public function testSaveTranslationThrowsException()
     {
         $country = new Country();
-        $country->iso = 'Belgium';
+        $country->iso = 'be';
         $country->name = null;
         $country->save();
     }
