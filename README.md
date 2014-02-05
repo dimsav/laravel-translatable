@@ -111,6 +111,7 @@ The translatable model `Country` should extend `Dimsav\Translatable\Translatable
 class Country extends \Dimsav\Translatable\Translatable {
     
     public $translatedAttributes = array('name');
+    protected $fillable = ['iso', 'name'];
 
 }
 
@@ -118,6 +119,7 @@ class Country extends \Dimsav\Translatable\Translatable {
 class CountryTranslation extends Eloquent {
 
     public $timestamps = false;
+    protected $fillable = ['name'];
 
 }
 ```
