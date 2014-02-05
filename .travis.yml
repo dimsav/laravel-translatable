@@ -3,7 +3,6 @@ language: php
 php:
   - 5.5
   - 5.4
-  - 5.3
 
 env:
   - LARAVEL_VERSION="4.0.*" TESTBENCH_VERSION="2.0.*"
@@ -11,8 +10,8 @@ env:
 
 before_script:
   - composer self-update
-  - composer require orchestra/testbench:$TESTBENCH_VERSION
-  - composer require illuminate/support:$LARAVEL_VERSION
+  - composer require orchestra/testbench:"$TESTBENCH_VERSION" --dev
+  - composer require illuminate/support:"$LARAVEL_VERSION" --dev
   - composer install
 
 script: phpunit --coverage-text
