@@ -3,8 +3,9 @@ Laravel-Translatable (beta)
 
 [![Build Status](https://travis-ci.org/dimsav/laravel-translatable.png?branch=master)](https://travis-ci.org/dimsav/laravel-translatable)
 
-A Laravel package for translatable models.
-This package offers easy management of models containing attributes in many languages.
+This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being managed automatically behind the scenes.
+
+If you want to store translations of your models into the database, this package is for you.
 
 * [Demo](#what-is-this-package-doing)
 * [Installation](#installation-in-4-steps)
@@ -66,9 +67,8 @@ Add the package in your composer.json file and run `composer update`.
 {
     "require": {
         "dimsav/laravel-translatable": "1.*@beta"
-    },
+    }
 }
-
 ```
 
 *Note: There is not a stable version released yet. Thanks for testing!*
@@ -76,7 +76,7 @@ Add the package in your composer.json file and run `composer update`.
 
 ### Step 2
 
-To save the translations of countries you need two models and two tables.
+Let's say you have a model `Country`. To save the translations of countries you need in total two model classes and two tables.
 
 Create your migrations:
 
@@ -121,7 +121,6 @@ class CountryTranslation extends Eloquent {
     public $timestamps = false;
 
 }
-
 ```
 
 The array `$translatedAttributes` contains the names of the fields being translated in the "Translation" model.
@@ -141,8 +140,7 @@ return array(
   // The default locale
   'locale' => 'en',
   
-)
-
+);
 ```
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them till the end.*
