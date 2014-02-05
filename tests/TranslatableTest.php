@@ -139,8 +139,8 @@ class TranslatableTests extends TestsBase {
     {
         $data = array(
             'iso' => 'be',
-            'en' => array('name' => 'Belgium'),
-            'fr' => array('name' => 'Belgique')
+            'en' => ['name' => 'Belgium'],
+            'fr' => ['name' => 'Belgique']
         );
         $country = Country::create($data);
         $this->assertEquals('be', $country->iso);
@@ -156,8 +156,8 @@ class TranslatableTests extends TestsBase {
     {
         $data = array(
             'iso' => 'be',
-            'en' => array('name' => 'Belgium'),
-            'fr' => array('name' => 'Belgique')
+            'en' => ['name' => 'Belgium'],
+            'fr' => ['name' => 'Belgique']
         );
         $country = CountryStrict::create($data);
         $this->assertEquals('be', $country->iso);
