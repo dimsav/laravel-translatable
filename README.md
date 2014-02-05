@@ -1,6 +1,8 @@
 Laravel-Translatable (beta)
 ====================
 
+[![Build Status](https://travis-ci.org/dimsav/laravel-translatable.png?branch=master)](https://travis-ci.org/dimsav/laravel-translatable)
+
 A Laravel package for translatable models.
 This package offers easy management of models containing attributes in many languages.
 

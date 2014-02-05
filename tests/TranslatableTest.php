@@ -44,18 +44,18 @@ class TranslatableTests extends TestsBase {
         /** @var Country $country */
         $country = Country::where('iso', '=', 'gr')->first();
 
-        $englishTranslation = $country->getTranslationModel('el');
+        $englishTranslation = $country->getTranslation('el');
         $this->assertEquals('Ελλάδα', $englishTranslation->name);
 
-        $englishTranslation = $country->getTranslationModel('en');
+        $englishTranslation = $country->getTranslation('en');
         $this->assertEquals('Greece', $englishTranslation->name);
 
         $this->app->setLocale('el');
-        $englishTranslation = $country->getTranslationModel();
+        $englishTranslation = $country->getTranslation();
         $this->assertEquals('Ελλάδα', $englishTranslation->name);
 
         $this->app->setLocale('en');
-        $englishTranslation = $country->getTranslationModel();
+        $englishTranslation = $country->getTranslation();
         $this->assertEquals('Greece', $englishTranslation->name);
     }
 
@@ -139,8 +139,8 @@ class TranslatableTests extends TestsBase {
     {
         $data = array(
             'iso' => 'be',
-            'en' => array('name' => 'Belgium'),
-            'fr' => array('name' => 'Belgique')
+            'en' => ['name' => 'Belgium'],
+            'fr' => ['name' => 'Belgique']
         );
         $country = Country::create($data);
         $this->assertEquals('be', $country->iso);
@@ -156,8 +156,8 @@ class TranslatableTests extends TestsBase {
     {
         $data = array(
             'iso' => 'be',
-            'en' => array('name' => 'Belgium'),
-            'fr' => array('name' => 'Belgique')
+            'en' => ['name' => 'Belgium'],
+            'fr' => ['name' => 'Belgique']
         );
         $country = CountryStrict::create($data);
         $this->assertEquals('be', $country->iso);

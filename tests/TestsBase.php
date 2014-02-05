@@ -5,6 +5,8 @@ use Dimsav\Translatable\Test\Model\Country;
 
 class TestsBase extends TestCase {
 
+    protected $queriesCount;
+
     public function setUp()
     {
         parent::setUp();
@@ -13,6 +15,7 @@ class TestsBase extends TestCase {
             '--database' => 'testbench',
             '--path'     => '../tests/migrations',
         ]);
+        $this->countQueries();
     }
 
     public function testRunningMigration()
@@ -43,5 +46,13 @@ class TestsBase extends TestCase {
     protected function getPackageProviders()
     {
         return array('Dimsav\Translatable\TranslatableServiceProvider');
+    }
+
+    protected function countQueries() {
+        $that = $this;
+        $event = App::make('events');
+        $event->listen('illuminate.query', function() use ($that) {
+            $that->queriesCount++;
+        });
     }
 }
