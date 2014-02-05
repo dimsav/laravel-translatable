@@ -2,7 +2,7 @@
     "name": "dimsav/laravel-translatable",
     "description": "A Laravel package for multilingual models",
     "keywords": ["laravel", "translation", "language", "database"],
-    "licence": "MIT",
+    "license": "MIT",
     "authors": [
         {
             "name": "Dimitrios Savvopoulos",
