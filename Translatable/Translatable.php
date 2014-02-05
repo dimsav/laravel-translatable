@@ -10,7 +10,6 @@ abstract class Translatable extends Eloquent {
     public $localeKey = 'locale';
 
     protected $translatedAttributes = array();
-    protected $translationModels = array();
 
     public function getTranslationModelName()
     {
@@ -27,41 +26,38 @@ abstract class Translatable extends Eloquent {
         return $this->translationForeignKey ?: $this->getForeignKey();
     }
 
-    public function getTranslationModels()
+    public function translations()
     {
-        $modelsFromDb = $this->hasMany($this->getTranslationModelName(), $this->getRelationKey())
-            ->whereNotIn($this->localeKey, $this->getInstanciatedTranslationLocales())->get();
-        foreach ($modelsFromDb as $modelFromDb)
-        {
-            $this->translationModels[$modelFromDb->getAttribute($this->localeKey)] = $modelFromDb;
-        }
-        return $this->translationModels;
+        return $this->hasMany($this->getTranslationModelName(), $this->getRelationKey());
     }
 
-    public function getTranslationModel($locale = null)
+    public function getTranslation($locale = null)
     {
         $locale = $locale ?: \App::getLocale();
 
-        if (isset ($this->translationModels[$locale]))
+        foreach ($this->translations as $translation)
         {
-            return $this->translationModels[$locale];
+            if ($translation->getAttribute($this->localeKey) == $locale)
+            {
+                return $translation;
+            }
         }
-        $translation = $this->hasMany($this->getTranslationModelName(), $this->getRelationKey())
-            ->where($this->localeKey, '=', $locale)
-            ->first();
-        $translation = $translation ?: $this->getNewTranslationInsstance($locale);
-        return $this->translationModels[$locale] = $translation;
+        $translation = $this->getNewTranslationInsstance($locale);
+
+        $this->translations->add($translation);
+
+        return $translation;
     }
 
     public function getAttribute($key)
     {
         if ($this->isKeyReturningTranslationText($key))
         {
-            return $this->getTranslationModel()->$key;
+            return $this->getTranslation()->$key;
         }
         elseif ($this->isKeyALocale($key))
         {
-            return $this->getTranslationModel($key);
+            return $this->getTranslation($key);
         }
        return parent::getAttribute($key);
     }
@@ -70,7 +66,7 @@ abstract class Translatable extends Eloquent {
     {
         if (in_array($key, $this->translatedAttributes))
         {
-            $this->getTranslationModel()->$key = $value;
+            $this->getTranslation()->$key = $value;
         }
         else
         {
@@ -95,7 +91,7 @@ abstract class Translatable extends Eloquent {
         {
             if ($this->isKeyALocale($key))
             {
-                $translation = $this->getTranslationModel($key);
+                $translation = $this->getTranslation($key);
                 foreach ($values as $translationAttribute => $translationValue)
                 {
                     if ($this->isFillable($translationAttribute))
@@ -125,11 +121,6 @@ abstract class Translatable extends Eloquent {
         return in_array($key, $this->translatedAttributes);
     }
 
-    protected function getInstanciatedTranslationLocales()
-    {
-        return array_keys($this->translationModels);
-    }
-
     protected function isKeyALocale($key)
     {
         $locales = $this->getLocales();
@@ -145,7 +136,7 @@ abstract class Translatable extends Eloquent {
     protected function saveTranslations()
     {
         $saved = true;
-        foreach ($this->translationModels as $translation)
+        foreach ($this->translations as $translation)
         {
             if ($saved && $this->isTranslationDirty($translation))
             {
@@ -182,7 +173,7 @@ abstract class Translatable extends Eloquent {
 
     protected function deleteTranslations()
     {
-        foreach ($this->getTranslationModels() as $translation)
+        foreach ($this->translations as $translation)
         {
             $translation->delete();
         }

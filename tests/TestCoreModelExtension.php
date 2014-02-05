@@ -60,4 +60,15 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(0, count($after));
     }
 
-} 
+    // Performance
+
+    public function testNPlusOne()
+    {
+        $countries = Country::with('translations')->get();
+        foreach ($countries as $country) {
+            $country->name;
+        }
+        $this->assertGreaterThan(2, count($countries));
+        $this->assertEquals(2, $this->queriesCount);
+    }
+}
