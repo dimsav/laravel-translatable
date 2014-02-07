@@ -5,11 +5,31 @@ use Illuminate\Database\Eloquent\MassAssignmentException;
 
 abstract class Translatable extends Eloquent {
 
-    public $translationModel;
-    public $translationForeignKey;
-    public $localeKey = 'locale';
-
+    /*
+     * Fill this array with the fields you want to translate in the Translation table
+     */
     protected $translatedAttributes = array();
+
+    /*
+     * Fill $translationModel if you want to overwrite the convention
+     * for the name of the translation Model. Use full namespace if applied.
+     *
+     * The convention is to add "Translation" to the name of the class extending Translatable.
+     * Example: Country => CountryTranslation
+     */
+    public $translationModel;
+
+    /*
+     * This is the foreign key used to define the translation relationship.
+     * Fill this if you want to overwrite the laravel default for foreign keys.
+     */
+    public $translationForeignKey;
+
+    /*
+     * The database field being used to define the locale parameter in the translation model.
+     * Change it if you don't want to follow the convention.
+     */
+    public $localeKey = 'locale';
 
     public function getTranslationModelName()
     {
