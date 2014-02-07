@@ -5,7 +5,7 @@ Laravel-Translatable
 [![Build Status](https://travis-ci.org/dimsav/laravel-translatable.png?branch=master)](https://travis-ci.org/dimsav/laravel-translatable)
 [![License](https://poser.pugx.org/dimsav/laravel-translatable/license.png)](https://packagist.org/packages/dimsav/laravel-translatable)
 
-This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being managed automatically behind the scenes.
+This is a Laravel 4 package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being managed automatically behind the scenes.
 
 If you want to store translations of your models into the database, this package is for you.
 
