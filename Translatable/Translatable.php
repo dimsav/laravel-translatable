@@ -91,18 +91,19 @@ trait Translatable {
             if ($this->isKeyALocale($key))
             {
                 $translation = $this->getTranslation($key);
+
                 foreach ($values as $translationAttribute => $translationValue)
                 {
                     if ($this->isFillable($translationAttribute))
                     {
                         $translation->$translationAttribute = $translationValue;
-                        unset($attributes[$key]);
                     }
                     elseif ($totallyGuarded)
                     {
                         throw new MassAssignmentException($key);
                     }
                 }
+                unset($attributes[$key]);
             }
         }
 
