@@ -14,6 +14,7 @@ If you want to store translations of your models into the database, this package
 * [Installation](#installation-in-4-steps)
 * [Laravel versions](#laravel-versions)
 * [Support](#support)
+* [Version History](#version-history)
 
 
 ## Demo
@@ -159,7 +160,7 @@ Both Laravel versions `4.0` and `4.1` play nice with the package.
 
 Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
 
-## History
+## Version History
 
 ### v. 2.0
 * Translatable is now a trait and can be used as add-on to your models.
