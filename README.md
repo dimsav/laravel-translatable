@@ -103,12 +103,15 @@ Schema::create('country_translations', function(Blueprint $table)
 
 The models:
 
-The translatable model `Country` should extend `Dimsav\Translatable\Translatable`. The convention for the translation model is `CountryTranslation`.
+1. The translatable model `Country` should use the trait `Dimsav\Translatable\Translatable`. 
+2. The convention for the translation model is `CountryTranslation`.
 
 
 ```php
 // models/Country.php
-class Country extends \Dimsav\Translatable\Translatable {
+class Country extends Eloquent {
+    
+    use \Dimsav\Translatable\Translatable;
     
     public $translatedAttributes = array('name');
     protected $fillable = ['iso', 'name'];
@@ -154,3 +157,13 @@ Both Laravel versions `4.0` and `4.1` play nice with the package.
 ## Support
 
 Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
+
+## History
+
+### v. 2.0
+* Translatable is now a trait and can be used as add-on to your models.
+
+### v. 1.0
+* Initial version
+* Translatable is a class extending Eloquent
+

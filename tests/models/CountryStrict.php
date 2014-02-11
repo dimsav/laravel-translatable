@@ -8,11 +8,16 @@ class CountryStrict extends Eloquent {
     use Translatable;
 
     /**
-     * @var array Attributes of the translation object
+     * Array with the fields translated in the Translation table
+     *
+     * @var array
      */
     public $translatedAttributes = array('name');
 
     /**
+     * Here we set a custom model for translation.
+     * The convention would be Dimsav\Translatable\Test\Model\CountryStrictTranslation
+     *
      * @var string Class containing the translation
      */
     public $translationModel = 'Dimsav\Translatable\Test\Model\CountryTranslation';
@@ -28,7 +33,7 @@ class CountryStrict extends Eloquent {
      *
      * @var string
      */
-    public $localeKey = 'locale';
+    public $localeKey;
 
     public $table = 'countries';
 
