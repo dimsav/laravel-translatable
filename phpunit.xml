@@ -18,6 +18,7 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
             <file>./Translatable/Translatable.php</file>
+            <directory>./tests/models</directory>
         </whitelist>
     </filter>
 </phpunit>
