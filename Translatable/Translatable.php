@@ -1,15 +1,9 @@
 <?php namespace Dimsav\Translatable;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Database\Eloquent\Model;
 
-abstract class Translatable extends Eloquent {
-
-    public $translationModel;
-    public $translationForeignKey;
-    public $localeKey = 'locale';
-
-    protected $translatedAttributes = array();
+trait Translatable {
 
     public function getTranslationModelName()
     {
@@ -26,6 +20,11 @@ abstract class Translatable extends Eloquent {
         return $this->translationForeignKey ?: $this->getForeignKey();
     }
 
+    public function getLocaleKey()
+    {
+        return $this->localeKey ?: 'locale';
+    }
+
     public function translations()
     {
         return $this->hasMany($this->getTranslationModelName(), $this->getRelationKey());
@@ -37,7 +36,7 @@ abstract class Translatable extends Eloquent {
 
         foreach ($this->translations as $translation)
         {
-            if ($translation->getAttribute($this->localeKey) == $locale)
+            if ($translation->getAttribute($this->getLocaleKey()) == $locale)
             {
                 return $translation;
             }
@@ -150,15 +149,16 @@ abstract class Translatable extends Eloquent {
     protected function isTranslationDirty($translation)
     {
         $dirtyAttributes = $translation->getDirty();
-        unset($dirtyAttributes[$this->localeKey]);
+        unset($dirtyAttributes[$this->getLocaleKey()]);
         return count($dirtyAttributes) > 0;
     }
 
     protected function getNewTranslationInstance($locale)
     {
         $modelName = $this->getTranslationModelName();
+        /** @var Model $translation */
         $translation = new $modelName;
-        $translation->setAttribute($this->localeKey, $locale);
+        $translation->setAttribute($this->getLocaleKey(), $locale);
         return $translation;
     }
 
