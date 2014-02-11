@@ -42,7 +42,7 @@ abstract class Translatable extends Eloquent {
                 return $translation;
             }
         }
-        $translation = $this->getNewTranslationInsstance($locale);
+        $translation = $this->getNewTranslationInstance($locale);
 
         $this->translations->add($translation);
 
@@ -154,7 +154,7 @@ abstract class Translatable extends Eloquent {
         return count($dirtyAttributes) > 0;
     }
 
-    protected function getNewTranslationInsstance($locale)
+    protected function getNewTranslationInstance($locale)
     {
         $modelName = $this->getTranslationModelName();
         $translation = new $modelName;
