@@ -1,9 +1,11 @@
-Laravel-Translatable (beta)
+Laravel-Translatable
 ====================
 
+[![Latest Stable Version](https://poser.pugx.org/dimsav/laravel-translatable/v/stable.png)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![Build Status](https://travis-ci.org/dimsav/laravel-translatable.png?branch=master)](https://travis-ci.org/dimsav/laravel-translatable)
+[![License](https://poser.pugx.org/dimsav/laravel-translatable/license.png)](https://packagist.org/packages/dimsav/laravel-translatable)
 
-This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being managed automatically behind the scenes.
+This is a Laravel 4 package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
 
 If you want to store translations of your models into the database, this package is for you.
 
@@ -66,13 +68,10 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "1.*@beta"
+        "dimsav/laravel-translatable": "1.*"
     }
 }
 ```
-
-*Note: There is not a stable version released yet. Thanks for testing!*
-
 
 ### Step 2
 
@@ -112,6 +111,7 @@ The translatable model `Country` should extend `Dimsav\Translatable\Translatable
 class Country extends \Dimsav\Translatable\Translatable {
     
     public $translatedAttributes = array('name');
+    protected $fillable = ['iso', 'name'];
 
 }
 
@@ -119,6 +119,7 @@ class Country extends \Dimsav\Translatable\Translatable {
 class CountryTranslation extends Eloquent {
 
     public $timestamps = false;
+    protected $fillable = ['name'];
 
 }
 ```
