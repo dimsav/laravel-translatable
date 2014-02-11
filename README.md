@@ -3,6 +3,7 @@ Laravel-Translatable
 
 [![Latest Stable Version](https://poser.pugx.org/dimsav/laravel-translatable/v/stable.png)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![Build Status](https://travis-ci.org/dimsav/laravel-translatable.png?branch=master)](https://travis-ci.org/dimsav/laravel-translatable)
+[![Code Coverage](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/badges/coverage.png?s=da6f88287610ff41bbfaf1cd47119f4333040e88)](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/)
 [![License](https://poser.pugx.org/dimsav/laravel-translatable/license.png)](https://packagist.org/packages/dimsav/laravel-translatable)
 
 This is a Laravel 4 package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
@@ -162,8 +163,9 @@ Got any question or suggestion? Feel free to open an [Issue](https://github.com/
 
 ### v. 2.0
 * Translatable is now a trait and can be used as add-on to your models.
+* 100% code coverage
 
 ### v. 1.0
 * Initial version
 * Translatable is a class extending Eloquent
-
+* 96% code coverage
