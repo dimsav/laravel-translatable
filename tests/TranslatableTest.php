@@ -2,7 +2,6 @@
 
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryGuarded;
 
 class TranslatableTests extends TestsBase {
 
@@ -173,29 +172,6 @@ class TranslatableTests extends TestsBase {
         $this->assertTrue(is_object($country->en));
         $this->assertEquals('Greece', $country->en->name);
         $this->assertEquals('Ελλάδα', $country->el->name);
-    }
-
-    /**
-     * @expectedException \Illuminate\Database\Eloquent\MassAssignmentException
-     */
-    public function testExceptionIsThrownWhenModelTotallyGuarded()
-    {
-        $country = new CountryGuarded();
-        $this->assertTrue($country->totallyGuarded());
-        $country->fill(['en' => ['name' => 'Italy']]);
-    }
-
-    public function testParentReturnsFalseOnSave()
-    {
-        $that = $this;
-        $event = App::make('events');
-        $event->listen('eloquent*', function($model) use ($that) {
-                return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
-        });
-
-        $country = Country::find(1);
-        $country->name = 'abc';
-        $this->assertFalse($country->save());
     }
 
 }
