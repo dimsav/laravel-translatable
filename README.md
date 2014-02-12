@@ -105,7 +105,7 @@ Schema::create('country_translations', function(Blueprint $table)
 
 The models:
 
-1. The translatable model `Country` should use the trait `Dimsav\Translatable\Translatable`. 
+1. The translatable model `Country` should [use the trait](http://www.sitepoint.com/using-traits-in-php-5-4/) `Dimsav\Translatable\Translatable`. 
 2. The convention for the translation model is `CountryTranslation`.
 
 
