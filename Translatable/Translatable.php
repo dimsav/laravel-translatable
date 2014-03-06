@@ -110,12 +110,6 @@ trait Translatable {
         return parent::fill($attributes);
     }
 
-    public function forceDelete()
-    {
-        $this->deleteTranslations();
-        parent::forceDelete();
-    }
-
     protected function isKeyReturningTranslationText($key)
     {
         return in_array($key, $this->translatedAttributes);
@@ -161,23 +155,6 @@ trait Translatable {
         $translation = new $modelName;
         $translation->setAttribute($this->getLocaleKey(), $locale);
         return $translation;
-    }
-
-    protected function performDeleteOnModel()
-    {
-        if ( ! $this->softDelete)
-        {
-            $this->deleteTranslations();
-        }
-        parent::performDeleteOnModel();
-    }
-
-    protected function deleteTranslations()
-    {
-        foreach ($this->translations as $translation)
-        {
-            $translation->delete();
-        }
     }
 
 }
