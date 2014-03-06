@@ -97,7 +97,7 @@ Schema::create('country_translations', function(Blueprint $table)
     $table->string('locale')->index();
 
     $table->unique(['country_id','locale']);
-    $table->foreign('country_id')->references('id')->on('countries');
+    $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
 });
 ```
 
