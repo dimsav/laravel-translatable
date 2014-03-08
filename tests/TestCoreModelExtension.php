@@ -4,6 +4,8 @@ use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryGuarded;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryTranslation;
+use Dimsav\Translatable\Test\Model\City;
+use Dimsav\Translatable\Test\Model\CityTranslation;
 use Orchestra\Testbench\TestCase;
 
 class TestCoreModelExtension extends TestsBase {
@@ -60,16 +62,33 @@ class TestCoreModelExtension extends TestsBase {
 
     public function testDeleting()
     {
+        $city = City::find(1);
+        $cityId = $city->id;
+        $translation = $city->en;
+        $this->assertTrue(is_object($translation));
+        $city->delete();
+        $city = City::find($cityId);
+        $this->assertNull($city);
+        $translations = CityTranslation::where('country_id', '=', $cityId)->get();
+        $this->assertEquals(0, count($translations));
+    }
+
+    public function testDeletingWithContraint()
+    {
         $country = Country::find(1);
         $countryId = $country->id;
         $translation = $country->en;
         $this->assertTrue(is_object($translation));
-        $country->delete();
-        $country = Country::find($countryId);
-        $this->assertNull($country);
+        try {
+            $country->delete();
+        }
+        catch (\Exception $e) {}
+
+        $country = Country::find(1);
+        $this->assertNotNull($country);
 
         $translations = CountryTranslation::where('country_id', '=', $countryId)->get();
-        $this->assertEquals(0, count($translations));
+        $this->assertEquals(4, count($translations));
     }
 
     public function testDeletingWithSoftDeleteDoesNotDeleteTranslations()
@@ -80,9 +99,13 @@ class TestCoreModelExtension extends TestsBase {
 
         $after = CountryTranslation::where('country_id', '=', 1)->get();
         $this->assertEquals(count($before), count($after));
+    }
 
+    public function testForceDeletingWithSoftDeleteDoesDeleteTranslations()
+    {
+        $country = CountryStrict::find(2);
         $country->forceDelete();
-        $after = CountryTranslation::where('country_id', '=', 1)->get();
+        $after = CountryTranslation::where('country_id', '=', 2)->get();
         $this->assertEquals(0, count($after));
     }
 
