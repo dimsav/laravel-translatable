@@ -73,7 +73,7 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(0, count($translations));
     }
 
-    public function testDeletingWithContraint()
+    public function testDeletingWithConstraint()
     {
         $country = Country::find(1);
         $countryId = $country->id;

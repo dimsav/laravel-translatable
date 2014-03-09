@@ -70,7 +70,7 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "2.*"
+        "dimsav/laravel-translatable": "3.*"
     }
 }
 ```
@@ -161,6 +161,9 @@ Both Laravel versions `4.0` and `4.1` play nice with the package.
 Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
 
 ## Version History
+
+### v. 3.0
+* Fixed bug #7. Model's Translations were deleted when the model delete failed.
 
 ### v. 2.0
 * Translatable is now a trait and can be used as add-on to your models.

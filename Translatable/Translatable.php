@@ -1,5 +1,6 @@
 <?php namespace Dimsav\Translatable;
 
+use App;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,7 +33,7 @@ trait Translatable {
 
     public function getTranslation($locale = null)
     {
-        $locale = $locale ?: \App::getLocale();
+        $locale = $locale ?: App::getLocale();
 
         foreach ($this->translations as $translation)
         {
@@ -123,7 +124,7 @@ trait Translatable {
 
     protected function getLocales()
     {
-        $config = \App::make('config');
+        $config = App::make('config');
         return $config->get('app.locales', array());
     }
 
