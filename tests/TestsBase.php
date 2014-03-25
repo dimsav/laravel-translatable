@@ -44,11 +44,6 @@ class TestsBase extends TestCase {
         return array('Eloquent' => 'Illuminate\Database\Eloquent\Model');
     }
 
-    protected function getPackageProviders()
-    {
-        return array('Dimsav\Translatable\TranslatableServiceProvider');
-    }
-
     protected function countQueries() {
         $that = $this;
         $event = App::make('events');
