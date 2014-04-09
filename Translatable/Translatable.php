@@ -2,7 +2,6 @@
 
 use App;
 use Illuminate\Database\Eloquent\MassAssignmentException;
-use Illuminate\Database\Eloquent\Model;
 
 trait Translatable {
 
@@ -152,7 +151,6 @@ trait Translatable {
     protected function getNewTranslationInstance($locale)
     {
         $modelName = $this->getTranslationModelName();
-        /** @var Model $translation */
         $translation = new $modelName;
         $translation->setAttribute($this->getLocaleKey(), $locale);
         return $translation;
