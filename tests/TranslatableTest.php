@@ -174,4 +174,11 @@ class TranslatableTests extends TestsBase {
         $this->assertEquals('Ελλάδα', $country->translate('el')->name);
     }
 
+    public function testHasTranslation()
+    {
+        $country = Country::find(1);
+        $this->assertTrue($country->hasTranslation('en'));
+        $this->assertFalse($country->hasTranslation('abc'));
+    }
+
 }

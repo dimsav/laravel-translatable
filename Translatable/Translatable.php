@@ -160,4 +160,19 @@ trait Translatable {
         return $translation;
     }
 
+    public function hasTranslation($locale = null)
+    {
+        $locale = $locale ?: App::getLocale();
+
+        foreach ($this->translations as $translation)
+        {
+            if ($translation->getAttribute($this->getLocaleKey()) == $locale)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
