@@ -48,15 +48,19 @@ trait Translatable {
         return $translation;
     }
 
+    /**
+     * Alias for getTranslation()
+     */
+    public function translate($locale = null)
+    {
+        return $this->getTranslation($locale);
+    }
+
     public function getAttribute($key)
     {
         if ($this->isKeyReturningTranslationText($key))
         {
             return $this->getTranslation()->$key;
-        }
-        elseif ($this->isKeyALocale($key))
-        {
-            return $this->getTranslation($key);
         }
        return parent::getAttribute($key);
     }
