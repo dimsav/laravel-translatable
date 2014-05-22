@@ -70,7 +70,7 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "3.*"
+        "dimsav/laravel-translatable": "4.*"
     }
 }
 ```
@@ -163,8 +163,8 @@ Translatable is fully compatible with all kinds of Eloquent extensions, includin
 ## Version History
 
 ### v. 4.0
-* Removed syntax `$model->en->name` because conflicts may happen if the model has a property named `en`. See #18.
-* Added method `hasTranslation($locale)`. See #19.
+* Removed syntax `$model->en->name` because conflicts may happen if the model has a property named `en`. See [#18](https://github.com/dimsav/laravel-translatable/issues/18).
+* Added method `hasTranslation($locale)`. See [#19](https://github.com/dimsav/laravel-translatable/issues/19).
 
 ### v. 3.0
 * Fixed bug #7. Model's Translations were deleted when the model delete failed.
