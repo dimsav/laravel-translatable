@@ -164,6 +164,7 @@ Translatable is fully compatible with all kinds of Eloquent extensions, includin
 
 ### v. 4.0
 * Removed syntax `$model->en->name` because conflicts may happen if the model has a property named `en`. See #18.
+* Added method `hasTranslation($locale)`. See #19.
 
 ### v. 3.0
 * Fixed bug #7. Model's Translations were deleted when the model delete failed.
