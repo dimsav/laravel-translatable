@@ -64,7 +64,7 @@ class TestCoreModelExtension extends TestsBase {
     {
         $city = City::find(1);
         $cityId = $city->id;
-        $translation = $city->en;
+        $translation = $city->translate('en');
         $this->assertTrue(is_object($translation));
         $city->delete();
         $city = City::find($cityId);
@@ -77,7 +77,7 @@ class TestCoreModelExtension extends TestsBase {
     {
         $country = Country::find(1);
         $countryId = $country->id;
-        $translation = $country->en;
+        $translation = $country->translate('en');
         $this->assertTrue(is_object($translation));
         try {
             $country->delete();

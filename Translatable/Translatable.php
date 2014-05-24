@@ -48,15 +48,19 @@ trait Translatable {
         return $translation;
     }
 
+    /**
+     * Alias for getTranslation()
+     */
+    public function translate($locale = null)
+    {
+        return $this->getTranslation($locale);
+    }
+
     public function getAttribute($key)
     {
         if ($this->isKeyReturningTranslationText($key))
         {
             return $this->getTranslation()->$key;
-        }
-        elseif ($this->isKeyALocale($key))
-        {
-            return $this->getTranslation($key);
         }
        return parent::getAttribute($key);
     }
@@ -154,6 +158,21 @@ trait Translatable {
         $translation = new $modelName;
         $translation->setAttribute($this->getLocaleKey(), $locale);
         return $translation;
+    }
+
+    public function hasTranslation($locale = null)
+    {
+        $locale = $locale ?: App::getLocale();
+
+        foreach ($this->translations as $translation)
+        {
+            if ($translation->getAttribute($this->getLocaleKey()) == $locale)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

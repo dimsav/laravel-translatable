@@ -25,7 +25,7 @@ Getting translated attributes
 
 ```php
   $country = Country::where('iso', '=', 'gr')->first();
-  echo $country->en->name; // Greece
+  echo $country->translate('en')->name; // Greece
   
   App::setLocale('en');
   echo $country->name;     // Greece
@@ -38,13 +38,13 @@ Saving translated attributes
 
 ```php
   $country = Country::where('iso', '=', 'gr')->first();
-  echo $country->en->name; // Greece
+  echo $country->translate('en')->name; // Greece
   
-  $country->en->name = 'abc';
+  $country->translate('en')->name = 'abc';
   $country->save();
   
   $country = Country::where('iso', '=', 'gr')->first();
-  echo $country->en->name; // abc
+  echo $country->translate('en')->name; // abc
 ```
 
 Filling multiple translations
@@ -58,10 +58,8 @@ Filling multiple translations
 
   $country = Country::create($data);
   
-  echo $country->fr->name; // Grèce
+  echo $country->translate('fr')->name; // Grèce
 ```
-
-Please note that deleting an instance will delete the translations, while soft-deleting the instance will not delete the translations.
 
 ## Installation in 4 steps
 
@@ -72,14 +70,14 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "3.*"
+        "dimsav/laravel-translatable": "4.*"
     }
 }
 ```
 
 ### Step 2
 
-Let's say you have a model `Country`. To save the translations of countries you need in total two model classes and two tables.
+Let's say you have a model `Country`. To save the translations of countries you need in total two tables for the two models.
 
 Create your migrations:
 
@@ -135,19 +133,15 @@ The array `$translatedAttributes` contains the names of the fields being transla
 
 ### Step 4
 
-Finally, you have to inform the package about the languages you plan to use for translation. This allows us to use the syntax `$country->es->name`. 
+Optionally, edit the default locale.
 
 ```php
 // app/config/app.php
 
 return array(
 
-  // Just enter this array somewhere near your default locale
-  'locales' => array('en', 'fr', 'es'),
-  
-  // The default locale
   'locale' => 'en',
-  
+
 );
 ```
 
@@ -167,6 +161,10 @@ Got any question or suggestion? Feel free to open an [Issue](https://github.com/
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
 ## Version History
+
+### v. 4.0
+* Removed syntax `$model->en->name` because conflicts may happen if the model has a property named `en`. See [#18](https://github.com/dimsav/laravel-translatable/issues/18).
+* Added method `hasTranslation($locale)`. See [#19](https://github.com/dimsav/laravel-translatable/issues/19).
 
 ### v. 3.0
 * Fixed bug #7. Model's Translations were deleted when the model delete failed.
