@@ -193,4 +193,14 @@ class TranslatableTests extends TestsBase {
         $this->assertFalse($country->hasTranslation('abc'));
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_default_translation()
+    {
+        $country = Country::find(1);
+        $this->assertEquals($country->getTranslation('ch', true)->name, 'Greece');
+        $this->assertEquals($country->translateOrDefault('ch')->name, 'Greece');
+    }
+
 }
