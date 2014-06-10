@@ -162,6 +162,10 @@ Translatable is fully compatible with all kinds of Eloquent extensions, includin
 
 ## Version History
 
+### v. 4.1
+* Added [fallback](https://github.com/dimsav/laravel-translatable/issues/23) to default locale if translations is missing.
+* Added travis environment for laravel 4.2.
+
 ### v. 4.0
 * Removed syntax `$model->en->name` because conflicts may happen if the model has a property named `en`. See [#18](https://github.com/dimsav/laravel-translatable/issues/18).
 * Added method `hasTranslation($locale)`. See [#19](https://github.com/dimsav/laravel-translatable/issues/19).
