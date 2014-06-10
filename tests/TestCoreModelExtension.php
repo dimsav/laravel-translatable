@@ -14,9 +14,9 @@ class TestCoreModelExtension extends TestsBase {
 
     /**
      * @test
-     * @expectedException Illuminate\Database\QueryException
+     * @expectedException \Exception
      */
-    public function it_throws_exception_if_iso_is_null()
+    public function it_throws_query_exception_if_iso_is_null()
     {
         $country = new Country();
         $country->name = 'Belgium';
@@ -25,9 +25,9 @@ class TestCoreModelExtension extends TestsBase {
 
     /**
      * @test
-     * @expectedException Illuminate\Database\QueryException
+     * @expectedException \Exception
      */
-    public function it_throws_exception_if_saving_and_name_is_null()
+    public function it_throws_query_exception_if_saving_and_name_is_null()
     {
         $country = new Country();
         $country->iso = 'be';
