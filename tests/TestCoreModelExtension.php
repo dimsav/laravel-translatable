@@ -13,9 +13,10 @@ class TestCoreModelExtension extends TestsBase {
     // Failing saving
 
     /**
-     * @expectedException \Exception
+     * @test
+     * @expectedException Illuminate\Database\QueryException
      */
-    public function testSaveTranslatableThrowsException()
+    public function it_throws_exception_if_iso_is_null()
     {
         $country = new Country();
         $country->name = 'Belgium';
@@ -23,9 +24,10 @@ class TestCoreModelExtension extends TestsBase {
     }
 
     /**
-     * @expectedException \Exception
+     * @test
+     * @expectedException Illuminate\Database\QueryException
      */
-    public function testSaveTranslationThrowsException()
+    public function it_throws_exception_if_saving_and_name_is_null()
     {
         $country = new Country();
         $country->iso = 'be';
@@ -33,7 +35,10 @@ class TestCoreModelExtension extends TestsBase {
         $country->save();
     }
 
-    public function testParentReturnsFalseOnSave()
+    /**
+     * @test
+     */
+    public function it_returns_false_if_save_was_not_successful()
     {
         $that = $this;
         $event = App::make('events');
@@ -49,9 +54,10 @@ class TestCoreModelExtension extends TestsBase {
     // Filling
 
     /**
-     * @expectedException \Illuminate\Database\Eloquent\MassAssignmentException
+     * @test
+     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function testExceptionIsThrownWhenModelTotallyGuarded()
+    public function it_throws_exception_if_filling_a_protected_property()
     {
         $country = new CountryGuarded();
         $this->assertTrue($country->totallyGuarded());
@@ -60,7 +66,10 @@ class TestCoreModelExtension extends TestsBase {
 
     // Deleting
 
-    public function testDeleting()
+    /**
+     * @test
+     */
+    public function it_deletes_translations()
     {
         $city = City::find(1);
         $cityId = $city->id;
@@ -73,7 +82,10 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(0, count($translations));
     }
 
-    public function testDeletingWithConstraint()
+    /**
+     * @test
+     */
+    public function it_does_not_delete_translations_when_attempting_to_delete_object_fails()
     {
         $country = Country::find(1);
         $countryId = $country->id;
@@ -91,7 +103,10 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(4, count($translations));
     }
 
-    public function testDeletingWithSoftDeleteDoesNotDeleteTranslations()
+    /**
+     * @test
+     */
+    public function it_does_not_delete_translations_while_soft_deleting()
     {
         $country = CountryStrict::find(1);
         $before = CountryTranslation::where('country_id', '=', 1)->get();
@@ -101,7 +116,10 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(count($before), count($after));
     }
 
-    public function testForceDeletingWithSoftDeleteDoesDeleteTranslations()
+    /**
+     * @test
+     */
+    public function it_does_not_delete_translations_while_force_deleting()
     {
         $country = CountryStrict::find(2);
         $country->forceDelete();
@@ -111,7 +129,10 @@ class TestCoreModelExtension extends TestsBase {
 
     // Performance
 
-    public function testNPlusOne()
+    /**
+     * @test
+     */
+    public function it_passes_the_N_plus_1_problem()
     {
         $countries = Country::with('translations')->get();
         foreach ($countries as $country) {
