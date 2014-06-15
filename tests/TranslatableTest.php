@@ -5,7 +5,10 @@ use Dimsav\Translatable\Test\Model\CountryStrict;
 
 class TranslatableTests extends TestsBase {
 
-    public function testTranslationModelName()
+    /**
+     * @test
+     */
+    public function it_finds_the_default_translation_class()
     {
         $country = new Country;
         $this->assertEquals(
@@ -13,7 +16,10 @@ class TranslatableTests extends TestsBase {
             $country->getTranslationModelNameDefault());
     }
 
-    public function testTranslationModelCustomName()
+    /**
+     * @test
+     */
+    public function it_returns_custom_TranslationModelName()
     {
         $country = new Country;
 
@@ -29,20 +35,25 @@ class TranslatableTests extends TestsBase {
         );
     }
 
-    public function testRelationKey()
+    /**
+     * @test
+     */
+    public function it_returns_relation_key()
     {
         $country = new Country;
-
         $this->assertEquals('country_id', $country->getRelationKey());
 
         $country->translationForeignKey = 'my_awesome_key';
         $this->assertEquals('my_awesome_key', $country->getRelationKey());
     }
 
-    public function testGettingTranslationModel()
+    /**
+     * @test
+     */
+    public function it_returns_the_translation()
     {
         /** @var Country $country */
-        $country = Country::where('iso', '=', 'gr')->first();
+        $country = Country::whereIso('gr')->first();
 
         $englishTranslation = $country->translate('el');
         $this->assertEquals('Ελλάδα', $englishTranslation->name);
@@ -59,72 +70,73 @@ class TranslatableTests extends TestsBase {
         $this->assertEquals('Greece', $englishTranslation->name);
     }
 
-    public function testGettingAttributeFromTranslation()
+    /**
+     * @test
+     */
+    public function it_saves_translations()
     {
-        $country = Country::where('iso', '=', 'gr')->first();
-        $this->assertEquals('Greece', $country->name);
-
-        $this->app->setLocale('el');
-        $this->assertEquals('Ελλάδα', $country->name);
-    }
-
-    public function testSavingTranslation()
-    {
-        $country = Country::where('iso', '=', 'gr')->first();
-
-        $country->setAttribute('name', 'abcd');
-        $this->assertEquals('abcd', $country->name);
+        $country = Country::whereIso('gr')->first();
 
         $country->name = '1234';
-        $this->assertEquals('1234', $country->name);
         $country->save();
 
-        $country = Country::where('iso', '=', 'gr')->first();
+        $country = Country::whereIso('gr')->first();
         $this->assertEquals('1234', $country->name);
     }
 
-    public function testSavingTranslationProvidingLocale()
+    /**
+     * @test
+     */
+    public function it_uses_default_locale_to_return_translations()
     {
-        $country = Country::where('iso', '=', 'gr')->first();
+        $country = Country::whereIso('gr')->first();
 
         $country->translate('el')->name = 'abcd';
-        $this->assertEquals('abcd', $country->translate('el')->name);
 
         $this->app->setLocale('el');
         $this->assertEquals('abcd', $country->name);
         $country->save();
 
-        $country = Country::where('iso', '=', 'gr')->first();
+        $country = Country::whereIso('gr')->first();
         $this->assertEquals('abcd', $country->translate('el')->name);
     }
 
-    public function testCreatingInstanceWithoutTranslation()
+    /**
+     * @test
+     */
+    public function it_creates_translations()
     {
         $country = new Country;
         $country->iso = 'be';
         $country->save();
 
-        $country = Country::where('iso', '=', 'be')->first();
+        $country = Country::whereIso('be')->first();
         $country->name = 'Belgium';
         $country->save();
 
-        $country = Country::where('iso', '=', 'be')->first();
+        $country = Country::whereIso('be')->first();
         $this->assertEquals('Belgium', $country->name);
 
     }
 
-    public function testCreatingInstanceWithTranslation()
+    /**
+     * @test
+     */
+    public function it_creates_translations_using_the_shortcut()
     {
         $country = new Country;
         $country->iso = 'be';
         $country->name = 'Belgium';
         $country->save();
 
-        $country = Country::where('iso', '=', 'be')->first();
+        $country = Country::whereIso('be')->first();
         $this->assertEquals('Belgium', $country->name);
     }
 
-    public function testCreatingInstanceUsingMassAssignment()
+    /**
+     * @test
+     */
+    public function it_creates_translations_using_mass_assignment()
     {
         $data = array(
             'iso' => 'be',
@@ -135,7 +147,10 @@ class TranslatableTests extends TestsBase {
         $this->assertEquals('Belgium', $country->name);
     }
 
-    public function testCreatingInstanceUsingMassAssignmentAndLocales()
+    /**
+     * @test
+     */
+    public function it_creates_translations_using_mass_assignment_and_locales()
     {
         $data = array(
             'iso' => 'be',
@@ -147,12 +162,15 @@ class TranslatableTests extends TestsBase {
         $this->assertEquals('Belgium', $country->translate('en')->name);
         $this->assertEquals('Belgique', $country->translate('fr')->name);
 
-        $country = Country::where('iso', '=', 'be')->first();
+        $country = Country::whereIso('be')->first();
         $this->assertEquals('Belgium', $country->translate('en')->name);
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
 
-    public function testMassAssignmentWithNonFillable()
+    /**
+     * @test
+     */
+    public function it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $data = array(
             'iso' => 'be',
@@ -165,20 +183,24 @@ class TranslatableTests extends TestsBase {
         $this->assertNull($country->translate('fr')->name);
     }
 
-    public function testGettingTranslationFromSpecificLocale()
-    {
-        $country = Country::find(1);
-
-        $this->assertTrue(is_object($country->translate('en')));
-        $this->assertEquals('Greece', $country->translate('en')->name);
-        $this->assertEquals('Ελλάδα', $country->translate('el')->name);
-    }
-
-    public function testHasTranslation()
+    /**
+     * @test
+     */
+    public function it_returns_if_object_has_translation()
     {
         $country = Country::find(1);
         $this->assertTrue($country->hasTranslation('en'));
         $this->assertFalse($country->hasTranslation('abc'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_default_translation()
+    {
+        $country = Country::find(1);
+        $this->assertEquals($country->getTranslation('ch', true)->name, 'Greece');
+        $this->assertEquals($country->translateOrDefault('ch')->name, 'Greece');
     }
 
 }

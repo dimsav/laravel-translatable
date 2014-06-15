@@ -30,30 +30,53 @@ trait Translatable {
         return $this->hasMany($this->getTranslationModelName(), $this->getRelationKey());
     }
 
-    public function getTranslation($locale = null)
+    public function getTranslation($locale = null, $withFallback = false)
     {
         $locale = $locale ?: App::getLocale();
 
+        if ($this->getTranslationByLocaleKey($locale))
+        {
+            $translation = $this->getTranslationByLocaleKey($locale);
+        }
+        elseif ($withFallback && $this->getTranslationByLocaleKey(App::getLocale()))
+        {
+            $translation = $this->getTranslationByLocaleKey(App::getLocale());
+        }
+        else
+        {
+            $translation = $this->getNewTranslationInstance($locale);
+            $this->translations->add($translation);
+        }
+
+        return $translation;
+    }
+
+    private function getTranslationByLocaleKey($key)
+    {
         foreach ($this->translations as $translation)
         {
-            if ($translation->getAttribute($this->getLocaleKey()) == $locale)
+            if ($translation->getAttribute($this->getLocaleKey()) == $key)
             {
                 return $translation;
             }
         }
-        $translation = $this->getNewTranslationInstance($locale);
-
-        $this->translations->add($translation);
-
-        return $translation;
+        return null;
     }
 
     /**
      * Alias for getTranslation()
      */
-    public function translate($locale = null)
+    public function translate($locale = null, $defaultLocale = null)
     {
-        return $this->getTranslation($locale);
+        return $this->getTranslation($locale, $defaultLocale);
+    }
+
+    /**
+     * Alias for getTranslation()
+     */
+    public function translateOrDefault($locale)
+    {
+        return $this->getTranslation($locale, true);
     }
 
     public function getAttribute($key)
