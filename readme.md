@@ -140,6 +140,10 @@ Optionally, edit the default locale.
 
 return array(
 
+  // Just enter this array somewhere near your default locale
+  'locales' => array('en', 'fr', 'es'),
+
+  // The default locale
   'locale' => 'en',
 
 );
