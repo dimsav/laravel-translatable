@@ -198,9 +198,12 @@ class TranslatableTests extends TestsBase {
      */
     public function it_returns_default_translation()
     {
+        $this->assertEquals(App::make('config')->get('app.fallback_locale'), 'de');
+
         $country = Country::find(1);
-        $this->assertEquals($country->getTranslation('ch', true)->name, 'Greece');
-        $this->assertEquals($country->translateOrDefault('ch')->name, 'Greece');
+        $this->assertEquals($country->getTranslation('ch', true)->name, 'Griechenland');
+        $this->assertEquals($country->translateOrDefault('ch')->name, 'Griechenland');
+        $this->assertEquals($country->getTranslation('ch', false)->name, null);
     }
 
 }

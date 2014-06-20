@@ -37,6 +37,7 @@ class TestsBase extends TestCase {
         DB::statement('PRAGMA foreign_keys = ON');
         $app['config']->set('app.locale', 'en');
         $app['config']->set('app.locales', array('el', 'en', 'fr', 'de', 'id'));
+        $app['config']->set('app.fallback_locale', 'de');
     }
 
     protected function getPackageAliases()
