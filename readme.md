@@ -70,7 +70,7 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "4.1.*"
+        "dimsav/laravel-translatable": "4.2.*"
     }
 }
 ```
@@ -165,6 +165,14 @@ Got any question or suggestion? Feel free to open an [Issue](https://github.com/
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
 ## Version History
+
+### v. 4.2
+
+* Fallback locale now is taken from `app.fallback_locale` config key.
+
+### v. 4.1.1
+
+* Fixed issue with saving translations, caused by the update of the laravel core.
 
 ### v. 4.1
 * Added [fallback](https://github.com/dimsav/laravel-translatable/issues/23) to default locale if translations is missing.
