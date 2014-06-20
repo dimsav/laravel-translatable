@@ -70,7 +70,7 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "4.*"
+        "dimsav/laravel-translatable": "4.1.*"
     }
 }
 ```
