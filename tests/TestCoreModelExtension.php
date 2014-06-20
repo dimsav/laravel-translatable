@@ -12,6 +12,35 @@ use Orchestra\Testbench\TestCase;
 
 class TestCoreModelExtension extends TestsBase {
 
+    // Saving
+
+    /**
+     * @test
+     */
+    public function it_saves_empty_instances()
+    {
+        $company = new Company;
+        $company->save();
+        $this->assertGreaterThan(0, $company->id);
+
+        $country = new Continent;
+        $country->save();
+        $this->assertGreaterThan(0, $country->id);
+    }
+
+    /**
+     * @test
+     */
+    public function it_saves_translations_when_existing_and_dirty()
+    {
+        $country = Country::find(1);
+        $country->iso = 'make_model_dirty';
+        $country->name = 'abc';
+        $this->assertTrue($country->save());
+        $country = Country::find(1);
+        $this->assertEquals($country->name, 'abc');
+    }
+
     // Failing saving
 
     /**
@@ -40,7 +69,7 @@ class TestCoreModelExtension extends TestsBase {
     /**
      * @test
      */
-    public function it_returns_false_if_parent_save_was_not_successful()
+    public function it_returns_false_if_exists_and_dirty_and_parent_save_returns_false()
     {
         $that = $this;
         $event = App::make('events');
@@ -52,6 +81,21 @@ class TestCoreModelExtension extends TestsBase {
         $country->iso = 'make_model_dirty';
         $country->name = 'abc';
         $this->assertFalse($country->save());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_false_if_does_not_exist_and_parent_save_returns_false()
+    {
+        $that = $this;
+        $event = App::make('events');
+        $event->listen('eloquent*', function($model) use ($that) {
+                return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
+            });
+
+        $continent = new Continent;
+        $this->assertFalse($continent->save());
     }
 
     // Filling
@@ -143,19 +187,5 @@ class TestCoreModelExtension extends TestsBase {
         }
         $this->assertGreaterThan(2, count($countries));
         $this->assertEquals(2, $this->queriesCount);
-    }
-
-    /**
-     * @test
-     */
-    public function it_saves_empty_instances()
-    {
-        $company = new Company;
-        $company->save();
-        $this->assertGreaterThan(0, $company->id);
-
-        $country = new Continent;
-        $country->save();
-        $this->assertGreaterThan(0, $country->id);
     }
 }
