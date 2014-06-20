@@ -38,7 +38,7 @@ class TestCoreModelExtension extends TestsBase {
     /**
      * @test
      */
-    public function it_returns_false_if_save_was_not_successful()
+    public function it_returns_false_if_parent_save_was_not_successful()
     {
         $that = $this;
         $event = App::make('events');
@@ -47,6 +47,7 @@ class TestCoreModelExtension extends TestsBase {
             });
 
         $country = Country::find(1);
+        $country->iso = 'make_model_dirty';
         $country->name = 'abc';
         $this->assertFalse($country->save());
     }

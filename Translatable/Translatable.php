@@ -105,11 +105,18 @@ trait Translatable {
 
     public function save(array $options = array())
     {
-        if (parent::save($options))
+        if (count($this->getDirty()) > 0)
+        {
+            if (parent::save($options))
+            {
+                return $this->saveTranslations();
+            }
+            return false;
+        }
+        else
         {
             return $this->saveTranslations();
         }
-        return false;
     }
 
     public function fill(array $attributes)
