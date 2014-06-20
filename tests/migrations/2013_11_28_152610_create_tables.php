@@ -51,6 +51,28 @@ class CreateTables extends Migration {
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
         });
 
+        Schema::create('companies', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('name')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('continents', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->timestamps();
+        });
+
+        Schema::create('continent_translations', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('continent_id')->unsigned();
+            $table->string('name');
+            $table->string('locale')->index();
+            $table->timestamps();
+        });
+
 	}
 
 

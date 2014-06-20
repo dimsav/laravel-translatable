@@ -105,18 +105,31 @@ trait Translatable {
 
     public function save(array $options = array())
     {
-        if (count($this->getDirty()) > 0)
+        if ($this->exists)
         {
-            if (parent::save($options))
+            if (count($this->getDirty()) > 0)
             {
+                // If $this->exists and dirty, parent::save() has to return true. If not,
+                // an error has occurred. Therefore we shouldn't save the translations.
+                if (parent::save($options))
+                {
+                    return $this->saveTranslations();
+                }
+                return false;
+            }
+            else
+            {
+                // If $this->exists and not dirty, parent::save() skips saving and returns
+                // false. So we have to save the translations
                 return $this->saveTranslations();
             }
-            return false;
         }
-        else
+        elseif (parent::save($options))
         {
+            // We save the translations only if the instance is saved in the database.
             return $this->saveTranslations();
         }
+        return false;
     }
 
     public function fill(array $attributes)

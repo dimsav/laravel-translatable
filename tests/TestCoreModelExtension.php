@@ -1,11 +1,13 @@
 <?php
 
+use Dimsav\Translatable\Test\Model\Continent;
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryGuarded;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\City;
 use Dimsav\Translatable\Test\Model\CityTranslation;
+use Dimsav\Translatable\Test\Model\Company;
 use Orchestra\Testbench\TestCase;
 
 class TestCoreModelExtension extends TestsBase {
@@ -141,5 +143,19 @@ class TestCoreModelExtension extends TestsBase {
         }
         $this->assertGreaterThan(2, count($countries));
         $this->assertEquals(2, $this->queriesCount);
+    }
+
+    /**
+     * @test
+     */
+    public function it_saves_empty_instances()
+    {
+        $company = new Company;
+        $company->save();
+        $this->assertGreaterThan(0, $company->id);
+
+        $country = new Continent;
+        $country->save();
+        $this->assertGreaterThan(0, $country->id);
     }
 }
