@@ -96,7 +96,7 @@ trait Translatable {
     {
         if (in_array($key, $this->translatedAttributes))
         {
-            $this->getTranslation()->$key = $value;
+ 			$this->getTranslation(App::getLocale(), false)->$key = $value;
         }
         else
         {
