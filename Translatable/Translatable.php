@@ -64,7 +64,7 @@ trait Translatable {
 
     public function getTranslationModelNameDefault()
     {
-        return get_class($this) . 'Translation';
+  		return get_class($this) . $config->get('app.translation_model', 'Translation');
     }
 
     public function getRelationKey()
