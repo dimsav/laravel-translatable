@@ -64,6 +64,7 @@ trait Translatable {
 
     public function getTranslationModelNameDefault()
     {
+  		$config = App::make('config');
   		return get_class($this) . $config->get('app.translation_model', 'Translation');
     }
 
