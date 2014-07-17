@@ -59,13 +59,13 @@ trait Translatable {
 
     public function getTranslationModelName()
     {
-        return $this->translationModel ?: $this->getTranslationModelNameDefault();
+       return $this->translationModel ?: $this->getTranslationModelNameDefault();
     }
 
     public function getTranslationModelNameDefault()
     {
-  		$config = App::make('config');
-  		return get_class($this) . $config->get('app.translation_model', 'Translation');
+        $config = App::make('config');
+        return get_class($this) . $config->get('app.translatable_suffix', 'Translation');
     }
 
     public function getRelationKey()
