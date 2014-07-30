@@ -24,6 +24,7 @@ trait Translatable {
     public function getTranslation($locale = null, $withFallback = false)
     {
         $locale = $locale ?: App::getLocale();
+        $withFallback = $this->useTranslationFallback ?: $withFallback;
 
         if ($this->getTranslationByLocaleKey($locale))
         {
