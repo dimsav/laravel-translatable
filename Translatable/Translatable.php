@@ -24,12 +24,15 @@ trait Translatable {
     public function getTranslation($locale = null, $withFallback = false)
     {
         $locale = $locale ?: App::getLocale();
+        $withFallback = $this->useTranslationFallback ?: $withFallback;
 
         if ($this->getTranslationByLocaleKey($locale))
         {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
-        elseif ($withFallback && App::make('config')->has('app.fallback_locale'))
+        elseif ($withFallback
+            && App::make('config')->has('app.fallback_locale')
+            && $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale')))
         {
             $translation = $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale'));
         }
