@@ -2,6 +2,7 @@
 
 use App;
 use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Database\Eloquent\Model;
 
 trait Translatable {
 
@@ -203,7 +204,7 @@ trait Translatable {
         return $saved;
     }
 
-    protected function isTranslationDirty($translation)
+    protected function isTranslationDirty(Model $translation)
     {
         $dirtyAttributes = $translation->getDirty();
         unset($dirtyAttributes[$this->getLocaleKey()]);
