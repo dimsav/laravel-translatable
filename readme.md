@@ -146,6 +146,10 @@ return array(
   // The default locale
   'locale' => 'en',
 
+  // Override the default 'Translation' class suffix
+  // to use CountryTrans instead of CountryTranslation
+  'translatable_suffix' => 'Trans'
+
 );
 ```
 

@@ -65,7 +65,8 @@ trait Translatable {
 
     public function getTranslationModelNameDefault()
     {
-        return get_class($this) . 'Translation';
+        $config = App::make('config');
+        return get_class($this) . $config->get('app.translatable_suffix', 'Translation');
     }
 
     public function getRelationKey()

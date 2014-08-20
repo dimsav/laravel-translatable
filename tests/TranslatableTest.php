@@ -19,6 +19,18 @@ class TranslatableTests extends TestsBase {
     /**
      * @test
      */
+    public function it_finds_the_translation_class_with_suffix_set()
+    {
+        App::make('config')->set('app.translatable_suffix', 'Trans');
+        $country = new Country;
+        $this->assertEquals(
+            'Dimsav\Translatable\Test\Model\CountryTrans',
+            $country->getTranslationModelName());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_custom_TranslationModelName()
     {
         $country = new Country;
