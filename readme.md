@@ -170,6 +170,10 @@ Translatable is fully compatible with all kinds of Eloquent extensions, includin
 
 ## Version History
 
+### v. 4.3
+
+* Added option to override translation class suffix. See [#29](https://github.com/dimsav/laravel-translatable/pull/29)
+
 ### v. 4.2
 
 * Fallback locale now is taken from `app.fallback_locale` config key.
