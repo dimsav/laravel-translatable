@@ -172,7 +172,9 @@ Translatable is fully compatible with all kinds of Eloquent extensions, includin
 
 ### v. 4.3
 
-* Added option to override translation class suffix. See [#29](https://github.com/dimsav/laravel-translatable/pull/29)
+* The `Translation` class suffix default can be overridden in the app config. See [7ecc0a75d](https://github.com/dimsav/laravel-translatable/commit/7ecc0a75dfcec58ebf694e0a7feb686294b49847)
+* The `app.fallback_locale` setting can be overridden in each model separately. See [#33](https://github.com/dimsav/laravel-translatable/pull/33)
+* Fallback translation is not returned if it is not defined.
 
 ### v. 4.2
 
