@@ -146,6 +146,10 @@ return array(
   // The default locale
   'locale' => 'en',
 
+  // Override the default 'Translation' class suffix
+  // to use CountryTrans instead of CountryTranslation
+  'translatable_suffix' => 'Trans'
+
 );
 ```
 
@@ -165,6 +169,12 @@ Got any question or suggestion? Feel free to open an [Issue](https://github.com/
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
 ## Version History
+
+### v. 4.3
+
+* The `Translation` class suffix default can be overridden in the app config. See [7ecc0a75d](https://github.com/dimsav/laravel-translatable/commit/7ecc0a75dfcec58ebf694e0a7feb686294b49847)
+* The `app.fallback_locale` setting can be overridden in each model separately. See [#33](https://github.com/dimsav/laravel-translatable/pull/33)
+* Fallback translation is not returned if it is not defined.
 
 ### v. 4.2
 

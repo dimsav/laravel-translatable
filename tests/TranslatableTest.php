@@ -19,6 +19,18 @@ class TranslatableTests extends TestsBase {
     /**
      * @test
      */
+    public function it_finds_the_translation_class_with_suffix_set()
+    {
+        App::make('config')->set('app.translatable_suffix', 'Trans');
+        $country = new Country;
+        $this->assertEquals(
+            'Dimsav\Translatable\Test\Model\CountryTrans',
+            $country->getTranslationModelName());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_custom_TranslationModelName()
     {
         $country = new Country;
@@ -204,6 +216,34 @@ class TranslatableTests extends TestsBase {
         $this->assertEquals($country->getTranslation('ch', true)->name, 'Griechenland');
         $this->assertEquals($country->translateOrDefault('ch')->name, 'Griechenland');
         $this->assertEquals($country->getTranslation('ch', false)->name, null);
+    }
+
+    /**
+     * @test
+     */
+    public function models_fallback_option_overrides_fallback_option_in_config()
+    {
+        $country = Country::find(1);
+        $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
+
+        $country = Country::find(1);
+        $country->useTranslationFallback = false;
+        $this->assertEquals($country->getTranslation('ch', true)->locale, 'ch');
+
+        $country = Country::find(1);
+        $country->useTranslationFallback = true;
+        $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_fallback_if_fallback_is_not_defined()
+    {
+        App::make('config')->set('app.fallback_locale', 'ch');
+
+        $country = Country::find(1);
+        $this->assertEquals($country->getTranslation('pl', true)->locale, 'pl');
     }
 
 }

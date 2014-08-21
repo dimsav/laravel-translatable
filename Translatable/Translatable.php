@@ -2,6 +2,7 @@
 
 use App;
 use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Database\Eloquent\Model;
 
 trait Translatable {
 
@@ -24,12 +25,16 @@ trait Translatable {
     public function getTranslation($locale = null, $withFallback = false)
     {
         $locale = $locale ?: App::getLocale();
+        $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : $withFallback;
 
         if ($this->getTranslationByLocaleKey($locale))
         {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
-        elseif ($withFallback && App::make('config')->has('app.fallback_locale'))
+        elseif ($withFallback
+            && App::make('config')->has('app.fallback_locale')
+            && $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale'))
+        )
         {
             $translation = $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale'));
         }
@@ -64,7 +69,8 @@ trait Translatable {
 
     public function getTranslationModelNameDefault()
     {
-        return get_class($this) . 'Translation';
+        $config = App::make('config');
+        return get_class($this) . $config->get('app.translatable_suffix', 'Translation');
     }
 
     public function getRelationKey()
@@ -203,7 +209,7 @@ trait Translatable {
         return $saved;
     }
 
-    protected function isTranslationDirty($translation)
+    protected function isTranslationDirty(Model $translation)
     {
         $dirtyAttributes = $translation->getDirty();
         unset($dirtyAttributes[$this->getLocaleKey()]);
