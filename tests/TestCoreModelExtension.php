@@ -188,4 +188,16 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertGreaterThan(2, count($countries));
         $this->assertEquals(2, $this->queriesCount);
     }
+
+
+    // Forms
+
+    /**
+     * @test
+     */
+    public function it_fakes_isset_for_translated_attributes()
+    {
+        $country = Country::find(1);
+        $this->assertEquals(true, isset($country->name));
+    }
 }
