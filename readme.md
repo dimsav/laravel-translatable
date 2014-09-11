@@ -158,7 +158,7 @@ return array(
 
 ## Laravel versions
 
-Both Laravel versions `4.0` and `4.1` play nice with the package.
+Laravel versions `4.0`, `4.1` and `4.2` play nice with the package.
 
 ## Support
 
