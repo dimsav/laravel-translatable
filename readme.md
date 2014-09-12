@@ -77,7 +77,7 @@ Add the package in your composer.json file and run `composer update`.
 
 ### Step 2
 
-Let's say you have a model `Country`. To save the translations of countries you need in total two tables for the two models.
+Let's say you have a model `Country`. To save the translations of countries you need one extra table `country_translations`.
 
 Create your migrations:
 
