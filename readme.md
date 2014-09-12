@@ -15,7 +15,7 @@ If you want to store translations of your models into the database, this package
 * [Installation](#installation-in-4-steps)
 * [Laravel versions](#laravel-versions)
 * [Support](#support)
-* [Translatable & Ardent](#translatable--ardent)
+* [FAQ](#faq)
 * [Version History](#version-history)
 
 
@@ -160,13 +160,62 @@ return array(
 
 Laravel versions `4.0`, `4.1` and `4.2` play nice with the package.
 
-## Support
+## FAQ
+
+### I need help!
 
 Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
 
-## Translatable & Ardent
+### I want to help!
+
+You are awesome! Watched the repo and reply to the issues. You will help offering a great experience to the users of the package. `#communityWorks`
+
+### Is this compatible with Ardent?
 
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
+
+### Why do I get a mysql error while running the migrations?
+
+If you see the following mysql error:
+
+```
+[Illuminate\Database\QueryException]
+SQLSTATE[HY000]: General error: 1005 Can't create table 'my_database.#sql-455_63'
+  (errno: 150) (SQL: alter table `country_translations` 
+  add constraint country_translations_country_id_foreign foreign key (`country_id`) 
+  references `countries` (`id`) on delete cascade)
+```
+
+Then your tables have the MyISAM engine which doesn't allow foreign key constraints. MyISAM was the default engine for mysql versions older than 5.5. Since [version 5.5](http://dev.mysql.com/doc/refman/5.5/en/innodb-default-se.html), tables are created using the InnoDB storage engine by default.
+
+#### How to fix
+
+For tables already created in production, update your migrations to change the engine of the table before adding the foreign key constraint.
+
+```php
+public function up()
+{
+	DB::statement('ALTER TABLE countries ENGINE=InnoDB');
+}
+
+public function down()
+{
+  DB::statement('ALTER TABLE countries ENGINE=MyISAM');
+}
+```
+
+For new tables, a quick solution is to set the storage engine in the migration:
+
+```php
+Schema::create('language_translations', function(Blueprint $table){
+  $table->engine = 'InnoDB';
+  $table->increments('id');
+	// ...
+});
+```
+
+The best solution though would be to update your mysql version. And **always make sure you have the same version both in development and production environment!**
+
 
 ## Version History
 
