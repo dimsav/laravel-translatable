@@ -150,6 +150,10 @@ return array(
   // to use CountryTrans instead of CountryTranslation
   'translatable_suffix' => 'Trans'
 
+  // Override the default 'local key' field
+  // to use language_id instead of locale
+  'translatable_local_key' => 'language_id'
+
 );
 ```
 
