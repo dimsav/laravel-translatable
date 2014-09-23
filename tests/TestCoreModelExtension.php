@@ -51,6 +51,7 @@ class TestCoreModelExtension extends TestsBase {
     {
         $country = new Country();
         $country->name = 'Belgium';
+        $country->iso = null;
         $country->save();
     }
 
@@ -125,7 +126,7 @@ class TestCoreModelExtension extends TestsBase {
         $city->delete();
         $city = City::find($cityId);
         $this->assertNull($city);
-        $translations = CityTranslation::where('country_id', '=', $cityId)->get();
+        $translations = CityTranslation::where('city_id', '=', $cityId)->get();
         $this->assertEquals(0, count($translations));
     }
 
