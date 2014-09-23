@@ -11,13 +11,8 @@ class TestsBase extends TestCase {
     {
         parent::setUp();
         $artisan = $this->app->make('artisan');
-        $artisan->call('migrate:reset', [
-            '--database' => 'mysql',
-        ]);
-        $artisan->call('migrate', [
-            '--database' => 'mysql',
-            '--path'     => '../tests/migrations',
-        ]);
+
+        $this->resetDatabase($artisan);
         $this->countQueries();
     }
 
@@ -57,5 +52,26 @@ class TestsBase extends TestCase {
         $event->listen('illuminate.query', function() use ($that) {
             $that->queriesCount++;
         });
+    }
+
+    /**
+     * @param $artisan
+     */
+    private function resetDatabase($artisan)
+    {
+        // This creates the "migrations" table if not existing
+        $artisan->call('migrate', [
+            '--database' => 'mysql',
+            '--path'     => '../tests/migrations',
+        ]);
+        // We empty the tables
+        $artisan->call('migrate:reset', [
+            '--database' => 'mysql',
+        ]);
+        // We fill the tables
+        $artisan->call('migrate', [
+            '--database' => 'mysql',
+            '--path'     => '../tests/migrations',
+        ]);
     }
 }
