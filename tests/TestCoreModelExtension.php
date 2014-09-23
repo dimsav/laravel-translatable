@@ -45,12 +45,13 @@ class TestCoreModelExtension extends TestsBase {
 
     /**
      * @test
-     * @expectedException \Exception
+     * @expectedException \Illuminate\Database\QueryException
      */
     public function it_throws_query_exception_if_iso_is_null()
     {
         $country = new Country();
         $country->name = 'Belgium';
+        $country->iso = null;
         $country->save();
     }
 
@@ -125,7 +126,7 @@ class TestCoreModelExtension extends TestsBase {
         $city->delete();
         $city = City::find($cityId);
         $this->assertNull($city);
-        $translations = CityTranslation::where('country_id', '=', $cityId)->get();
+        $translations = CityTranslation::where('city_id', '=', $cityId)->get();
         $this->assertEquals(0, count($translations));
     }
 

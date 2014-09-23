@@ -83,10 +83,14 @@ class CreateTables extends Migration {
 	 */
 	public function down()
 	{
-        Schema::drop('city_translations');
-        Schema::drop('cities');
-        Schema::drop('country_translations');
-        Schema::drop('countries');
+
+        Schema::dropIfExists('city_translations');
+        Schema::dropIfExists('cities');
+        Schema::dropIfExists('country_translations');
+        Schema::dropIfExists('countries');
+        Schema::dropIfExists('companies');
+        Schema::dropIfExists('continents');
+        Schema::dropIfExists('continent_translations');
 	}
 
 }

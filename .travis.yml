@@ -11,6 +11,8 @@ env:
 
 before_script:
   - composer self-update
+  - mysql -e 'create database translatable_test;'
+  - mysql -e 'CREATE USER "homestead"@"localhost" IDENTIFIED BY "secret";'
   - composer require orchestra/testbench:"$TESTBENCH_VERSION" --dev
   - composer require illuminate/support:"$LARAVEL_VERSION" --dev
   - composer install
