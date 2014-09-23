@@ -22,9 +22,25 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
+    /**
+     * Returns only the language if the format locale is like 'en-US'
+     */
+    public function getLanguageLocale($locale)
+    {
+        if (strpos($locale, '-') !== false)
+        {
+            $array = explode('-', $locale);
+            return $array[0];
+        }
+        else
+        {
+            return $locale;
+        }
+    }
+
     public function getTranslation($locale = null, $withFallback = false)
     {
-        $locale = $locale ?: App::getLocale();
+        $locale = $locale ?: $this->getLanguageLocale(App::getLocale());
         $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : $withFallback;
 
         if ($this->getTranslationByLocaleKey($locale))
@@ -49,7 +65,7 @@ trait Translatable {
 
     public function hasTranslation($locale = null)
     {
-        $locale = $locale ?: App::getLocale();
+        $locale = $locale ?: $this->getLanguageLocale(App::getLocale());
 
         foreach ($this->translations as $translation)
         {
