@@ -45,7 +45,7 @@ class TestCoreModelExtension extends TestsBase {
 
     /**
      * @test
-     * @expectedException \Illuminate\Database\QueryException
+     * @expectedException \Exception
      */
     public function it_throws_query_exception_if_iso_is_null()
     {
