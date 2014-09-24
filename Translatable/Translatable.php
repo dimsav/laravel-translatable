@@ -32,6 +32,11 @@ trait Translatable {
             $array = explode('-', $locale);
             return $array[0];
         }
+        else if (strpos($locale, '_') !== false)
+        {
+            $array = explode('_', $locale);
+            return $array[0];
+        }
         else
         {
             return $locale;
