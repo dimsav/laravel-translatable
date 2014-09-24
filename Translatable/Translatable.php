@@ -23,7 +23,7 @@ trait Translatable {
     }
 
     /**
-     * Returns only the language if the format locale is like 'en-US'
+     * Returns only the language if the format locale is like 'en-US' or 'en_US'
      */
     public function getLanguageLocale($locale)
     {
