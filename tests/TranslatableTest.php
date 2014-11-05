@@ -3,7 +3,7 @@
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 
-class TranslatableTests extends TestsBase {
+class TranslatableTest extends TestsBase {
 
     /**
      * @test
@@ -221,18 +221,24 @@ class TranslatableTests extends TestsBase {
     /**
      * @test
      */
-    public function models_fallback_option_overrides_fallback_option_in_config()
+    public function fallback_option_in_config_overrides_models_fallback_option()
     {
+        App::make('config')->set('app.fallback_locale', 'de');
+
         $country = Country::find(1);
         $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
 
         $country = Country::find(1);
         $country->useTranslationFallback = false;
-        $this->assertEquals($country->getTranslation('ch', true)->locale, 'ch');
+        $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
 
         $country = Country::find(1);
         $country->useTranslationFallback = true;
-        $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
+        $this->assertEquals($country->getTranslation('ch')->locale, 'de');
+
+        $country = Country::find(1);
+        $country->useTranslationFallback = false;
+        $this->assertEquals($country->getTranslation('ch')->locale, 'ch');
     }
 
     /**
@@ -244,6 +250,38 @@ class TranslatableTests extends TestsBase {
 
         $country = Country::find(1);
         $this->assertEquals($country->getTranslation('pl', true)->locale, 'pl');
+    }
+
+    /**
+     * @test
+     */
+    public function it_fills_a_non_default_language_with_fallback_set()
+    {
+        App::make('config')->set('app.fallback_locale', 'en');
+
+        $country = new Country;
+        $country->fill([
+            'iso' => 'gr',
+            'en' => ['name' => 'Greece'],
+            'de' => ['name' => 'Griechenland'],
+        ]);
+
+        $this->assertEquals($country->translate('en')->name, 'Greece');
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_non_default_language_with_fallback_set()
+    {
+        App::make('config')->set('app.fallback_locale', 'en');
+
+        $country = Country::create(['iso' => 'gr']);
+        $country->useTranslationFallback = true;
+        $country->translate('en', false)->name = 'Greece';
+        $country->translate('de', false)->name = 'Griechenland';
+
+        $this->assertEquals($country->translate('en')->name, 'Greece');
     }
 
 }

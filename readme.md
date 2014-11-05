@@ -216,6 +216,49 @@ Schema::create('language_translations', function(Blueprint $table){
 
 The best solution though would be to update your mysql version. And **always make sure you have the same version both in development and production environment!**
 
+### Can I use translation fallbacks?
+
+If you want to fallback to a default translation if a translation has not been found, you can specify that on the model using `$model->useTranslationFallback = true`.
+
+```php
+App::make('config')->set('app.fallback_locale', 'en');
+
+$country = Country::create(['iso' => 'gr']);
+$country->translate('en')->name = 'Greece';
+$country->useTranslationFallback = true;
+
+$country->translate('de')->locale; // en
+$country->translate('de')->name; // Greece
+```
+
+You can also overwrite `useTranslationFallback` with a second parameter on `translate()`, so new translations can be created or existing ones used. Without the second parameter, `translate('de')` would return the fallback translation.
+
+```php
+App::make('config')->set('app.fallback_locale', 'en');
+
+$country = Country::create(['iso' => 'gr']);
+$country->useTranslationFallback = true;
+$country->translate('en', false)->name = 'Greece';
+$country->translate('de', false)->name = 'Griechenland';
+
+$country->translate('de')->locale; // de
+$country->translate('de')->name; // Griechenland
+```
+
+When using `fill`, this is done automatically for you:
+
+```php
+$country = new Country;
+$country->useTranslationFallback = true;
+$country->fill([
+  'iso' => 'gr',
+  'en' => ['name' => 'Greece'],
+  'de' => ['name' => 'Griechenland'],
+]);
+
+$country->translate('de')->locale; // de
+$country->translate('de')->name; // Griechenland
+```
 
 ## Version History
 

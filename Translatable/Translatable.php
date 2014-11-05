@@ -22,10 +22,14 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
-    public function getTranslation($locale = null, $fallback = false)
+    public function getTranslation($locale = null, $fallback = null)
     {
         $locale = $locale ?: App::getLocale();
-        $fallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : $fallback;
+
+        if ($fallback === null)
+        {
+            $fallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
+        }
 
         if ($this->getTranslationByLocaleKey($locale))
         {
@@ -146,7 +150,7 @@ trait Translatable {
         {
             if ($this->isKeyALocale($key))
             {
-                $translation = $this->getTranslation($key);
+                $translation = $this->getTranslation($key, false);
 
                 foreach ($values as $translationAttribute => $translationValue)
                 {
