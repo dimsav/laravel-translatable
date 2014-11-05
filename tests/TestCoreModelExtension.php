@@ -133,7 +133,7 @@ class TestCoreModelExtension extends TestsBase {
     /**
      * @test
      */
-    public function it_does_not_delete_translations_when_attempting_to_delete_object_fails()
+    public function it_does_not_delete_translations_when_attempting_to_delete_translatable()
     {
         $country = Country::find(1);
         $countryId = $country->id;
@@ -149,19 +149,6 @@ class TestCoreModelExtension extends TestsBase {
 
         $translations = CountryTranslation::where('country_id', '=', $countryId)->get();
         $this->assertEquals(4, count($translations));
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_delete_translations_while_soft_deleting()
-    {
-        $country = CountryStrict::find(1);
-        $before = CountryTranslation::where('country_id', '=', 1)->get();
-        $country->delete();
-
-        $after = CountryTranslation::where('country_id', '=', 1)->get();
-        $this->assertEquals(count($before), count($after));
     }
 
     /**

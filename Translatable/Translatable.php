@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 trait Translatable {
 
-    /**
+    /*
      * Alias for getTranslation()
      */
-    public function translate($locale = null, $defaultLocale = null)
+    public function translate($locale = null, $fallback = false)
     {
-        return $this->getTranslation($locale, $defaultLocale);
+        return $this->getTranslation($locale, $fallback);
     }
 
-    /**
+    /*
      * Alias for getTranslation()
      */
     public function translateOrDefault($locale)
@@ -22,16 +22,16 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
-    public function getTranslation($locale = null, $withFallback = false)
+    public function getTranslation($locale = null, $fallback = false)
     {
         $locale = $locale ?: App::getLocale();
-        $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : $withFallback;
+        $fallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : $fallback;
 
         if ($this->getTranslationByLocaleKey($locale))
         {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
-        elseif ($withFallback
+        elseif ($fallback
             && App::make('config')->has('app.fallback_locale')
             && $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale'))
         )
