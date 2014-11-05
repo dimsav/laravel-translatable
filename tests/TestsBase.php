@@ -10,9 +10,8 @@ class TestsBase extends TestCase {
     public function setUp()
     {
         parent::setUp();
-        $artisan = $this->app->make('artisan');
 
-        $this->resetDatabase($artisan);
+        $this->resetDatabase();
         $this->countQueries();
     }
 
@@ -24,8 +23,7 @@ class TestsBase extends TestCase {
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.base'] = __DIR__ . '/../Translatable';
-
+        $app['path.base'] = __DIR__ . '/../vendor/orchestra/testbench/src/fixture';
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', array(
             'driver'   => 'mysql',
@@ -54,24 +52,27 @@ class TestsBase extends TestCase {
         });
     }
 
-    /**
-     * @param $artisan
-     */
-    private function resetDatabase($artisan)
+    private function resetDatabase()
     {
-        // This creates the "migrations" table if not existing
+        // Relative to the testbench app folder: vendors/orchestra/testbench/src/fixture
+        $migrationsPath = '../../../../../tests/migrations';
+        $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
+
+        // Makes sure the migrations table is created
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--path'     => '../tests/migrations',
+            '--path'     => $migrationsPath,
         ]);
-        // We empty the tables
+
+        // We empty all tables
         $artisan->call('migrate:reset', [
             '--database' => 'mysql',
         ]);
-        // We fill the tables
+
+        // Migrate
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--path'     => '../tests/migrations',
+            '--path'     => $migrationsPath,
         ]);
     }
 }
