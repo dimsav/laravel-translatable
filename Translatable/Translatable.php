@@ -22,21 +22,11 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
-    /**
-     * Returns a translation instance for the given locale.
-     *
-     * @param null $locale The translation to return
-     * @param null $withFallback Specifies the behaviour in case a locale is not found:
-     * if $withFallback === NULL, then the value in $this->useTranslationsFallback gets used. If not set, no fallback.
-     * if $withFallback == TRUE, then the fallback set in the config (app.fallback_locale) gets used
-     * else A new translation instance for the given $locale is returned
-     * @return null Returns a translation instance.
-     */
     public function getTranslation($locale = null, $withFallback = null)
     {
         $locale = $locale ?: App::getLocale();
 
-        if ($withFallback === NULL)
+        if ($withFallback === null)
         {
             $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
         }
