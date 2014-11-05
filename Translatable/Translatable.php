@@ -9,9 +9,9 @@ trait Translatable {
     /**
      * Alias for getTranslation()
      */
-    public function translate($locale = null, $defaultLocale = null)
+    public function translate($locale = null, $withFallback = null)
     {
-        return $this->getTranslation($locale, $defaultLocale);
+        return $this->getTranslation($locale, $withFallback);
     }
 
     /**
@@ -22,10 +22,14 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
-    public function getTranslation($locale = null, $withFallback = false)
+    public function getTranslation($locale = null, $withFallback = null)
     {
         $locale = $locale ?: App::getLocale();
-        $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : $withFallback;
+
+        if ($withFallback === null)
+        {
+            $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
+        }
 
         if ($this->getTranslationByLocaleKey($locale))
         {
@@ -146,7 +150,7 @@ trait Translatable {
         {
             if ($this->isKeyALocale($key))
             {
-                $translation = $this->getTranslation($key);
+                $translation = $this->getTranslation($key, false);
 
                 foreach ($values as $translationAttribute => $translationValue)
                 {
