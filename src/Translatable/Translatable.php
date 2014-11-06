@@ -36,7 +36,7 @@ trait Translatable {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
         elseif ($withFallback
-            && App::make('config')->has('translatable::fallback_locale')
+            && App::make('config')->get('translatable::fallback_locale')
             && $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'))
         )
         {
