@@ -153,19 +153,19 @@ With this command, initialize the configuration and modify the created file, loc
 
 ## FAQ
 
-### I need help!
+#### I need help!
 
 Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
 
-### I want to help!
+#### I want to help!
 
 You are awesome! Watched the repo and reply to the issues. You will help offering a great experience to the users of the package. `#communityWorks`
 
-### Is this compatible with Ardent?
+#### Is this compatible with Ardent?
 
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
-### Why do I get a mysql error while running the migrations?
+#### Why do I get a mysql error while running the migrations?
 
 If you see the following mysql error:
 
@@ -179,7 +179,7 @@ SQLSTATE[HY000]: General error: 1005 Can't create table 'my_database.#sql-455_63
 
 Then your tables have the MyISAM engine which doesn't allow foreign key constraints. MyISAM was the default engine for mysql versions older than 5.5. Since [version 5.5](http://dev.mysql.com/doc/refman/5.5/en/innodb-default-se.html), tables are created using the InnoDB storage engine by default.
 
-#### How to fix
+##### How to fix
 
 For tables already created in production, update your migrations to change the engine of the table before adding the foreign key constraint.
 
@@ -207,7 +207,7 @@ Schema::create('language_translations', function(Blueprint $table){
 
 The best solution though would be to update your mysql version. And **always make sure you have the same version both in development and production environment!**
 
-### Can I use translation fallbacks?
+#### Can I use translation fallbacks?
 
 If you want to fallback to a default translation if a translation has not been found, you can specify that on the model using `$model->useTranslationFallback = true`.
 
