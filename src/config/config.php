@@ -8,6 +8,6 @@ return [
 
     'translation_suffix' => 'Translation',
 
-    'translatable_locale_key' => 'locale',
+    'locale_key' => 'locale',
 
 ];

@@ -299,7 +299,7 @@ class TranslatableTest extends TestsBase {
      */
     public function the_locale_key_can_be_overridden_in_configuration()
     {
-        App::make('config')->set('translatable::translatable_locale_key', 'language_id');
+        App::make('config')->set('translatable::locale_key', 'language_id');
 
         $country = Country::find(1);
         $this->assertEquals($country->getLocaleKey(), 'language_id');

@@ -85,7 +85,7 @@ trait Translatable {
     public function getLocaleKey()
     {
         $config = App::make('config');
-        return $this->localeKey ?: $config->get('translatable::translatable_locale_key', 'locale');
+        return $this->localeKey ?: $config->get('translatable::locale_key', 'locale');
     }
 
     public function translations()

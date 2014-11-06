@@ -152,7 +152,7 @@ return array(
   
   // Override the default 'locale' field name
   // to use a custom name instead of locale
-  'translatable_locale_key' => 'custom_locale'
+  'locale_key' => 'custom_locale'
 
 );
 ```
