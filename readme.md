@@ -148,7 +148,7 @@ return array(
 
   // Override the default 'Translation' class suffix
   // to use CountryTrans instead of CountryTranslation
-  'translatable_suffix' => 'Trans',
+  'translation_suffix' => 'Trans',
   
   // Override the default 'locale' field name
   // to use a custom name instead of locale

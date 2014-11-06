@@ -22,7 +22,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_finds_the_translation_class_with_suffix_set()
     {
-        App::make('config')->set('translatable::translatable_suffix', 'Trans');
+        App::make('config')->set('translatable::translation_suffix', 'Trans');
         $country = new Country;
         $this->assertEquals(
             'Dimsav\Translatable\Test\Model\CountryTrans',
@@ -319,7 +319,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_reads_the_configuration()
     {
-        $this->assertEquals(App::make('config')->get('translatable::translatable_suffix'), 'Translation');
+        $this->assertEquals(App::make('config')->get('translatable::translation_suffix'), 'Translation');
     }
 
 
