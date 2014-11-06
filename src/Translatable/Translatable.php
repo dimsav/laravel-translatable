@@ -36,11 +36,11 @@ trait Translatable {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
         elseif ($withFallback
-            && App::make('config')->has('app.fallback_locale')
-            && $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale'))
+            && App::make('config')->has('translatable::fallback_locale')
+            && $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'))
         )
         {
-            $translation = $this->getTranslationByLocaleKey(App::make('config')->get('app.fallback_locale'));
+            $translation = $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'));
         }
         else
         {
@@ -74,7 +74,7 @@ trait Translatable {
     public function getTranslationModelNameDefault()
     {
         $config = App::make('config');
-        return get_class($this) . $config->get('app.translatable_suffix', 'Translation');
+        return get_class($this) . $config->get('translatable::translatable_suffix', 'Translation');
     }
 
     public function getRelationKey()
@@ -85,7 +85,7 @@ trait Translatable {
     public function getLocaleKey()
     {
         $config = App::make('config');
-        return $this->localeKey ?: $config->get('app.translatable_locale_key', 'locale');
+        return $this->localeKey ?: $config->get('translatable::translatable_locale_key', 'locale');
     }
 
     public function translations()
@@ -197,7 +197,7 @@ trait Translatable {
     protected function getLocales()
     {
         $config = App::make('config');
-        return $config->get('app.locales', array());
+        return $config->get('translatable::locales', array());
     }
 
     protected function saveTranslations()

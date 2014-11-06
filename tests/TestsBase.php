@@ -11,6 +11,8 @@ class TestsBase extends TestCase {
     {
         parent::setUp();
 
+        App::register('Dimsav\Translatable\TranslatableServiceProvider');
+
         $this->resetDatabase();
         $this->countQueries();
     }
@@ -34,9 +36,7 @@ class TestsBase extends TestCase {
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
         ));
-        $app['config']->set('app.locale', 'en');
-        $app['config']->set('app.locales', array('el', 'en', 'fr', 'de', 'id'));
-        $app['config']->set('app.fallback_locale', 'de');
+        $app['config']->set('translatable::locales', array('el', 'en', 'fr', 'de', 'id'));
     }
 
     protected function getPackageAliases()
