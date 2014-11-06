@@ -148,7 +148,11 @@ return array(
 
   // Override the default 'Translation' class suffix
   // to use CountryTrans instead of CountryTranslation
-  'translatable_suffix' => 'Trans'
+  'translatable_suffix' => 'Trans',
+  
+  // Override the default 'locale key' field
+  // to use language_id instead of locale
+  'translatable_locale_key' => 'language_id'
 
 );
 ```
