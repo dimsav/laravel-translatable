@@ -2,6 +2,7 @@
 
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
+use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
 class TranslatableTest extends TestsBase {
 
@@ -283,5 +284,35 @@ class TranslatableTest extends TestsBase {
 
         $this->assertEquals($country->translate('en')->name, 'Greece');
     }
+
+    /**
+     * @test
+     */
+    public function the_locale_key_is_locale_by_default()
+    {
+        $country = Country::find(1);
+        $this->assertEquals($country->getLocaleKey(), 'locale');
+    }
+
+    /**
+     * @test
+     */
+    public function the_locale_key_can_be_overridden_in_configuration()
+    {
+        App::make('config')->set('app.translatable_locale_key', 'language_id');
+
+        $country = Country::find(1);
+        $this->assertEquals($country->getLocaleKey(), 'language_id');
+    }
+
+    /**
+     * @test
+     */
+    public function the_locale_key_can_be_customized_per_model()
+    {
+        $country = CountryWithCustomLocaleKey::find(1);
+        $this->assertEquals($country->getLocaleKey(), 'language_id');
+    }
+
 
 }
