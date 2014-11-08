@@ -4,27 +4,52 @@ use App;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Translatable
+ * @package Dimsav\Translatable
+ */
 trait Translatable {
 
-    /*
-     * Alias for getTranslation()
-     */
+	/**
+	 * Force locale for form generation for example
+	 * 
+	 * @var null|string
+	 */
+	public $forcedLocale = null;
+
+	/**
+	 * Alias for getTranslation()
+	 *
+	 * @param null $locale
+	 * @param bool $withFallback
+	 * @return mixed|null
+	 */
     public function translate($locale = null, $withFallback = false)
     {
         return $this->getTranslation($locale, $withFallback);
     }
 
-    /*
-     * Alias for getTranslation()
-     */
+	/**
+	 *  Alias for getTranslation()
+	 *
+	 * @param $locale
+	 * @return mixed|null
+	 */
     public function translateOrDefault($locale)
     {
         return $this->getTranslation($locale, true);
     }
 
+	/**
+	 * Get translation
+	 *
+	 * @param null $locale
+	 * @param null $withFallback
+	 * @return mixed|null
+	 */
     public function getTranslation($locale = null, $withFallback = null)
     {
-        $locale = $locale ?: App::getLocale();
+        $locale = $locale ?: $this->getLocale();
 
         if ($withFallback === null)
         {
@@ -51,9 +76,13 @@ trait Translatable {
         return $translation;
     }
 
+	/**
+	 * @param null $locale
+	 * @return bool
+	 */
     public function hasTranslation($locale = null)
     {
-        $locale = $locale ?: App::getLocale();
+        $locale = $locale ?: $this->getLocale();
 
         foreach ($this->translations as $translation)
         {
@@ -66,43 +95,66 @@ trait Translatable {
         return false;
     }
 
-    public function getTranslationModelName()
+	/**
+	 * @return string
+	 */
+	public function getTranslationModelName()
     {
         return $this->translationModel ?: $this->getTranslationModelNameDefault();
     }
 
-    public function getTranslationModelNameDefault()
+	/**
+	 * @return string
+	 */
+	public function getTranslationModelNameDefault()
     {
         $config = App::make('config');
         return get_class($this) . $config->get('translatable::translation_suffix', 'Translation');
     }
 
-    public function getRelationKey()
+	/**
+	 * @return mixed
+	 */
+	public function getRelationKey()
     {
         return $this->translationForeignKey ?: $this->getForeignKey();
     }
 
-    public function getLocaleKey()
+	/**
+	 * @return mixed
+	 */
+	public function getLocaleKey()
     {
         $config = App::make('config');
         return $this->localeKey ?: $config->get('translatable::locale_key', 'locale');
     }
 
-    public function translations()
+	/**
+	 * @return mixed
+	 */
+	public function translations()
     {
         return $this->hasMany($this->getTranslationModelName(), $this->getRelationKey());
     }
 
-    public function getAttribute($key)
+	/**
+	 * @param $key
+	 * @return mixed
+	 */
+	public function getAttribute($key)
     {
         if ($this->isKeyReturningTranslationText($key))
         {
-            return $this->getTranslation()->$key;
+            return $this->getTranslation($this->getForcedLocale())->$key;
         }
        return parent::getAttribute($key);
     }
 
-    public function setAttribute($key, $value)
+	/**
+	 * @param $key
+	 * @param $value
+	 */
+	public function setAttribute($key, $value)
     {
         if (in_array($key, $this->translatedAttributes))
         {
@@ -114,7 +166,11 @@ trait Translatable {
         }
     }
 
-    public function save(array $options = array())
+	/**
+	 * @param array $options
+	 * @return bool
+	 */
+	public function save(array $options = array())
     {
         if ($this->exists)
         {
@@ -143,7 +199,11 @@ trait Translatable {
         return false;
     }
 
-    public function fill(array $attributes)
+	/**
+	 * @param array $attributes
+	 * @return mixed
+	 */
+	public function fill(array $attributes)
     {
         $totallyGuarded = $this->totallyGuarded();
 
@@ -171,7 +231,15 @@ trait Translatable {
         return parent::fill($attributes);
     }
 
-    private function getTranslationByLocaleKey($key)
+	protected function getForcedLocale()
+	{
+		return $this->forcedLocale;
+	}
+	/**
+	 * @param $key
+	 * @return null
+	 */
+	private function getTranslationByLocaleKey($key)
     {
         foreach ($this->translations as $translation)
         {
@@ -183,24 +251,38 @@ trait Translatable {
         return null;
     }
 
-    protected function isKeyReturningTranslationText($key)
+	/**
+	 * @param $key
+	 * @return bool
+	 */
+	protected function isKeyReturningTranslationText($key)
     {
         return in_array($key, $this->translatedAttributes);
     }
 
-    protected function isKeyALocale($key)
+	/**
+	 * @param $key
+	 * @return bool
+	 */
+	protected function isKeyALocale($key)
     {
         $locales = $this->getLocales();
         return in_array($key, $locales);
     }
 
-    protected function getLocales()
+	/**
+	 * @return mixed
+	 */
+	protected function getLocales()
     {
         $config = App::make('config');
         return $config->get('translatable::locales', array());
     }
 
-    protected function saveTranslations()
+	/**
+	 * @return bool
+	 */
+	protected function saveTranslations()
     {
         $saved = true;
         foreach ($this->translations as $translation)
@@ -214,14 +296,22 @@ trait Translatable {
         return $saved;
     }
 
-    protected function isTranslationDirty(Model $translation)
+	/**
+	 * @param Model $translation
+	 * @return bool
+	 */
+	protected function isTranslationDirty(Model $translation)
     {
         $dirtyAttributes = $translation->getDirty();
         unset($dirtyAttributes[$this->getLocaleKey()]);
         return count($dirtyAttributes) > 0;
     }
 
-    protected function getNewTranslationInstance($locale)
+	/**
+	 * @param $locale
+	 * @return mixed
+	 */
+	protected function getNewTranslationInstance($locale)
     {
         $modelName = $this->getTranslationModelName();
         $translation = new $modelName;
@@ -229,7 +319,20 @@ trait Translatable {
         return $translation;
     }
 
-    public function __isset($key)
+	/**
+	 * Get locale
+	 *
+	 * @return string
+	 */
+	protected function getLocale()
+	{
+		return App::getLocale();
+	}
+	/**
+	 * @param $key
+	 * @return bool
+	 */
+	public function __isset($key)
     {
         return (in_array($key, $this->translatedAttributes) || parent::__isset($key));
     }
