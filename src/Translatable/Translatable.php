@@ -1,6 +1,7 @@
 <?php namespace Dimsav\Translatable;
 
 use App;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -123,6 +124,8 @@ trait Translatable
     }
 
     /**
+	 * Get all translations
+	 *
      * @return mixed
      */
     public function translations()
@@ -141,6 +144,18 @@ trait Translatable
         }
         return parent::getAttribute($key);
     }
+	/**
+	 * Only return models which contain translations
+	 *
+	 * @param Builder $query
+	 * @return Builder|static
+	 */
+	public function scopeHasTranslations(Builder $query)
+	{
+		return $query->whereHas('translations',function(Builder $query){
+			$query->where($this->getLocaleKey(),'=', $this->getLocale());
+		});
+	}
 
     /**
      * @param $key
@@ -207,6 +222,9 @@ trait Translatable
         return parent::fill($attributes);
     }
 
+	/**
+	 * @return null|string
+	 */
     protected function getForcedLocale()
     {
         return $this->forcedLocale;
