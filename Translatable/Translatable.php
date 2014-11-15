@@ -228,5 +228,14 @@ trait Translatable {
     {
         return (in_array($key, $this->translatedAttributes) || parent::__isset($key));
     }
+    
+    public function addAllTranslations()
+    {
+        $locales = array_unique($this->getLocales());
+        foreach ($locales as $locale) {        
+            $this->$locale = $this->translate($locale);
+        }
+        return $this;
+    }    
 
 }
