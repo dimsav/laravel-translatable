@@ -6,6 +6,7 @@
 * External config file
 * Fallback issue fixed
 * Added translated and translatedIn scopes
+* Changed behavior: getting non existing translations with `getTranslation()` used to return objects, now `null` is returned.
 
 ### v. 4.3
 
