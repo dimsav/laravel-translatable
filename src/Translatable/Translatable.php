@@ -234,4 +234,17 @@ trait Translatable {
         return (in_array($key, $this->translatedAttributes) || parent::__isset($key));
     }
 
+    public function scopeTranslatedIn($query, $locale)
+    {
+        return $query->whereHas('translations', function($q) use ($locale)
+        {
+            $q->where($this->getLocaleKey(), '=', $locale);
+        });
+    }
+
+    public function scopeTranslated($query)
+    {
+        return $query->has('translations');
+    }
+
 }

@@ -322,5 +322,21 @@ class TranslatableTest extends TestsBase {
         $this->assertEquals(App::make('config')->get('translatable::translation_suffix'), 'Translation');
     }
 
+    /**
+     * @test
+     */
+    public function translated_in_scope_returns_only_translated_records_for_this_locale()
+    {
+        $translatedCountries = Country::translatedIn('fr')->get();
+        $this->assertEquals($translatedCountries->count(), 1);
+    }
 
+    /**
+     * @test
+     */
+    public function translated_scope_returns_records_with_at_least_one_translation()
+    {
+        $translatedCountries = Country::translated()->get();
+        $this->assertEquals($translatedCountries->count(), 2);
+    }
 }
