@@ -5,6 +5,7 @@
 * Laravel 5 ready
 * External config file
 * Fallback issue fixed
+* Added translated and translatedIn scopes
 
 ### v. 4.3
 
