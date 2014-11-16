@@ -214,9 +214,9 @@ class TranslatableTest extends TestsBase {
         App::make('config')->set('translatable::fallback_locale', 'de');
 
         $country = Country::find(1);
-        $this->assertEquals($country->getTranslation('ch', true)->name, 'Griechenland');
-        $this->assertEquals($country->translateOrDefault('ch')->name, 'Griechenland');
-        $this->assertEquals($country->getTranslation('ch', false)->name, null);
+        $this->assertSame($country->getTranslation('ch', true)->name, 'Griechenland');
+        $this->assertSame($country->translateOrDefault('ch')->name, 'Griechenland');
+        $this->assertSame($country->getTranslation('ch', false), null);
     }
 
     /**
@@ -229,28 +229,25 @@ class TranslatableTest extends TestsBase {
         $country = Country::find(1);
         $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
 
-        $country = Country::find(1);
         $country->useTranslationFallback = false;
         $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
 
-        $country = Country::find(1);
         $country->useTranslationFallback = true;
         $this->assertEquals($country->getTranslation('ch')->locale, 'de');
 
-        $country = Country::find(1);
         $country->useTranslationFallback = false;
-        $this->assertEquals($country->getTranslation('ch')->locale, 'ch');
+        $this->assertSame($country->getTranslation('ch'), null);
     }
 
     /**
      * @test
      */
-    public function it_skips_fallback_if_fallback_is_not_defined()
+    public function it_returns_null_if_fallback_is_not_defined()
     {
         App::make('config')->set('translatable::fallback_locale', 'ch');
 
         $country = Country::find(1);
-        $this->assertEquals($country->getTranslation('pl', true)->locale, 'pl');
+        $this->assertSame($country->getTranslation('pl', true), null);
     }
 
     /**
@@ -273,14 +270,13 @@ class TranslatableTest extends TestsBase {
     /**
      * @test
      */
-    public function it_creates_a_non_default_language_with_fallback_set()
+    public function it_creates_a_new_translation()
     {
         App::make('config')->set('translatable::fallback_locale', 'en');
 
         $country = Country::create(['iso' => 'gr']);
-        $country->useTranslationFallback = true;
-        $country->translate('en', false)->name = 'Greece';
-        $country->translate('de', false)->name = 'Griechenland';
+        $country->getNewTranslation('en')->name = 'Greece';
+        $country->save();
 
         $this->assertEquals($country->translate('en')->name, 'Greece');
     }
@@ -338,5 +334,29 @@ class TranslatableTest extends TestsBase {
     {
         $translatedCountries = Country::translated()->get();
         $this->assertEquals($translatedCountries->count(), 2);
+    }
+
+    /**
+     * @test
+     */
+    public function getting_translation_does_not_create_translation()
+    {
+        $country = Country::with('translations')->find(1);
+        $translation = $country->getTranslation('abc', false);
+        $this->assertSame($translation, null);
+    }
+
+    /**
+     * @test
+     */
+    public function getting_translated_field_does_not_create_translation()
+    {
+        $this->app->setLocale('en');
+        $country = new Country(['iso' => 'pl']);
+        $country->save();
+
+        $country->name;
+
+        $this->assertSame($country->getTranslation('en'), null);
     }
 }

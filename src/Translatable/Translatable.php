@@ -22,6 +22,11 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
+    /**
+     * @param null $locale
+     * @param null $withFallback
+     * @return Model|null
+     */
     public function getTranslation($locale = null, $withFallback = null)
     {
         $locale = $locale ?: App::getLocale();
@@ -44,8 +49,7 @@ trait Translatable {
         }
         else
         {
-            $translation = $this->getNewTranslationInstance($locale);
-            $this->translations->add($translation);
+            $translation = null;
         }
 
         return $translation;
@@ -97,16 +101,20 @@ trait Translatable {
     {
         if ($this->isKeyReturningTranslationText($key))
         {
+            if ($this->getTranslation() === null)
+            {
+                return null;
+            }
             return $this->getTranslation()->$key;
         }
-       return parent::getAttribute($key);
+        return parent::getAttribute($key);
     }
 
     public function setAttribute($key, $value)
     {
         if (in_array($key, $this->translatedAttributes))
         {
-            $this->getTranslation()->$key = $value;
+            $this->getTranslationOrNew(App::getLocale())->$key = $value;
         }
         else
         {
@@ -143,6 +151,15 @@ trait Translatable {
         return false;
     }
 
+    protected function getTranslationOrNew($locale)
+    {
+        if (($translation = $this->getTranslation($locale, false)) === null)
+        {
+            $translation = $this->getNewTranslation($locale);
+        }
+        return $translation;
+    }
+
     public function fill(array $attributes)
     {
         $totallyGuarded = $this->totallyGuarded();
@@ -151,7 +168,7 @@ trait Translatable {
         {
             if ($this->isKeyALocale($key))
             {
-                $translation = $this->getTranslation($key, false);
+                $translation = $this->getTranslationOrNew($key);
 
                 foreach ($values as $translationAttribute => $translationValue)
                 {
@@ -221,11 +238,12 @@ trait Translatable {
         return count($dirtyAttributes) > 0;
     }
 
-    protected function getNewTranslationInstance($locale)
+    public function getNewTranslation($locale)
     {
         $modelName = $this->getTranslationModelName();
         $translation = new $modelName;
         $translation->setAttribute($this->getLocaleKey(), $locale);
+        $this->translations->add($translation);
         return $translation;
     }
 
