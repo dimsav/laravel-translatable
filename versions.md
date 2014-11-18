@@ -7,6 +7,7 @@
 * Fallback issue fixed
 * Added translated and translatedIn scopes
 * Changed behavior: getting non existing translations with `getTranslation()` used to return objects, now `null` is returned.
+* Translated attributes now shown when converting toArray() or toJson().
 
 ### v. 4.3
 
