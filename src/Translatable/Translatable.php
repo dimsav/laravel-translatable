@@ -265,4 +265,16 @@ trait Translatable {
         return $query->has('translations');
     }
 
+    public function toArray()
+    {
+        $attributes = parent::toArray();
+
+        foreach($this->translatedAttributes AS $field)
+        {
+            $attributes[$field] = $this->getTranslation()->$field;
+        }
+
+        return $attributes;
+    }
+
 }
