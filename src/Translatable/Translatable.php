@@ -222,7 +222,7 @@ trait Translatable {
             throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
             ' and that the locales configuration is defined.');
         }
-        return ;
+        return $locales;
     }
 
     protected function saveTranslations()
