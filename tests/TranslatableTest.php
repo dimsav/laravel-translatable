@@ -359,4 +359,14 @@ class TranslatableTest extends TestsBase {
 
         $this->assertSame($country->getTranslation('en'), null);
     }
+
+    /**
+     * @test
+     * @expectedException Dimsav\Translatable\Exception\LocalesNotDefinedException
+     */
+    public function if_locales_are_not_defined_throw_exception()
+    {
+        $this->app->config->set('translatable::locales', []);
+        new Country(['iso' => 'pl']);
+    }
 }
