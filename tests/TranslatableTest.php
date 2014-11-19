@@ -2,8 +2,9 @@
 
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
+use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
-class TranslatableTests extends TestsBase {
+class TranslatableTest extends TestsBase {
 
     /**
      * @test
@@ -21,7 +22,7 @@ class TranslatableTests extends TestsBase {
      */
     public function it_finds_the_translation_class_with_suffix_set()
     {
-        App::make('config')->set('app.translatable_suffix', 'Trans');
+        App::make('config')->set('translatable::translation_suffix', 'Trans');
         $country = new Country;
         $this->assertEquals(
             'Dimsav\Translatable\Test\Model\CountryTrans',
@@ -210,40 +211,152 @@ class TranslatableTests extends TestsBase {
      */
     public function it_returns_default_translation()
     {
-        $this->assertEquals(App::make('config')->get('app.fallback_locale'), 'de');
+        App::make('config')->set('translatable::fallback_locale', 'de');
 
         $country = Country::find(1);
-        $this->assertEquals($country->getTranslation('ch', true)->name, 'Griechenland');
-        $this->assertEquals($country->translateOrDefault('ch')->name, 'Griechenland');
-        $this->assertEquals($country->getTranslation('ch', false)->name, null);
+        $this->assertSame($country->getTranslation('ch', true)->name, 'Griechenland');
+        $this->assertSame($country->translateOrDefault('ch')->name, 'Griechenland');
+        $this->assertSame($country->getTranslation('ch', false), null);
     }
 
     /**
      * @test
      */
-    public function models_fallback_option_overrides_fallback_option_in_config()
+    public function fallback_option_in_config_overrides_models_fallback_option()
     {
+        App::make('config')->set('translatable::fallback_locale', 'de');
+
         $country = Country::find(1);
         $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
 
-        $country = Country::find(1);
         $country->useTranslationFallback = false;
-        $this->assertEquals($country->getTranslation('ch', true)->locale, 'ch');
-
-        $country = Country::find(1);
-        $country->useTranslationFallback = true;
         $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
+
+        $country->useTranslationFallback = true;
+        $this->assertEquals($country->getTranslation('ch')->locale, 'de');
+
+        $country->useTranslationFallback = false;
+        $this->assertSame($country->getTranslation('ch'), null);
     }
 
     /**
      * @test
      */
-    public function it_skips_fallback_if_fallback_is_not_defined()
+    public function it_returns_null_if_fallback_is_not_defined()
     {
-        App::make('config')->set('app.fallback_locale', 'ch');
+        App::make('config')->set('translatable::fallback_locale', 'ch');
 
         $country = Country::find(1);
-        $this->assertEquals($country->getTranslation('pl', true)->locale, 'pl');
+        $this->assertSame($country->getTranslation('pl', true), null);
     }
 
+    /**
+     * @test
+     */
+    public function it_fills_a_non_default_language_with_fallback_set()
+    {
+        App::make('config')->set('translatable::fallback_locale', 'en');
+
+        $country = new Country;
+        $country->fill([
+            'iso' => 'gr',
+            'en' => ['name' => 'Greece'],
+            'de' => ['name' => 'Griechenland'],
+        ]);
+
+        $this->assertEquals($country->translate('en')->name, 'Greece');
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_translation()
+    {
+        App::make('config')->set('translatable::fallback_locale', 'en');
+
+        $country = Country::create(['iso' => 'gr']);
+        $country->getNewTranslation('en')->name = 'Greece';
+        $country->save();
+
+        $this->assertEquals($country->translate('en')->name, 'Greece');
+    }
+
+    /**
+     * @test
+     */
+    public function the_locale_key_is_locale_by_default()
+    {
+        $country = Country::find(1);
+        $this->assertEquals($country->getLocaleKey(), 'locale');
+    }
+
+    /**
+     * @test
+     */
+    public function the_locale_key_can_be_overridden_in_configuration()
+    {
+        App::make('config')->set('translatable::locale_key', 'language_id');
+
+        $country = Country::find(1);
+        $this->assertEquals($country->getLocaleKey(), 'language_id');
+    }
+
+    /**
+     * @test
+     */
+    public function the_locale_key_can_be_customized_per_model()
+    {
+        $country = CountryWithCustomLocaleKey::find(1);
+        $this->assertEquals($country->getLocaleKey(), 'language_id');
+    }
+
+    /**
+     * @test
+     */
+    public function it_reads_the_configuration()
+    {
+        $this->assertEquals(App::make('config')->get('translatable::translation_suffix'), 'Translation');
+    }
+
+    /**
+     * @test
+     */
+    public function translated_in_scope_returns_only_translated_records_for_this_locale()
+    {
+        $translatedCountries = Country::translatedIn('fr')->get();
+        $this->assertEquals($translatedCountries->count(), 1);
+    }
+
+    /**
+     * @test
+     */
+    public function translated_scope_returns_records_with_at_least_one_translation()
+    {
+        $translatedCountries = Country::translated()->get();
+        $this->assertEquals($translatedCountries->count(), 2);
+    }
+
+    /**
+     * @test
+     */
+    public function getting_translation_does_not_create_translation()
+    {
+        $country = Country::with('translations')->find(1);
+        $translation = $country->getTranslation('abc', false);
+        $this->assertSame($translation, null);
+    }
+
+    /**
+     * @test
+     */
+    public function getting_translated_field_does_not_create_translation()
+    {
+        $this->app->setLocale('en');
+        $country = new Country(['iso' => 'pl']);
+        $country->save();
+
+        $country->name;
+
+        $this->assertSame($country->getTranslation('en'), null);
+    }
 }

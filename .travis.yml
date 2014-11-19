@@ -6,9 +6,7 @@ php:
   - 5.4
 
 env:
-  - LARAVEL_VERSION="4.0.*" TESTBENCH_VERSION="2.0.*"
-  - LARAVEL_VERSION="4.1.*" TESTBENCH_VERSION="2.1.*"
-  - LARAVEL_VERSION="4.2.*" TESTBENCH_VERSION="2.1.*"
+  - LARAVEL_VERSION="5.0.*@dev" TESTBENCH_VERSION="~3.0@dev"
 
 before_script:
   - composer self-update
