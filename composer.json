@@ -18,6 +18,11 @@
         "orchestra/testbench": "3.0.*@dev",
         "phpunit/phpunit": "~4.0"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.0-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Dimsav\\Translatable\\": "src/Translatable/"
