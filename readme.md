@@ -13,10 +13,17 @@ If you want to store translations of your models into the database, this package
 
 * [Demo](#what-is-this-package-doing)
 * [Installation](#installation-in-4-steps)
-* [Laravel versions](#laravel-versions)
 * [Support](#support)
 * [FAQ](#faq)
 
+## Laravel compatibility
+
+!! Version 5 will be stable after laravel 5 is released
+
+ Laravel  | Translatable
+:---------|:----------
+ 4.x      | 4.x
+ 5.0.x    | 5.x
 
 ## Demo
 
@@ -69,7 +76,7 @@ Add the package in your composer.json file and run `composer update`.
 ```json
 {
     "require": {
-        "dimsav/laravel-translatable": "5.*"
+        "dimsav/laravel-translatable": "5.*-dev"
     }
 }
 ```
@@ -141,14 +148,6 @@ php artisan config:publish dimsav/laravel-translatable
 With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/config.php`.
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
-
-
-## Laravel compatibility
-
- Laravel  | Translatable
-:---------|:----------
- 4.x      | 4.x
- 5.0.x    | 5.x
 
 
 ## FAQ
