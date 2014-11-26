@@ -47,4 +47,19 @@ return [
     */
     'locale_key' => 'locale',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Make translated attributes always fillable
+    |--------------------------------------------------------------------------
+    |
+    | If true, translatable automatically sets
+    | translated attributes as fillable.
+    |
+    | WARNING!
+    | Set this to true only if you know what the security risks are.
+    |
+    */
+    'always_fillable' => false,
+
+
 ];

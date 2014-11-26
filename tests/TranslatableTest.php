@@ -378,4 +378,19 @@ class TranslatableTest extends TestsBase {
         $country = Country::find(1)->first();
         $this->assertSame('abc', $country->translateOrNew('abc')->locale);
     }
+
+    /**
+     * @test
+     */
+    public function configuration_overrides_fillable()
+    {
+        App::make('config')->set('translatable::always_fillable', true);
+
+        $country = new CountryStrict([
+            'en' => ['name' => 'Not fillable'],
+            'iso' => 'te'
+        ]);
+
+        $this->assertSame($country->getTranslation('en')->name, 'Not fillable');
+    }
 }

@@ -180,7 +180,7 @@ trait Translatable {
             {
                 foreach ($values as $translationAttribute => $translationValue)
                 {
-                    if ($this->isFillable($translationAttribute))
+                    if ($this->alwaysFillable() or $this->isFillable($translationAttribute))
                     {
                         $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
                     }
@@ -290,6 +290,11 @@ trait Translatable {
         }
 
         return $attributes;
+    }
+
+    private function alwaysFillable()
+    {
+        return App::make('config')->get('translatable::always_fillable', false);
     }
 
 }
