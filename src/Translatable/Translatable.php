@@ -34,7 +34,7 @@ trait Translatable {
 
     /**
      * @param null $locale
-     * @param null $withFallback
+     * @param bool|null $withFallback
      * @return Model|null
      */
     public function getTranslation($locale = null, $withFallback = null)
@@ -178,13 +178,11 @@ trait Translatable {
         {
             if ($this->isKeyALocale($key))
             {
-                $translation = $this->getTranslationOrNew($key);
-
                 foreach ($values as $translationAttribute => $translationValue)
                 {
                     if ($this->isFillable($translationAttribute))
                     {
-                        $translation->$translationAttribute = $translationValue;
+                        $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
                     }
                     elseif ($totallyGuarded)
                     {

@@ -8,6 +8,7 @@
 * Added translated and translatedIn scopes
 * Changed behavior: getting non existing translations with `getTranslation()` used to return objects, now `null` is returned.
 * Translated attributes now shown when converting toArray() or toJson().
+* Fixed bug: fill() created empty translations even when translated attributes were not fillable
 
 ### v. 4.3
 

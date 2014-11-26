@@ -192,8 +192,8 @@ class TranslatableTest extends TestsBase {
         );
         $country = CountryStrict::create($data);
         $this->assertEquals('be', $country->iso);
-        $this->assertNull($country->translate('en')->name);
-        $this->assertNull($country->translate('fr')->name);
+        $this->assertNull($country->translate('en'));
+        $this->assertNull($country->translate('fr'));
     }
 
     /**
