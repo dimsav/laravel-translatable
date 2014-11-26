@@ -369,4 +369,13 @@ class TranslatableTest extends TestsBase {
         $this->app->config->set('translatable::locales', []);
         new Country(['iso' => 'pl']);
     }
+
+    /**
+     * @test
+     */
+    public function it_has_methods_that_return_always_a_translation()
+    {
+        $country = Country::find(1)->first();
+        $this->assertSame('abc', $country->translateOrNew('abc')->locale);
+    }
 }

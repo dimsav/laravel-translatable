@@ -24,6 +24,14 @@ trait Translatable {
         return $this->getTranslation($locale, true);
     }
 
+    /*
+     * Alias for getTranslationOrNew()
+     */
+    public function translateOrNew($locale)
+    {
+        return $this->getTranslationOrNew($locale);
+    }
+
     /**
      * @param null $locale
      * @param null $withFallback
