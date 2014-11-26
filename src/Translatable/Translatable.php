@@ -2,6 +2,7 @@
 
 use App;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -260,15 +261,15 @@ trait Translatable {
         return (in_array($key, $this->translatedAttributes) || parent::__isset($key));
     }
 
-    public function scopeTranslatedIn($query, $locale)
+    public function scopeTranslatedIn(Builder $query, $locale)
     {
-        return $query->whereHas('translations', function($q) use ($locale)
+        return $query->whereHas('translations', function(Builder $q) use ($locale)
         {
             $q->where($this->getLocaleKey(), '=', $locale);
         });
     }
 
-    public function scopeTranslated($query)
+    public function scopeTranslated(Builder $query)
     {
         return $query->has('translations');
     }
