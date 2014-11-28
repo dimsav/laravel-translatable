@@ -286,7 +286,11 @@ trait Translatable {
 
         foreach($this->translatedAttributes AS $field)
         {
-            $attributes[$field] = $this->getTranslation()->$field;
+            $translations = $this->getTranslation();
+            if ($translations)
+            {
+                $attributes[$field] = $translations->$field;
+            }
         }
 
         return $attributes;
