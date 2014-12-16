@@ -71,14 +71,10 @@ Filling multiple translations
 
 ### Step 1: Install package
 
-Add the package in your composer.json file and run `composer update`.
+Add the package in your composer.json by executing the command.
 
-```json
-{
-    "require": {
-        "dimsav/laravel-translatable": "5.*-dev"
-    }
-}
+```bash
+composer require dimsav/laravel-translatable
 ```
 
 Next, add the service provider to `app/config/app.php`
