@@ -162,6 +162,26 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertEquals(0, count($after));
     }
 
+    /**
+     * @test
+     */
+    public function to_array_returs_translated_attributes()
+    {
+        $country = Country::find(1);
+        $this->assertArrayHasKey('name', $country->toArray());
+        $this->assertArrayHasKey('iso', $country->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function to_array_wont_break_if_no_translations_exist()
+    {
+        $country = new Country(['iso' => 'test']);
+        $country->save();
+        $country->toArray();
+    }
+
     // Performance
 
     /**

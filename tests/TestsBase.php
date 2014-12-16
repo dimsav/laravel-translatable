@@ -9,10 +9,13 @@ class TestsBase extends TestCase {
 
     public function setUp()
     {
-        parent::setUp();
-        $artisan = $this->app->make('artisan');
 
-        $this->resetDatabase($artisan);
+        parent::setUp();
+
+        App::register('Dimsav\Translatable\TranslatableServiceProvider');
+
+        $this->resetDatabase();
+
         $this->countQueries();
     }
 
@@ -24,8 +27,7 @@ class TestsBase extends TestCase {
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.base'] = __DIR__ . '/../Translatable';
-
+        $app['path.base'] = __DIR__ . '/../src';
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', array(
             'driver'   => 'mysql',
@@ -36,9 +38,7 @@ class TestsBase extends TestCase {
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
         ));
-        $app['config']->set('app.locale', 'en');
-        $app['config']->set('app.locales', array('el', 'en', 'fr', 'de', 'id'));
-        $app['config']->set('app.fallback_locale', 'de');
+        $app['config']->set('translatable::locales', array('el', 'en', 'fr', 'de', 'id'));
     }
 
     protected function getPackageAliases()
@@ -54,16 +54,16 @@ class TestsBase extends TestCase {
         });
     }
 
-    /**
-     * @param $artisan
-     */
-    private function resetDatabase($artisan)
+    private function resetDatabase()
     {
+        $artisan = $this->app->make('artisan');
+
         // This creates the "migrations" table if not existing
         $artisan->call('migrate', [
             '--database' => 'mysql',
             '--path'     => '../tests/migrations',
         ]);
+
         // We empty the tables
         $artisan->call('migrate:reset', [
             '--database' => 'mysql',
@@ -73,5 +73,6 @@ class TestsBase extends TestCase {
             '--database' => 'mysql',
             '--path'     => '../tests/migrations',
         ]);
+
     }
 }
