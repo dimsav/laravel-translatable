@@ -22,7 +22,9 @@ If you want to store translations of your models into the database, this package
 
  Laravel  | Translatable
 :---------|:----------
- 4.x      | 4.x
+ 4.0.x    | 4.3.x
+ 4.1.x    | 4.4.x
+ 4.2.x    | 4.4.x
  5.0.x    | 5.x
 
 ## Demo
