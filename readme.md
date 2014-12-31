@@ -45,14 +45,23 @@ Getting translated attributes
 Saving translated attributes
 
 ```php
-  $country = Country::where('iso', '=', 'gr')->first();
-  echo $country->translate('en')->name; // Greece
-  
-  $country->translate('en')->name = 'abc';
+  $country = new Country();
+  $country->iso = 'gr';
   $country->save();
   
-  $country = Country::where('iso', '=', 'gr')->first();
-  echo $country->translate('en')->name; // abc
+  $names = [
+  	'en' => 'Greece', 
+  	'fr' => 'Grèce' 
+  ]
+  
+  // Assume that you have locales defined in the config as follow ['en', 'gr']
+  foreach (Config::get('locales') as $locale) {
+  	$trans = new CountryTranslation();
+  	$trans->name = $names[$locale];
+  	$trans->country()->associate($country);
+  	$trans->save();
+  }
+  
 ```
 
 Filling multiple translations
@@ -131,6 +140,10 @@ class CountryTranslation extends Eloquent {
 
     public $timestamps = false;
     protected $fillable = ['name'];
+    
+    public function country() {
+    	return $this->belongsTo('Country');
+    }
 
 }
 ```
