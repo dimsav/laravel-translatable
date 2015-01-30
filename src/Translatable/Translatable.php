@@ -130,7 +130,7 @@ trait Translatable {
         }
     }
 
-    public function save(array $options = array())
+    public function save(array $options = [])
     {
         if ($this->exists)
         {
@@ -235,7 +235,7 @@ trait Translatable {
     protected function getLocales()
     {
         $config = App::make('config');
-        $locales = (array) $config->get('translatable::locales', array());
+        $locales = (array) $config->get('translatable::locales', []);
 
         if (empty($locales))
         {
@@ -293,12 +293,25 @@ trait Translatable {
         return $query->has('translations');
     }
 
-    public function scopeListsTranslations(Builder $query, $field)
+    /**
+     * Adds scope to get a list of translated attributes, using the current locale.
+     *
+     * Example usage: Country::scopeListsTranslations('name')->get()->toArray()
+     * Will return an array with items:
+     *  [
+     *      'id' => '1',                // The id of country
+     *      'name' => 'Griechenland'    // The translated name
+     *  ]
+     *
+     * @param Builder $query
+     * @param string $translationField
+     */
+    public function scopeListsTranslations(Builder $query, $translationField)
     {
         $withFallback = $this->useFallback();
 
         $query
-            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$field)
+            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$translationField)
             ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
             ->where('locale', App::getLocale())
         ;
