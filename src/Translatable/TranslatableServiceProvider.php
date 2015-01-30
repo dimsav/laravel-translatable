@@ -6,7 +6,6 @@ class TranslatableServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $this->package('dimsav/laravel-translatable', 'translatable', __DIR__ .'/../');
     }
 
     /**
@@ -16,6 +15,8 @@ class TranslatableServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-
+        $configPath = __DIR__ . '/../config/translatable.php';
+        $this->mergeConfigFrom($configPath, 'translatable');
+        $this->publishes([$configPath => config_path('translatable.php')]);
     }
 }
