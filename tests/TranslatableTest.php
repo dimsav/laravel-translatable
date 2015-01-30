@@ -404,7 +404,7 @@ class TranslatableTest extends TestsBase {
             'id' => '1',
             'name' => 'Griechenland'
         ]];
-        $this->assertSame($list, Country::listsTranslations('name')->get()->toArray());
+        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
     }
 
     /**
@@ -423,6 +423,6 @@ class TranslatableTest extends TestsBase {
             'id' => '2',
             'name' => 'France'
         ],];
-        $this->assertSame($list, $country->listsTranslations('name')->get()->toArray());
+        $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
 }
