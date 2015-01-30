@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 4.5
+
+ * Added scope to list translated attributes in the current locale.
+
 ### v. 4.4
 
  * External config file
