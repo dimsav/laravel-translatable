@@ -49,8 +49,9 @@ class TestsBase extends TestCase {
     protected function countQueries() {
         $that = $this;
         $event = App::make('events');
-        $event->listen('illuminate.query', function() use ($that) {
+        $event->listen('illuminate.query', function($q) use ($that) {
             $that->queriesCount++;
+//            \Log::info($q);
         });
     }
 

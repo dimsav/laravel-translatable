@@ -41,21 +41,18 @@ trait Translatable {
     {
         $locale = $locale ?: App::getLocale();
 
-        if ($withFallback === null)
-        {
-            $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
-        }
+        $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
 
         if ($this->getTranslationByLocaleKey($locale))
         {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
         elseif ($withFallback
-            && App::make('config')->get('translatable::fallback_locale')
-            && $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'))
+            && $this->getFallbackLocale()
+            && $this->getTranslationByLocaleKey($this->getFallbackLocale())
         )
         {
-            $translation = $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'));
+            $translation = $this->getTranslationByLocaleKey($this->getFallbackLocale());
         }
         else
         {
@@ -110,7 +107,7 @@ trait Translatable {
 
     public function getAttribute($key)
     {
-        if ($this->isKeyReturningTranslationText($key))
+        if ($this->isTranslationAttribute($key))
         {
             if ($this->getTranslation() === null)
             {
@@ -202,6 +199,16 @@ trait Translatable {
         return parent::fill($attributes);
     }
 
+    private function getFallbackLocale()
+    {
+        return App::make('config')->get('translatable::fallback_locale');
+    }
+
+    private function useFallback()
+    {
+        return isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
+    }
+
     private function getTranslationByLocaleKey($key)
     {
         foreach ($this->translations as $translation)
@@ -214,7 +221,7 @@ trait Translatable {
         return null;
     }
 
-    protected function isKeyReturningTranslationText($key)
+    protected function isTranslationAttribute($key)
     {
         return in_array($key, $this->translatedAttributes);
     }
@@ -305,5 +312,33 @@ trait Translatable {
     {
         return App::make('config')->get('translatable::always_fillable', false);
     }
+//
+//    private function getTranslationsTable()
+//    {
+//        return App::make($this->getTranslationModelName())->getTable();
+//    }
+//
+//    public function scopeListsTranslations(Builder $query, $field)
+//    {
+//        $withFallback = $this->useFallback();
+//
+//        $query
+//            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$field)
+//            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
+//            ->where('locale', App::getLocale())
+//        ;
+//        if ($withFallback)
+//        {
+//            $query->orWhere(function($q){
+//                $q->where($this->getTranslationsTable() .'.'. $this->getLocaleKey(), $this->getFallbackLocale())
+//                    ->whereNotIn($this->getTranslationsTable() . '.' . $this->getRelationKey(), function($q)
+//                    {
+//                        $q->select($this->getTranslationsTable() . '.' . $this->getRelationKey())
+//                            ->from($this->getTranslationsTable())
+//                            ->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), App::getLocale());
+//                    });
+//            });
+//        }
+//    }
 
 }
