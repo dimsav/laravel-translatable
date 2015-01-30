@@ -3,6 +3,7 @@
 ### v. 4.5
 
  * Added scope to list translated attributes in the current locale.
+ * Force fire "saved" event when the original model is not saved, but the translation is. #85
 
 ### v. 4.4
 
