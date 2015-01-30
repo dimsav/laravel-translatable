@@ -7,7 +7,7 @@ Laravel-Translatable
 [![License](https://poser.pugx.org/dimsav/laravel-translatable/license.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee/mini.png)](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee)
 
-This is a Laravel 4 package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
+This is a Laravel 5 package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
 
 If you want to store translations of your models into the database, this package is for you.
 
@@ -18,12 +18,7 @@ If you want to store translations of your models into the database, this package
 
 ## Laravel compatibility
 
-!! Version 5 will be stable after laravel 5 is released
-
- Laravel  | Translatable
-:---------|:----------
- 4.x      | 4.x
- 5.0.x    | 5.x
+!! This version is compatible with Laravel 5
 
 ## Demo
 
@@ -142,10 +137,10 @@ The array `$translatedAttributes` contains the names of the fields being transla
 ### Step 4: Configuration
 
 ```bash
-php artisan config:publish dimsav/laravel-translatable
+php artisan vendor:publish
 ```
 
-With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/config.php`.
+With this command, initialize the configuration and modify the created file, located under `app/config/translatable.php`.
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
 
