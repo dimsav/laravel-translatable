@@ -293,6 +293,29 @@ trait Translatable {
         return $query->has('translations');
     }
 
+    public function scopeListsTranslations(Builder $query, $field)
+    {
+        $withFallback = $this->useFallback();
+
+        $query
+            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$field)
+            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
+            ->where('locale', App::getLocale())
+        ;
+        if ($withFallback)
+        {
+            $query->orWhere(function($q){
+                $q->where($this->getTranslationsTable() .'.'. $this->getLocaleKey(), $this->getFallbackLocale())
+                    ->whereNotIn($this->getTranslationsTable() . '.' . $this->getRelationKey(), function($q)
+                    {
+                        $q->select($this->getTranslationsTable() . '.' . $this->getRelationKey())
+                            ->from($this->getTranslationsTable())
+                            ->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), App::getLocale());
+                    });
+            });
+        }
+    }
+
     public function toArray()
     {
         $attributes = parent::toArray();
@@ -312,33 +335,10 @@ trait Translatable {
     {
         return App::make('config')->get('translatable::always_fillable', false);
     }
-//
-//    private function getTranslationsTable()
-//    {
-//        return App::make($this->getTranslationModelName())->getTable();
-//    }
-//
-//    public function scopeListsTranslations(Builder $query, $field)
-//    {
-//        $withFallback = $this->useFallback();
-//
-//        $query
-//            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$field)
-//            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
-//            ->where('locale', App::getLocale())
-//        ;
-//        if ($withFallback)
-//        {
-//            $query->orWhere(function($q){
-//                $q->where($this->getTranslationsTable() .'.'. $this->getLocaleKey(), $this->getFallbackLocale())
-//                    ->whereNotIn($this->getTranslationsTable() . '.' . $this->getRelationKey(), function($q)
-//                    {
-//                        $q->select($this->getTranslationsTable() . '.' . $this->getRelationKey())
-//                            ->from($this->getTranslationsTable())
-//                            ->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), App::getLocale());
-//                    });
-//            });
-//        }
-//    }
+
+    private function getTranslationsTable()
+    {
+        return App::make($this->getTranslationModelName())->getTable();
+    }
 
 }
