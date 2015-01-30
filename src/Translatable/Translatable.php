@@ -202,7 +202,7 @@ trait Translatable
         $locales = (array)config('translatable.locales', []);
 
         if (empty($locales)) {
-            throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" ' .
+            throw new LocalesNotDefinedException('Please make sure you have run "php artisan vendor:publish" ' .
                 ' and that the locales configuration is defined.');
         }
 
