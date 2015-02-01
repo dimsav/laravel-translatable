@@ -39,7 +39,7 @@ class TestsBase extends TestCase {
         $app['config']->set('translatable::locales', array('el', 'en', 'fr', 'de', 'id'));
     }
 
-    protected function getPackageAliases()
+    protected function getPackageAliases($app)
     {
         return array('Eloquent' => 'Illuminate\Database\Eloquent\Model');
     }
