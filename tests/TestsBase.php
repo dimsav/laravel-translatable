@@ -11,8 +11,6 @@ class TestsBase extends TestCase {
     {
         parent::setUp();
 
-        App::register('Dimsav\Translatable\TranslatableServiceProvider');
-
         $this->resetDatabase();
         $this->countQueries();
     }
@@ -23,9 +21,14 @@ class TestsBase extends TestCase {
         $this->assertEquals('gr', $country->iso);
     }
 
+    protected function getPackageProviders($app)
+    {
+        return ['Dimsav\Translatable\TranslatableServiceProvider'];
+    }
+
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.base'] = __DIR__ . '/../vendor/orchestra/testbench/src/fixture';
+        $app['path.base'] = __DIR__ . '/..';
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', array(
             'driver'   => 'mysql',
@@ -55,7 +58,7 @@ class TestsBase extends TestCase {
     private function resetDatabase()
     {
         // Relative to the testbench app folder: vendors/orchestra/testbench/src/fixture
-        $migrationsPath = '../../../../../tests/migrations';
+        $migrationsPath = 'tests/migrations';
         $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
 
         // Makes sure the migrations table is created
