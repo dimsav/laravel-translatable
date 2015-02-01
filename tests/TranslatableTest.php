@@ -22,7 +22,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_finds_the_translation_class_with_suffix_set()
     {
-        App::make('config')->set('translatable::translation_suffix', 'Trans');
+        App::make('config')->set('translatable.translation_suffix', 'Trans');
         $country = new Country;
         $this->assertEquals(
             'Dimsav\Translatable\Test\Model\CountryTrans',
@@ -211,7 +211,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_returns_default_translation()
     {
-        App::make('config')->set('translatable::fallback_locale', 'de');
+        App::make('config')->set('translatable.fallback_locale', 'de');
 
         $country = Country::find(1);
         $this->assertSame($country->getTranslation('ch', true)->name, 'Griechenland');
@@ -224,7 +224,7 @@ class TranslatableTest extends TestsBase {
      */
     public function fallback_option_in_config_overrides_models_fallback_option()
     {
-        App::make('config')->set('translatable::fallback_locale', 'de');
+        App::make('config')->set('translatable.fallback_locale', 'de');
 
         $country = Country::find(1);
         $this->assertEquals($country->getTranslation('ch', true)->locale, 'de');
@@ -244,7 +244,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_returns_null_if_fallback_is_not_defined()
     {
-        App::make('config')->set('translatable::fallback_locale', 'ch');
+        App::make('config')->set('translatable.fallback_locale', 'ch');
 
         $country = Country::find(1);
         $this->assertSame($country->getTranslation('pl', true), null);
@@ -255,7 +255,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_fills_a_non_default_language_with_fallback_set()
     {
-        App::make('config')->set('translatable::fallback_locale', 'en');
+        App::make('config')->set('translatable.fallback_locale', 'en');
 
         $country = new Country;
         $country->fill([
@@ -272,7 +272,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_creates_a_new_translation()
     {
-        App::make('config')->set('translatable::fallback_locale', 'en');
+        App::make('config')->set('translatable.fallback_locale', 'en');
 
         $country = Country::create(['iso' => 'gr']);
         $country->getNewTranslation('en')->name = 'Greece';
@@ -295,7 +295,7 @@ class TranslatableTest extends TestsBase {
      */
     public function the_locale_key_can_be_overridden_in_configuration()
     {
-        App::make('config')->set('translatable::locale_key', 'language_id');
+        App::make('config')->set('translatable.locale_key', 'language_id');
 
         $country = Country::find(1);
         $this->assertEquals($country->getLocaleKey(), 'language_id');
@@ -315,7 +315,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_reads_the_configuration()
     {
-        $this->assertEquals(App::make('config')->get('translatable::translation_suffix'), 'Translation');
+        $this->assertEquals(App::make('config')->get('translatable.translation_suffix'), 'Translation');
     }
 
     /**
@@ -366,7 +366,7 @@ class TranslatableTest extends TestsBase {
      */
     public function if_locales_are_not_defined_throw_exception()
     {
-        $this->app->config->set('translatable::locales', []);
+        $this->app->config->set('translatable.locales', []);
         new Country(['iso' => 'pl']);
     }
 
@@ -384,7 +384,7 @@ class TranslatableTest extends TestsBase {
      */
     public function configuration_overrides_fillable()
     {
-        App::make('config')->set('translatable::always_fillable', true);
+        App::make('config')->set('translatable.always_fillable', true);
 
         $country = new CountryStrict([
             'en' => ['name' => 'Not fillable'],

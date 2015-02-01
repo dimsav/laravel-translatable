@@ -51,11 +51,11 @@ trait Translatable {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
         elseif ($withFallback
-            && App::make('config')->get('translatable::fallback_locale')
-            && $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'))
+            && App::make('config')->get('translatable.fallback_locale')
+            && $this->getTranslationByLocaleKey(App::make('config')->get('translatable.fallback_locale'))
         )
         {
-            $translation = $this->getTranslationByLocaleKey(App::make('config')->get('translatable::fallback_locale'));
+            $translation = $this->getTranslationByLocaleKey(App::make('config')->get('translatable.fallback_locale'));
         }
         else
         {
@@ -88,7 +88,7 @@ trait Translatable {
     public function getTranslationModelNameDefault()
     {
         $config = App::make('config');
-        return get_class($this) . $config->get('translatable::translation_suffix', 'Translation');
+        return get_class($this) . $config->get('translatable.translation_suffix', 'Translation');
     }
 
     public function getRelationKey()
@@ -99,7 +99,7 @@ trait Translatable {
     public function getLocaleKey()
     {
         $config = App::make('config');
-        return $this->localeKey ?: $config->get('translatable::locale_key', 'locale');
+        return $this->localeKey ?: $config->get('translatable.locale_key', 'locale');
     }
 
     public function translations()
@@ -222,7 +222,7 @@ trait Translatable {
     protected function getLocales()
     {
         $config = App::make('config');
-        $locales = (array) $config->get('translatable::locales', array());
+        $locales = (array) $config->get('translatable.locales', array());
 
         if (empty($locales))
         {
@@ -297,7 +297,7 @@ trait Translatable {
 
     private function alwaysFillable()
     {
-        return App::make('config')->get('translatable::always_fillable', false);
+        return App::make('config')->get('translatable.always_fillable', false);
     }
 
 }

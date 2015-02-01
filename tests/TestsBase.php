@@ -39,7 +39,7 @@ class TestsBase extends TestCase {
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
         ));
-        $app['config']->set('translatable::locales', array('el', 'en', 'fr', 'de', 'id'));
+        $app['config']->set('translatable.locales', array('el', 'en', 'fr', 'de', 'id'));
     }
 
     protected function getPackageAliases($app)

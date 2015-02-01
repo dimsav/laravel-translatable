@@ -143,7 +143,7 @@ The array `$translatedAttributes` contains the names of the fields being transla
 php artisan config:publish dimsav/laravel-translatable
 ```
 
-With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/config.php`.
+With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/translatable.php`.
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
 
@@ -209,7 +209,7 @@ The best solution though would be to update your mysql version. And **always mak
 If you want to fallback to a default translation if a translation has not been found, you can specify that on the model using `$model->useTranslationFallback = true`.
 
 ```php
-App::make('config')->set('translatable::fallback_locale', 'en');
+App::make('config')->set('translatable.fallback_locale', 'en');
 
 $country = Country::create(['iso' => 'gr']);
 $country->translate('en')->name = 'Greece';
@@ -222,7 +222,7 @@ $country->translate('de')->name; // Greece
 You can also overwrite `useTranslationFallback` with a second parameter on `translate()`, so new translations can be created or existing ones used. Without the second parameter, `translate('de')` would return the fallback translation.
 
 ```php
-App::make('config')->set('translatable::fallback_locale', 'en');
+App::make('config')->set('translatable.fallback_locale', 'en');
 
 $country = Country::create(['iso' => 'gr']);
 $country->useTranslationFallback = true;
