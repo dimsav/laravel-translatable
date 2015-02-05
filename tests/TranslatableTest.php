@@ -393,4 +393,36 @@ class TranslatableTest extends TestsBase {
 
         $this->assertSame($country->getTranslation('en')->name, 'Not fillable');
     }
+
+    /**
+     * @test
+     */
+    public function lists_of_translated_fields()
+    {
+        App::setLocale('de');
+        $list = [[
+            'id' => '1',
+            'name' => 'Griechenland'
+        ]];
+        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function lists_of_translated_fields_with_fallback()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'en');
+        App::setLocale('de');
+        $country = new Country;
+        $country->useTranslationFallback = true;
+        $list = [[
+            'id' => '1',
+            'name' => 'Griechenland'
+        ],[
+            'id' => '2',
+            'name' => 'France'
+        ],];
+        $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
+    }
 }

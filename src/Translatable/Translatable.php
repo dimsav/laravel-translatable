@@ -41,21 +41,18 @@ trait Translatable {
     {
         $locale = $locale ?: App::getLocale();
 
-        if ($withFallback === null)
-        {
-            $withFallback = isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
-        }
+        $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
 
         if ($this->getTranslationByLocaleKey($locale))
         {
             $translation = $this->getTranslationByLocaleKey($locale);
         }
         elseif ($withFallback
-            && App::make('config')->get('translatable.fallback_locale')
-            && $this->getTranslationByLocaleKey(App::make('config')->get('translatable.fallback_locale'))
+            && $this->getFallbackLocale()
+            && $this->getTranslationByLocaleKey($this->getFallbackLocale())
         )
         {
-            $translation = $this->getTranslationByLocaleKey(App::make('config')->get('translatable.fallback_locale'));
+            $translation = $this->getTranslationByLocaleKey($this->getFallbackLocale());
         }
         else
         {
@@ -88,6 +85,7 @@ trait Translatable {
     public function getTranslationModelNameDefault()
     {
         $config = App::make('config');
+
         return get_class($this) . $config->get('translatable.translation_suffix', 'Translation');
     }
 
@@ -109,7 +107,7 @@ trait Translatable {
 
     public function getAttribute($key)
     {
-        if ($this->isKeyReturningTranslationText($key))
+        if ($this->isTranslationAttribute($key))
         {
             if ($this->getTranslation() === null)
             {
@@ -132,7 +130,7 @@ trait Translatable {
         }
     }
 
-    public function save(array $options = array())
+    public function save(array $options = [])
     {
         if ($this->exists)
         {
@@ -150,7 +148,12 @@ trait Translatable {
             {
                 // If $this->exists and not dirty, parent::save() skips saving and returns
                 // false. So we have to save the translations
-                return $this->saveTranslations();
+                if($saved = $this->saveTranslations())
+                {
+                    $this->fireModelEvent('saved', false);
+                }
+
+                return $saved;
             }
         }
         elseif (parent::save($options))
@@ -208,7 +211,17 @@ trait Translatable {
         return null;
     }
 
-    protected function isKeyReturningTranslationText($key)
+    private function getFallbackLocale()
+    {
+        return App::make('config')->get('translatable.fallback_locale');
+    }
+
+    private function useFallback()
+    {
+        return isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
+    }
+
+    protected function isTranslationAttribute($key)
     {
         return in_array($key, $this->translatedAttributes);
     }
@@ -222,7 +235,7 @@ trait Translatable {
     protected function getLocales()
     {
         $config = App::make('config');
-        $locales = (array) $config->get('translatable.locales', array());
+        $locales = (array) $config->get('translatable.locales', []);
 
         if (empty($locales))
         {
@@ -280,6 +293,42 @@ trait Translatable {
         return $query->has('translations');
     }
 
+    /**
+     * Adds scope to get a list of translated attributes, using the current locale.
+     *
+     * Example usage: Country::scopeListsTranslations('name')->get()->toArray()
+     * Will return an array with items:
+     *  [
+     *      'id' => '1',                // The id of country
+     *      'name' => 'Griechenland'    // The translated name
+     *  ]
+     *
+     * @param Builder $query
+     * @param string $translationField
+     */
+    public function scopeListsTranslations(Builder $query, $translationField)
+    {
+        $withFallback = $this->useFallback();
+
+        $query
+            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$translationField)
+            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
+            ->where('locale', App::getLocale())
+        ;
+        if ($withFallback)
+        {
+            $query->orWhere(function($q){
+                $q->where($this->getTranslationsTable() .'.'. $this->getLocaleKey(), $this->getFallbackLocale())
+                    ->whereNotIn($this->getTranslationsTable() . '.' . $this->getRelationKey(), function($q)
+                    {
+                        $q->select($this->getTranslationsTable() . '.' . $this->getRelationKey())
+                            ->from($this->getTranslationsTable())
+                            ->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), App::getLocale());
+                    });
+            });
+        }
+    }
+
     public function toArray()
     {
         $attributes = parent::toArray();
@@ -300,4 +349,8 @@ trait Translatable {
         return App::make('config')->get('translatable.always_fillable', false);
     }
 
+    private function getTranslationsTable()
+    {
+        return App::make($this->getTranslationModelName())->getTable();
+    }
 }
