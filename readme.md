@@ -19,14 +19,13 @@ If you want to store translations of your models into the database, this package
 
 ## Laravel compatibility
 
-!! Version 5 will be stable after laravel 5 is released
-
  Laravel  | Translatable
 :---------|:----------
- 4.0.x    | 4.3.x
- 4.1.x    | 4.4.x
- 4.2.x    | 4.4.x
  5.0.x    | 5.x
+ 4.2.x    | 4.4.x
+ 4.1.x    | 4.4.x
+ 4.0.x    | 4.3.x
+
 
 ## Demo
 
@@ -184,12 +183,12 @@ For tables already created in production, update your migrations to change the e
 ```php
 public function up()
 {
-	DB::statement('ALTER TABLE countries ENGINE=InnoDB');
+    DB::statement('ALTER TABLE countries ENGINE=InnoDB');
 }
 
 public function down()
 {
-  DB::statement('ALTER TABLE countries ENGINE=MyISAM');
+    DB::statement('ALTER TABLE countries ENGINE=MyISAM');
 }
 ```
 
