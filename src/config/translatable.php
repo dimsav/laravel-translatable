@@ -14,6 +14,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Use fallback
+    |--------------------------------------------------------------------------
+    |
+    | Determine if fallback locales are returned by default or not. To add
+    | more flexibility and configure this option per "translatable"
+    | instance, this value will be overridden by the property
+    | $useTranslationFallback when defined
+    */
+    'use_fallback' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Fallback Locale
     |--------------------------------------------------------------------------
     |

@@ -242,6 +242,30 @@ class TranslatableTest extends TestsBase {
     /**
      * @test
      */
+    public function configuration_defines_if_fallback_is_used()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'de');
+        App::make('config')->set('translatable.use_fallback', true);
+
+        $country = Country::find(1);
+        $this->assertEquals($country->getTranslation('ch')->locale, 'de');
+    }
+
+    /**
+     * @test
+     */
+    public function useTranslationFallback_overrides_configuration()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'de');
+        App::make('config')->set('translatable.use_fallback', true);
+        $country = Country::find(1);
+        $country->useTranslationFallback = false;
+        $this->assertSame($country->getTranslation('ch'), null);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_null_if_fallback_is_not_defined()
     {
         App::make('config')->set('translatable.fallback_locale', 'ch');

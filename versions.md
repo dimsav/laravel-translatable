@@ -3,6 +3,7 @@
 ### v. 5
 
  * Laravel 5 ready
+ * Added configuration option for returning fallback translations
 
 ### v. 4.5
 

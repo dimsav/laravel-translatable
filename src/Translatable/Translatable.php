@@ -216,9 +216,16 @@ trait Translatable {
         return App::make('config')->get('translatable.fallback_locale');
     }
 
+    /**
+     * @return bool|null
+     */
     private function useFallback()
     {
-        return isset($this->useTranslationFallback) ? $this->useTranslationFallback : false;
+        if (isset($this->useTranslationFallback) and $this->useTranslationFallback !== null)
+        {
+            return $this->useTranslationFallback;
+        }
+        return App::make('config')->get('translatable.use_fallback');
     }
 
     protected function isTranslationAttribute($key)
