@@ -43,7 +43,7 @@ class CountryStrict extends Eloquent {
      *
      * @var array
      */
-    public $fillable = array('iso');
+    public $fillable = array('code');
 
     protected $softDelete = true;
 

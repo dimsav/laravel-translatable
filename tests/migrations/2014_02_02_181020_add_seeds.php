@@ -16,10 +16,10 @@ class AddSeeds extends Migration {
 	public function up()
 	{
         $countries = array(
-            ['id'=>1, 'iso'=>'gr'],
-            ['id'=>2, 'iso'=>'fr'],
-            ['id'=>3, 'iso'=>'en'],
-            ['id'=>4, 'iso'=>'de'],
+            ['id'=>1, 'code'=>'gr'],
+            ['id'=>2, 'code'=>'fr'],
+            ['id'=>3, 'code'=>'en'],
+            ['id'=>4, 'code'=>'de'],
         );
 
         $this->createCountries($countries);
@@ -56,7 +56,7 @@ class AddSeeds extends Migration {
         foreach ($countries as $data) {
             $country = new Country;
             $country->id = $data['id'];
-            $country->iso = $data['iso'];
+            $country->code = $data['code'];
             $country->save();
         }
     }
