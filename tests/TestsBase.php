@@ -18,7 +18,7 @@ class TestsBase extends TestCase {
     public function testRunningMigration()
     {
         $country = Country::find(1);
-        $this->assertEquals('gr', $country->iso);
+        $this->assertEquals('gr', $country->code);
     }
 
     protected function getPackageProviders($app)

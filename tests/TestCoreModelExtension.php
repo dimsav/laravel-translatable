@@ -34,7 +34,7 @@ class TestCoreModelExtension extends TestsBase {
     public function it_saves_translations_when_existing_and_dirty()
     {
         $country = Country::find(1);
-        $country->iso = 'make_model_dirty';
+        $country->code = 'make_model_dirty';
         $country->name = 'abc';
         $this->assertTrue($country->save());
         $country = Country::find(1);
@@ -47,11 +47,11 @@ class TestCoreModelExtension extends TestsBase {
      * @test
      * @expectedException \Exception
      */
-    public function it_throws_query_exception_if_iso_is_null()
+    public function it_throws_query_exception_if_code_is_null()
     {
         $country = new Country();
         $country->name = 'Belgium';
-        $country->iso = null;
+        $country->code = null;
         $country->save();
     }
 
@@ -62,7 +62,7 @@ class TestCoreModelExtension extends TestsBase {
     public function it_throws_query_exception_if_saving_and_name_is_null()
     {
         $country = new Country();
-        $country->iso = 'be';
+        $country->code = 'be';
         $country->name = null;
         $country->save();
     }
@@ -79,7 +79,7 @@ class TestCoreModelExtension extends TestsBase {
             });
 
         $country = Country::find(1);
-        $country->iso = 'make_model_dirty';
+        $country->code = 'make_model_dirty';
         $country->name = 'abc';
         $this->assertFalse($country->save());
     }
@@ -169,7 +169,7 @@ class TestCoreModelExtension extends TestsBase {
     {
         $country = Country::find(1);
         $this->assertArrayHasKey('name', $country->toArray());
-        $this->assertArrayHasKey('iso', $country->toArray());
+        $this->assertArrayHasKey('code', $country->toArray());
     }
 
     /**
@@ -177,7 +177,7 @@ class TestCoreModelExtension extends TestsBase {
      */
     public function to_array_wont_break_if_no_translations_exist()
     {
-        $country = new Country(['iso' => 'test']);
+        $country = new Country(['code' => 'test']);
         $country->save();
         $country->toArray();
     }
