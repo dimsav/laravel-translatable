@@ -3,6 +3,7 @@
 use App;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -324,9 +325,9 @@ trait Translatable {
         ;
         if ($withFallback)
         {
-            $query->orWhere(function($q){
+            $query->orWhere(function(Builder $q){
                 $q->where($this->getTranslationsTable() .'.'. $this->getLocaleKey(), $this->getFallbackLocale())
-                    ->whereNotIn($this->getTranslationsTable() . '.' . $this->getRelationKey(), function($q)
+                    ->whereNotIn($this->getTranslationsTable() . '.' . $this->getRelationKey(), function(QueryBuilder $q)
                     {
                         $q->select($this->getTranslationsTable() . '.' . $this->getRelationKey())
                             ->from($this->getTranslationsTable())
