@@ -221,7 +221,7 @@ trait Translatable {
      */
     private function useFallback()
     {
-        if (isset($this->useTranslationFallback) and $this->useTranslationFallback !== null)
+        if (isset($this->useTranslationFallback) && $this->useTranslationFallback !== null)
         {
             return $this->useTranslationFallback;
         }
