@@ -15,7 +15,7 @@ class CreateTables extends Migration {
 		Schema::create('countries', function(Blueprint $table)
         {
 			$table->increments('id');
-			$table->string('iso');
+			$table->string('code');
             $table->timestamps();
             $table->softDeletes();
 		});

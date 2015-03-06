@@ -66,7 +66,7 @@ class TranslatableTest extends TestsBase {
     public function it_returns_the_translation()
     {
         /** @var Country $country */
-        $country = Country::whereIso('gr')->first();
+        $country = Country::whereCode('gr')->first();
 
         $englishTranslation = $country->translate('el');
         $this->assertEquals('Ελλάδα', $englishTranslation->name);
@@ -88,12 +88,12 @@ class TranslatableTest extends TestsBase {
      */
     public function it_saves_translations()
     {
-        $country = Country::whereIso('gr')->first();
+        $country = Country::whereCode('gr')->first();
 
         $country->name = '1234';
         $country->save();
 
-        $country = Country::whereIso('gr')->first();
+        $country = Country::whereCode('gr')->first();
         $this->assertEquals('1234', $country->name);
     }
 
@@ -102,7 +102,7 @@ class TranslatableTest extends TestsBase {
      */
     public function it_uses_default_locale_to_return_translations()
     {
-        $country = Country::whereIso('gr')->first();
+        $country = Country::whereCode('gr')->first();
 
         $country->translate('el')->name = 'abcd';
 
@@ -110,7 +110,7 @@ class TranslatableTest extends TestsBase {
         $this->assertEquals('abcd', $country->name);
         $country->save();
 
-        $country = Country::whereIso('gr')->first();
+        $country = Country::whereCode('gr')->first();
         $this->assertEquals('abcd', $country->translate('el')->name);
     }
 
@@ -120,14 +120,14 @@ class TranslatableTest extends TestsBase {
     public function it_creates_translations()
     {
         $country = new Country;
-        $country->iso = 'be';
+        $country->code = 'be';
         $country->save();
 
-        $country = Country::whereIso('be')->first();
+        $country = Country::whereCode('be')->first();
         $country->name = 'Belgium';
         $country->save();
 
-        $country = Country::whereIso('be')->first();
+        $country = Country::whereCode('be')->first();
         $this->assertEquals('Belgium', $country->name);
 
     }
@@ -138,11 +138,11 @@ class TranslatableTest extends TestsBase {
     public function it_creates_translations_using_the_shortcut()
     {
         $country = new Country;
-        $country->iso = 'be';
+        $country->code = 'be';
         $country->name = 'Belgium';
         $country->save();
 
-        $country = Country::whereIso('be')->first();
+        $country = Country::whereCode('be')->first();
         $this->assertEquals('Belgium', $country->name);
     }
 
@@ -152,11 +152,11 @@ class TranslatableTest extends TestsBase {
     public function it_creates_translations_using_mass_assignment()
     {
         $data = array(
-            'iso' => 'be',
+            'code' => 'be',
             'name' => 'Belgium',
         );
         $country = Country::create($data);
-        $this->assertEquals('be', $country->iso);
+        $this->assertEquals('be', $country->code);
         $this->assertEquals('Belgium', $country->name);
     }
 
@@ -166,16 +166,16 @@ class TranslatableTest extends TestsBase {
     public function it_creates_translations_using_mass_assignment_and_locales()
     {
         $data = array(
-            'iso' => 'be',
+            'code' => 'be',
             'en' => ['name' => 'Belgium'],
             'fr' => ['name' => 'Belgique']
         );
         $country = Country::create($data);
-        $this->assertEquals('be', $country->iso);
+        $this->assertEquals('be', $country->code);
         $this->assertEquals('Belgium', $country->translate('en')->name);
         $this->assertEquals('Belgique', $country->translate('fr')->name);
 
-        $country = Country::whereIso('be')->first();
+        $country = Country::whereCode('be')->first();
         $this->assertEquals('Belgium', $country->translate('en')->name);
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
@@ -186,12 +186,12 @@ class TranslatableTest extends TestsBase {
     public function it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $data = array(
-            'iso' => 'be',
+            'code' => 'be',
             'en' => ['name' => 'Belgium'],
             'fr' => ['name' => 'Belgique']
         );
         $country = CountryStrict::create($data);
-        $this->assertEquals('be', $country->iso);
+        $this->assertEquals('be', $country->code);
         $this->assertNull($country->translate('en'));
         $this->assertNull($country->translate('fr'));
     }
@@ -283,7 +283,7 @@ class TranslatableTest extends TestsBase {
 
         $country = new Country;
         $country->fill([
-            'iso' => 'gr',
+            'code' => 'gr',
             'en' => ['name' => 'Greece'],
             'de' => ['name' => 'Griechenland'],
         ]);
@@ -298,7 +298,7 @@ class TranslatableTest extends TestsBase {
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
 
-        $country = Country::create(['iso' => 'gr']);
+        $country = Country::create(['code' => 'gr']);
         $country->getNewTranslation('en')->name = 'Greece';
         $country->save();
 
@@ -376,7 +376,7 @@ class TranslatableTest extends TestsBase {
     public function getting_translated_field_does_not_create_translation()
     {
         $this->app->setLocale('en');
-        $country = new Country(['iso' => 'pl']);
+        $country = new Country(['code' => 'pl']);
         $country->save();
 
         $country->name;
@@ -391,7 +391,7 @@ class TranslatableTest extends TestsBase {
     public function if_locales_are_not_defined_throw_exception()
     {
         $this->app->config->set('translatable.locales', []);
-        new Country(['iso' => 'pl']);
+        new Country(['code' => 'pl']);
     }
 
     /**
@@ -412,7 +412,7 @@ class TranslatableTest extends TestsBase {
 
         $country = new CountryStrict([
             'en' => ['name' => 'Not fillable'],
-            'iso' => 'te'
+            'code' => 'te'
         ]);
 
         $this->assertSame($country->getTranslation('en')->name, 'Not fillable');

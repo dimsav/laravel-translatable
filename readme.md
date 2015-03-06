@@ -8,7 +8,7 @@ Laravel-Translatable
 [![License](https://poser.pugx.org/dimsav/laravel-translatable/license.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee/mini.png)](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee)
 
-This is a Laravel 4 package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
+This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
 
 If you want to store translations of your models into the database, this package is for you.
 
@@ -19,21 +19,20 @@ If you want to store translations of your models into the database, this package
 
 ## Laravel compatibility
 
-!! Version 5 will be stable after laravel 5 is released
-
  Laravel  | Translatable
 :---------|:----------
- 4.0.x    | 4.3.x
- 4.1.x    | 4.4.x
- 4.2.x    | 4.4.x
  5.0.x    | 5.x
+ 4.2.x    | 4.4.x
+ 4.1.x    | 4.4.x
+ 4.0.x    | 4.3.x
+
 
 ## Demo
 
 Getting translated attributes
 
 ```php
-  $country = Country::where('iso', '=', 'gr')->first();
+  $country = Country::where('code', '=', 'gr')->first();
   echo $country->translate('en')->name; // Greece
   
   App::setLocale('en');
@@ -46,13 +45,13 @@ Getting translated attributes
 Saving translated attributes
 
 ```php
-  $country = Country::where('iso', '=', 'gr')->first();
+  $country = Country::where('code', '=', 'gr')->first();
   echo $country->translate('en')->name; // Greece
   
   $country->translate('en')->name = 'abc';
   $country->save();
   
-  $country = Country::where('iso', '=', 'gr')->first();
+  $country = Country::where('code', '=', 'gr')->first();
   echo $country->translate('en')->name; // abc
 ```
 
@@ -60,7 +59,7 @@ Filling multiple translations
 
 ```php
   $data = array(
-    'iso' => 'gr',
+    'code' => 'gr',
     'en'  => array('name' => 'Greece'),
     'fr'  => array('name' => 'Grèce'),
   );
@@ -94,7 +93,7 @@ In this example, we want to translate the model `Country`. We will need an extra
 Schema::create('countries', function(Blueprint $table)
 {
     $table->increments('id');
-    $table->string('iso');
+    $table->string('code');
     $table->timestamps();
 });
 
@@ -123,7 +122,7 @@ class Country extends Eloquent {
     use \Dimsav\Translatable\Translatable;
     
     public $translatedAttributes = array('name');
-    protected $fillable = ['iso', 'name'];
+    protected $fillable = ['code', 'name'];
 
 }
 
@@ -140,8 +139,14 @@ The array `$translatedAttributes` contains the names of the fields being transla
 
 ### Step 4: Configuration
 
+Laravel 4.*
 ```bash
 php artisan config:publish dimsav/laravel-translatable
+```
+
+Laravel 5.*
+```bash
+php artisan vendor:publish 
 ```
 
 With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/translatable.php`.
@@ -184,12 +189,12 @@ For tables already created in production, update your migrations to change the e
 ```php
 public function up()
 {
-	DB::statement('ALTER TABLE countries ENGINE=InnoDB');
+    DB::statement('ALTER TABLE countries ENGINE=InnoDB');
 }
 
 public function down()
 {
-  DB::statement('ALTER TABLE countries ENGINE=MyISAM');
+    DB::statement('ALTER TABLE countries ENGINE=MyISAM');
 }
 ```
 
@@ -199,7 +204,7 @@ For new tables, a quick solution is to set the storage engine in the migration:
 Schema::create('language_translations', function(Blueprint $table){
   $table->engine = 'InnoDB';
   $table->increments('id');
-	// ...
+    // ...
 });
 ```
 
@@ -212,7 +217,7 @@ If you want to fallback to a default translation if a translation has not been f
 ```php
 App::make('config')->set('translatable.fallback_locale', 'en');
 
-$country = Country::create(['iso' => 'gr']);
+$country = Country::create(['code' => 'gr']);
 $country->translate('en')->name = 'Greece';
 $country->useTranslationFallback = true;
 
@@ -225,7 +230,7 @@ You can also overwrite `useTranslationFallback` with a second parameter on `tran
 ```php
 App::make('config')->set('translatable.fallback_locale', 'en');
 
-$country = Country::create(['iso' => 'gr']);
+$country = Country::create(['code' => 'gr']);
 $country->useTranslationFallback = true;
 $country->translate('en', false)->name = 'Greece';
 $country->translate('de', false)->name = 'Griechenland';
@@ -240,7 +245,7 @@ When using `fill`, this is done automatically for you:
 $country = new Country;
 $country->useTranslationFallback = true;
 $country->fill([
-  'iso' => 'gr',
+  'code' => 'gr',
   'en' => ['name' => 'Greece'],
   'de' => ['name' => 'Griechenland'],
 ]);
