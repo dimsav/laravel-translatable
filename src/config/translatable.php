@@ -73,5 +73,4 @@ return [
     */
     'always_fillable' => false,
 
-
 ];

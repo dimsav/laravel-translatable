@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 /**
  * A test class that has no required properties.
  */
-class Continent extends Eloquent {
-
+class Continent extends Eloquent
+{
     use Translatable;
 
-    public $translatedAttributes = array('name');
-
+    public $translatedAttributes = ['name'];
 }

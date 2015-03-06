@@ -3,8 +3,8 @@
 use Orchestra\Testbench\TestCase;
 use Dimsav\Translatable\Test\Model\Country;
 
-class TestsBase extends TestCase {
-
+class TestsBase extends TestCase
+{
     protected $queriesCount;
 
     public function setUp()
@@ -28,9 +28,9 @@ class TestsBase extends TestCase {
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.base'] = __DIR__ . '/..';
+        $app['path.base'] = __DIR__.'/..';
         $app['config']->set('database.default', 'mysql');
-        $app['config']->set('database.connections.mysql', array(
+        $app['config']->set('database.connections.mysql', [
             'driver'   => 'mysql',
             'host' => 'localhost',
             'database' => 'translatable_test',
@@ -38,19 +38,20 @@ class TestsBase extends TestCase {
             'password' => 'secret',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
-        ));
-        $app['config']->set('translatable.locales', array('el', 'en', 'fr', 'de', 'id'));
+        ]);
+        $app['config']->set('translatable.locales', ['el', 'en', 'fr', 'de', 'id']);
     }
 
     protected function getPackageAliases($app)
     {
-        return array('Eloquent' => 'Illuminate\Database\Eloquent\Model');
+        return ['Eloquent' => 'Illuminate\Database\Eloquent\Model'];
     }
 
-    protected function countQueries() {
+    protected function countQueries()
+    {
         $that = $this;
         $event = App::make('events');
-        $event->listen('illuminate.query', function() use ($that) {
+        $event->listen('illuminate.query', function () use ($that) {
             $that->queriesCount++;
         });
     }

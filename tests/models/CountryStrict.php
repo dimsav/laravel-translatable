@@ -3,20 +3,20 @@
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class CountryStrict extends Eloquent {
-
+class CountryStrict extends Eloquent
+{
     use Translatable;
 
     /**
-     * Array with the fields translated in the Translation table
+     * Array with the fields translated in the Translation table.
      *
      * @var array
      */
-    public $translatedAttributes = array('name');
+    public $translatedAttributes = ['name'];
 
     /**
      * Here we set a custom model for translation.
-     * The convention would be Dimsav\Translatable\Test\Model\CountryStrictTranslation
+     * The convention would be Dimsav\Translatable\Test\Model\CountryStrictTranslation.
      *
      * @var string Class containing the translation
      */
@@ -29,7 +29,7 @@ class CountryStrict extends Eloquent {
 
     /**
      * Column containing the locale in the translation table.
-     * Defaults to 'locale'
+     * Defaults to 'locale'.
      *
      * @var string
      */
@@ -39,12 +39,11 @@ class CountryStrict extends Eloquent {
 
     /**
      * Add your translated attributes here if you want
-     * fill them with mass assignment
+     * fill them with mass assignment.
      *
      * @var array
      */
-    public $fillable = array('code');
+    public $fillable = ['code'];
 
     protected $softDelete = true;
-
 }

@@ -3,16 +3,16 @@
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Country extends Eloquent {
-
+class Country extends Eloquent
+{
     use Translatable;
 
     /**
-     * Array with the fields translated in the Translation table
+     * Array with the fields translated in the Translation table.
      *
      * @var array
      */
-    public $translatedAttributes = array('name');
+    public $translatedAttributes = ['name'];
 
     /**
      * Set $translationModel if you want to overwrite the convention
@@ -33,18 +33,17 @@ class Country extends Eloquent {
 
     /**
      * Add your translated attributes here if you want
-     * fill them with mass assignment
+     * fill them with mass assignment.
      *
      * @var array
      */
-    public $fillable = array('code','name');
+    public $fillable = ['code','name'];
 
     /**
      * The database field being used to define the locale parameter in the translation model.
-     * Defaults to 'locale'
+     * Defaults to 'locale'.
      *
      * @var string
      */
     public $localeKey;
-
 }

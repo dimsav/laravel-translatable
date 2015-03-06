@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class CityTranslation extends Eloquent {
-
+class CityTranslation extends Eloquent
+{
     public $timestamps = false;
-
 }

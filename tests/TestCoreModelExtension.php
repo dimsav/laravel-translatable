@@ -8,10 +8,9 @@ use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\City;
 use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\Company;
-use Orchestra\Testbench\TestCase;
 
-class TestCoreModelExtension extends TestsBase {
-
+class TestCoreModelExtension extends TestsBase
+{
     // Saving
 
     /**
@@ -19,11 +18,11 @@ class TestCoreModelExtension extends TestsBase {
      */
     public function it_saves_empty_instances()
     {
-        $company = new Company;
+        $company = new Company();
         $company->save();
         $this->assertGreaterThan(0, $company->id);
 
-        $country = new Continent;
+        $country = new Continent();
         $country->save();
         $this->assertGreaterThan(0, $country->id);
     }
@@ -74,7 +73,7 @@ class TestCoreModelExtension extends TestsBase {
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function($model) use ($that) {
+        $event->listen('eloquent*', function ($model) use ($that) {
                 return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
             });
 
@@ -91,11 +90,11 @@ class TestCoreModelExtension extends TestsBase {
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function($model) use ($that) {
+        $event->listen('eloquent*', function ($model) use ($that) {
                 return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
             });
 
-        $continent = new Continent;
+        $continent = new Continent();
         $this->assertFalse($continent->save());
     }
 
@@ -141,8 +140,8 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertTrue(is_object($translation));
         try {
             $country->delete();
+        } catch (\Exception $e) {
         }
-        catch (\Exception $e) {}
 
         $country = Country::find(1);
         $this->assertNotNull($country);
@@ -196,7 +195,6 @@ class TestCoreModelExtension extends TestsBase {
         $this->assertGreaterThan(2, count($countries));
         $this->assertEquals(2, $this->queriesCount);
     }
-
 
     // Forms
 

@@ -3,12 +3,12 @@
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class CountryWithCustomLocaleKey extends Eloquent {
-
+class CountryWithCustomLocaleKey extends Eloquent
+{
     use Translatable;
 
     public $table = 'countries';
-    public $translatedAttributes = array('name');
+    public $translatedAttributes = ['name'];
     public $translationModel = 'Dimsav\Translatable\Test\Model\CountryTranslation';
 
     /*
@@ -16,5 +16,4 @@ class CountryWithCustomLocaleKey extends Eloquent {
      * be used to save the locale info into the database
      */
     public $localeKey = 'language_id';
-
 }

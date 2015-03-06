@@ -3,36 +3,31 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTables extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('countries', function(Blueprint $table)
-        {
-			$table->increments('id');
-			$table->string('code');
+class CreateTables extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        Schema::create('countries', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code');
             $table->timestamps();
             $table->softDeletes();
-		});
+        });
 
-        Schema::create('country_translations', function(Blueprint $table)
-        {
+        Schema::create('country_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('country_id')->unsigned();
             $table->string('name');
             $table->string('locale')->index();
 
-            $table->unique(['country_id','locale']);
+            $table->unique(['country_id', 'locale']);
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
-        Schema::create('cities', function(Blueprint $table)
-        {
+        Schema::create('cities', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('country_id')->unsigned();
             $table->timestamps();
@@ -40,8 +35,7 @@ class CreateTables extends Migration {
             $table->foreign('country_id')->references('id')->on('countries');
         });
 
-        Schema::create('city_translations', function(Blueprint $table)
-        {
+        Schema::create('city_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('city_id')->unsigned();
             $table->string('name');
@@ -51,39 +45,31 @@ class CreateTables extends Migration {
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
         });
 
-        Schema::create('companies', function(Blueprint $table)
-        {
+        Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('continents', function(Blueprint $table)
-        {
+        Schema::create('continents', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
 
-        Schema::create('continent_translations', function(Blueprint $table)
-        {
+        Schema::create('continent_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('continent_id')->unsigned();
             $table->string('name');
             $table->string('locale')->index();
             $table->timestamps();
         });
+    }
 
-	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
         Schema::dropIfExists('city_translations');
         Schema::dropIfExists('cities');
 
@@ -94,6 +80,5 @@ class CreateTables extends Migration {
 
         Schema::dropIfExists('continent_translations');
         Schema::dropIfExists('continents');
-	}
-
+    }
 }

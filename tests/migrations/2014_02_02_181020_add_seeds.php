@@ -6,55 +6,52 @@ use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\City;
 use Dimsav\Translatable\Test\Model\CityTranslation;
 
-class AddSeeds extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-        $countries = array(
-            ['id'=>1, 'code'=>'gr'],
-            ['id'=>2, 'code'=>'fr'],
-            ['id'=>3, 'code'=>'en'],
-            ['id'=>4, 'code'=>'de'],
-        );
+class AddSeeds extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        $countries = [
+            ['id' => 1, 'code' => 'gr'],
+            ['id' => 2, 'code' => 'fr'],
+            ['id' => 3, 'code' => 'en'],
+            ['id' => 4, 'code' => 'de'],
+        ];
 
         $this->createCountries($countries);
 
-        $countryTranslations = array(
+        $countryTranslations = [
             ['country_id' => 1, 'locale' => 'el', 'name' => 'Ελλάδα'],
             ['country_id' => 1, 'locale' => 'fr', 'name' => 'Grèce'],
             ['country_id' => 1, 'locale' => 'en', 'name' => 'Greece'],
             ['country_id' => 1, 'locale' => 'de', 'name' => 'Griechenland'],
             ['country_id' => 2, 'locale' => 'en', 'name' => 'France'],
-        );
+        ];
 
         $this->createCountryTranslations($countryTranslations);
 
-
-        $cities = array(
-            ['id'=>1, 'country_id'=>1],
-        );
+        $cities = [
+            ['id' => 1, 'country_id' => 1],
+        ];
 
         $this->createCities($cities);
 
-        $cityTranslations = array(
+        $cityTranslations = [
             ['city_id' => 1, 'locale' => 'el', 'name' => 'Αθήνα'],
             ['city_id' => 1, 'locale' => 'fr', 'name' => 'Athènes'],
             ['city_id' => 1, 'locale' => 'en', 'name' => 'Athens'],
             ['city_id' => 1, 'locale' => 'de', 'name' => 'Athen'],
-        );
+        ];
 
         $this->createCityTranslations($cityTranslations);
-	}
+    }
 
     private function createCountries($countries)
     {
         foreach ($countries as $data) {
-            $country = new Country;
+            $country = new Country();
             $country->id = $data['id'];
             $country->code = $data['code'];
             $country->save();
@@ -64,7 +61,7 @@ class AddSeeds extends Migration {
     private function createCountryTranslations($translations)
     {
         foreach ($translations as $data) {
-            $translation = new CountryTranslation;
+            $translation = new CountryTranslation();
             $translation->country_id = $data['country_id'];
             $translation->locale = $data['locale'];
             $translation->name = $data['name'];
@@ -75,7 +72,7 @@ class AddSeeds extends Migration {
     private function createCities($cities)
     {
         foreach ($cities as $data) {
-            $city = new City;
+            $city = new City();
             $city->id = $data['id'];
             $city->country_id = $data['country_id'];
             $city->save();
@@ -85,7 +82,7 @@ class AddSeeds extends Migration {
     private function createCityTranslations($translations)
     {
         foreach ($translations as $data) {
-            $translation = new CityTranslation;
+            $translation = new CityTranslation();
             $translation->city_id = $data['city_id'];
             $translation->locale = $data['locale'];
             $translation->name = $data['name'];
@@ -93,11 +90,10 @@ class AddSeeds extends Migration {
         }
     }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down() {}
-
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+    }
 }
