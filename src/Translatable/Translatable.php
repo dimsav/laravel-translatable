@@ -301,7 +301,7 @@ trait Translatable
         $query
             ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$translationField)
             ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
-            ->where('locale', App::getLocale())
+            ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), App::getLocale())
         ;
         if ($withFallback) {
             $query->orWhere(function (Builder $q) {
