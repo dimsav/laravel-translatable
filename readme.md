@@ -14,8 +14,8 @@ If you want to store translations of your models into the database, this package
 
 * [Demo](#what-is-this-package-doing)
 * [Installation](#installation-in-4-steps)
-* [Support](#support)
-* [FAQ](#faq)
+* [Configuration](#configuration)
+* [Support](#faq)
 
 ## Laravel compatibility
 
@@ -153,8 +153,39 @@ With this command, initialize the configuration and modify the created file, loc
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
 
+## Configuration
+
+### The translation model
+
+The convention used to define the class of the translation model is to append the keyword `Translation`.
+
+So if your model is `\MyApp\Models\Country`, the default translation would be `\MyApp\Models\CountryTranslation`.
+
+To use a custom class as translation model, define the translation class (including the namespace) as parameter. For example:
+
+```php
+<?php 
+
+namespace MyApp\Models;
+
+use Dimsav\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Model as Eloquent;
+
+class Country extends Eloquent
+{
+    use Translatable;
+
+    public $translationModel = 'MyApp\Models\CountryAwesomeTranslation';
+}
+
+```
+
 
 ## FAQ
+
+#### I need some example code!
+
+Examples for all the package features can be found [in the code](https://github.com/dimsav/laravel-translatable/tree/master/tests/models) used for the [tests](https://github.com/dimsav/laravel-translatable/tree/master/tests).
 
 #### I need help!
 
