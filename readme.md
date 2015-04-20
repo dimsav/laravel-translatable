@@ -195,7 +195,7 @@ Got any question or suggestion? Feel free to open an [Issue](https://github.com/
 
 You are awesome! Watched the repo and reply to the issues. You will help offering a great experience to the users of the package. `#communityWorks`
 
-#### Is this compatible with Ardent?
+#### I am getting collisions with other trait methods!
 
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
