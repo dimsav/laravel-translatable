@@ -86,6 +86,18 @@ class TranslatableTest extends TestsBase
     /**
      * @test
      */
+    public function it_returns_the_translation_with_accessor()
+    {
+        /** @var Country $country */
+        $country = Country::whereCode('gr')->first();
+
+        $this->assertEquals('Ελλάδα', $country->{'name:el'});
+        $this->assertEquals('Greece', $country->{'name:en'});
+    }
+
+    /**
+     * @test
+     */
     public function it_saves_translations()
     {
         $country = Country::whereCode('gr')->first();
@@ -95,6 +107,28 @@ class TranslatableTest extends TestsBase
 
         $country = Country::whereCode('gr')->first();
         $this->assertEquals('1234', $country->name);
+    }
+
+    /**
+     * @test
+     */
+    public function it_saves_translations_with_mutator()
+    {
+        $country = Country::whereCode('gr')->first();
+
+        $country->{'name:en'} = '1234';
+        $country->{'name:el'} = '5678';
+        $country->save();
+
+        $country = Country::whereCode('gr')->first();
+
+        $this->app->setLocale('en');
+        $translation = $country->translate();
+        $this->assertEquals('1234', $translation->name);
+
+        $this->app->setLocale('el');
+        $translation = $country->translate();
+        $this->assertEquals('5678', $translation->name);
     }
 
     /**
