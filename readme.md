@@ -59,11 +59,11 @@ If you want to store translations of your models into the database, this package
 **Filling multiple translations**
 
 ```php
-  $data = array(
+  $data = [
     'code' => 'gr',
-    'en'  => array('name' => 'Greece'),
-    'fr'  => array('name' => 'Grèce'),
-  );
+    'en'  => ['name' => 'Greece'],
+    'fr'  => ['name' => 'Grèce'],
+  ];
 
   $greece = Country::create($data);
   
@@ -122,7 +122,7 @@ class Country extends Eloquent {
     
     use \Dimsav\Translatable\Translatable;
     
-    public $translatedAttributes = array('name');
+    public $translatedAttributes = ['name'];
     protected $fillable = ['code', 'name'];
 
 }
@@ -236,6 +236,32 @@ $translation = $germany->getNewTranslation('it');
 
 // The eloquent model relationship. Do what you want with it ;) 
 $germany->translations();
+```
+
+### Magic properties
+
+To use the magic properties, you have to define the property `$translatedAttributes` in your
+ main model:
+
+ ```php
+ class Country extends Eloquent {
+
+     use \Dimsav\Translatable\Translatable;
+
+     public $translatedAttributes = ['name'];
+ }
+ ```
+
+```php
+// Again we start by having a country instance
+$germany = Country::where('code', 'de')->first();
+
+// We can reference properties of the translation object directly from our main model.
+// This uses the default locale and is the equivalent of $germany->translate()->name
+$germany->name; // 'Germany'
+
+// We can also quick access a translation with a custom locale
+$germany->{'name:de'} // 'Deutschland'
 ```
 
 ### Fallback locales
