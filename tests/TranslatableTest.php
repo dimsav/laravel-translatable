@@ -495,13 +495,7 @@ class TranslatableTest extends TestsBase
             'code' => 'gr'
         ]];
         $results = Country::withTranslations(['name'])->get()->toArray();
-        foreach ($results as $key => $row) {
-            unset($row['created_at']);
-            unset($row['updated_at']);
-            unset($row['deleted_at']);
-            $results[$key] = $row;
-        }
-        $this->assertEquals($list, $results);
+        $this->assertArraySubset($list,$results);
     }
 
     /**
@@ -514,24 +508,37 @@ class TranslatableTest extends TestsBase
         $country = new Country();
         $country->useTranslationFallback = true;
         $list = [[
-            'id' => 2,
-            'name' => 'France',
-            'code' => 'fr',
-            'locale' => 'en'
-        ],[
             'id' => 1,
             'name' => 'Griechenland',
             'code' => 'gr',
             'locale' => 'de'
+        ],[
+            'id' => 2,
+            'name' => 'France',
+            'code' => 'fr',
+            'locale' => 'en'
         ]];
-        $results = $country->withTranslations(['name','locale'])->orderby('name')->get()->toArray();
+        $results = $country->withTranslations(['name','locale'])->get()->toArray();
+        $this->assertArraySubset($list, $results);
+    }
 
-        foreach ($results as $key => $row) {
-            unset($row['created_at']);
-            unset($row['updated_at']);
-            unset($row['deleted_at']);
-            $results[$key] = $row;
-        }
-        $this->assertEquals($list, $results);
+    /**
+     * @test
+     */
+    public function ordering_by_a_translated_field()
+    {
+        App::setLocale('en');
+        $country = new Country();
+        $list = [[
+            'id' => 2,
+            'name' => 'France',
+            'code' => 'fr'
+        ],[
+            'id' => 1,
+            'name' => 'Greece',
+            'code' => 'gr'
+        ]];
+        $results = $country->withTranslations(['name'])->orderBy("name")->get()->toArray();
+        $this->assertArraySubset($list, $results);
     }
 }
