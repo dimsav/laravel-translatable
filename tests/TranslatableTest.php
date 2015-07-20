@@ -482,4 +482,56 @@ class TranslatableTest extends TestsBase
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function with_translated_fields()
+    {
+        App::setLocale('de');
+        $list = [[
+            'id' => 1,
+            'name' => 'Griechenland',
+            'code' => 'gr'
+        ]];
+        $results = Country::withTranslations(['name'])->get()->toArray();
+        foreach ($results as $key => $row) {
+            unset($row['created_at']);
+            unset($row['updated_at']);
+            unset($row['deleted_at']);
+            $results[$key] = $row;
+        }
+        $this->assertEquals($list, $results);
+    }
+
+    /**
+     * @test
+     */
+    public function with_translated_fields_with_fallback()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'en');
+        App::setLocale('de');
+        $country = new Country();
+        $country->useTranslationFallback = true;
+        $list = [[
+            'id' => 2,
+            'name' => 'France',
+            'code' => 'fr',
+            'locale' => 'en'
+        ],[
+            'id' => 1,
+            'name' => 'Griechenland',
+            'code' => 'gr',
+            'locale' => 'de'
+        ]];
+        $results = $country->withTranslations(['name','locale'])->orderby('name')->get()->toArray();
+
+        foreach ($results as $key => $row) {
+            unset($row['created_at']);
+            unset($row['updated_at']);
+            unset($row['deleted_at']);
+            $results[$key] = $row;
+        }
+        $this->assertEquals($list, $results);
+    }
 }

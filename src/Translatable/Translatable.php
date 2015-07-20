@@ -313,6 +313,55 @@ trait Translatable
         $query
             ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$translationField)
             ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
+            ->where('locale', $this->locale())
+        ;
+        if ($withFallback) {
+            $query->orWhere(function (Builder $q) {
+                $q->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale())
+                    ->whereNotIn($this->getTranslationsTable().'.'.$this->getRelationKey(), function (QueryBuilder $q) {
+                        $q->select($this->getTranslationsTable().'.'.$this->getRelationKey())
+                            ->from($this->getTranslationsTable())
+                            ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
+                    });
+            });
+        }
+    }
+
+    /**
+     * Adds scope to add translations fields to the selection
+     *
+     * Example usage: Country::withTranslations('name')->get()->toArray();
+     * Will return an array of the countries fields with an additional `name` field :
+     * [
+     *     [
+     *         'id' => 1,
+     *         'code' => 'be',
+     *         'name' => 'Belgium'
+     *     ], [
+     *         'id' => 2,
+     *         'code' => 'fr',
+     *         'name' => 'France'
+     *     ]
+     * ]
+     *
+     * @param Builder $query
+     * @param string|array $translationFields
+     */
+    public function scopewithTranslations(Builder $query, $translationFields)
+    {
+        $withFallback = $this->useFallback();
+
+        $query->addSelect($this->getTable().'.*');
+
+        if (is_array($translationFields)) {
+            foreach ($translationFields as $translationField)
+                $query->addSelect($this->getTranslationsTable().'.'.$translationField);
+        } else {
+            $query->addSelect($this->getTranslationsTable().'.'.$translationFields);
+        }
+
+        $query
+            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
             ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale())
         ;
         if ($withFallback) {
