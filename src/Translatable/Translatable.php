@@ -331,7 +331,13 @@ trait Translatable
     {
         $attributes = parent::toArray();
 
+        $hidden = $this->getHidden();
+        
         foreach ($this->translatedAttributes as $field) {
+            if (in_array($field, $hidden)) {
+                continue;
+            }
+            
             if ($translations = $this->getTranslation()) {
                 $attributes[$field] = $translations->$field;
             }
