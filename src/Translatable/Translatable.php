@@ -354,26 +354,29 @@ trait Translatable
         $query->addSelect($this->getTable().'.*');
 
         if (is_array($translationFields)) {
-            foreach ($translationFields as $translationField)
+            foreach ($translationFields as $translationField) {
                 $query->addSelect($this->getTranslationsTable().'.'.$translationField);
+            }
         } else {
             $query->addSelect($this->getTranslationsTable().'.'.$translationFields);
         }
 
-        $query
-            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
-            ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale())
-        ;
-        if ($withFallback) {
-            $query->orWhere(function (Builder $q) {
-                $q->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale())
-                    ->whereNotIn($this->getTranslationsTable().'.'.$this->getRelationKey(), function (QueryBuilder $q) {
-                        $q->select($this->getTranslationsTable().'.'.$this->getRelationKey())
-                            ->from($this->getTranslationsTable())
-                            ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
-                    });
-            });
-        }
+        $query->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName());
+        
+        $query->where(function(Builder $wherequery) use ($withFallback) {
+        
+            $wherequery->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
+            if ($withFallback) {
+                $wherequery->orWhere(function (Builder $q) {
+                    $q->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale())
+                        ->whereNotIn($this->getTranslationsTable().'.'.$this->getRelationKey(), function (QueryBuilder $q) {
+                            $q->select($this->getTranslationsTable().'.'.$this->getRelationKey())
+                                ->from($this->getTranslationsTable())
+                                ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
+                        });
+                });
+            }
+        });
     }
 
     public function toArray()
