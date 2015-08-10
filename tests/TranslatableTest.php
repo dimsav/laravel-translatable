@@ -482,4 +482,63 @@ class TranslatableTest extends TestsBase
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function with_translated_fields()
+    {
+        App::setLocale('de');
+        $list = [[
+            'id' => 1,
+            'name' => 'Griechenland',
+            'code' => 'gr'
+        ]];
+        $results = Country::withTranslations(['name'])->get()->toArray();
+        $this->assertArraySubset($list,$results);
+    }
+
+    /**
+     * @test
+     */
+    public function with_translated_fields_with_fallback()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'en');
+        App::setLocale('de');
+        $country = new Country();
+        $country->useTranslationFallback = true;
+        $list = [[
+            'id' => 1,
+            'name' => 'Griechenland',
+            'code' => 'gr',
+            'locale' => 'de'
+        ],[
+            'id' => 2,
+            'name' => 'France',
+            'code' => 'fr',
+            'locale' => 'en'
+        ]];
+        $results = $country->withTranslations(['name','locale'])->get()->toArray();
+        $this->assertArraySubset($list, $results);
+    }
+
+    /**
+     * @test
+     */
+    public function ordering_by_a_translated_field()
+    {
+        App::setLocale('en');
+        $country = new Country();
+        $list = [[
+            'id' => 2,
+            'name' => 'France',
+            'code' => 'fr'
+        ],[
+            'id' => 1,
+            'name' => 'Greece',
+            'code' => 'gr'
+        ]];
+        $results = $country->withTranslations(['name'])->orderBy("name")->get()->toArray();
+        $this->assertArraySubset($list, $results);
+    }
 }
