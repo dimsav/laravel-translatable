@@ -206,4 +206,22 @@ class TestCoreModelExtension extends TestsBase
         $country = Country::find(1);
         $this->assertEquals(true, isset($country->name));
     }
+
+    // Hidden attributes
+
+    /**
+     * @test
+     */
+    public function it_should_hide_attributes_after_to_array()
+    {
+        $country = Country::find(1);
+
+        $this->assertEquals(true, isset($country->toArray()['name']));
+
+        // it is equivalent to set
+        //      protected $hidden = ['name'];
+        // in Eloquent
+        $country->setHidden(['name']);
+        $this->assertEquals(false, isset($country->toArray()['name']));
+    }
 }
