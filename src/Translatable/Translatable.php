@@ -163,6 +163,31 @@ trait Translatable
         return false;
     }
 
+    public static function firstOrCreate(array $attributes)
+    {
+        $instance = new static;
+        $original = $attributes;
+
+        foreach($instance->getLocales() as $locale) {
+            if (array_key_exists($locale, $attributes)) {
+                $locales[$locale] = array_pull($attributes, $locale);
+            }
+        }
+
+        if (! is_null($model = static::where($attributes)->first())) {
+            foreach ($locales as $locale => $value) {
+                if (! $model->hasTranslation($locale)) {
+                    $model->fill([$locale => $value]);
+                }
+            }
+            $model->save();
+
+            return $model;
+        }
+
+        return static::create($original);
+    }
+
     protected function getTranslationOrNew($locale)
     {
         if (($translation = $this->getTranslation($locale, false)) === null) {

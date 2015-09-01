@@ -482,4 +482,67 @@ class TranslatableTest extends TestsBase
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_model_with_newly_created_translations()
+    {
+        $data = [
+            'code' => 'be',
+            'en' => ['name' => 'Belgium'],
+            'fr' => ['name' => 'Belgique'],
+        ];
+
+        $country = Country::firstOrCreate($data);
+        $this->assertEquals('be', $country->code);
+        $this->assertEquals('Belgium', $country->translate('en')->name);
+        $this->assertEquals('Belgique', $country->translate('fr')->name);
+
+        $country = Country::whereCode('be')->first();
+        $this->assertEquals('Belgium', $country->translate('en')->name);
+        $this->assertEquals('Belgique', $country->translate('fr')->name);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_model_with_existing_translations()
+    {
+        $data = [
+            'code' => 'gr',
+            'en' => ['name' => 'Greece'],
+            'fr' => ['name' => 'Grèce'],
+        ];
+
+        $country = Country::firstOrCreate($data);
+        $this->assertEquals('gr', $country->code);
+        $this->assertEquals('Greece', $country->translate('en')->name);
+        $this->assertEquals('Grèce', $country->translate('fr')->name);
+
+        $country = Country::whereCode('gr')->first();
+        $this->assertEquals('Greece', $country->translate('en')->name);
+        $this->assertEquals('Grèce', $country->translate('fr')->name);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_model_with_existing_and_newly_created_translations()
+    {
+        $data = [
+            'code' => 'fr',
+            'en' => ['name' => 'France'],
+            'de' => ['name' => 'Frankrijk'],
+        ];
+
+        $country = Country::firstOrCreate($data);
+        $this->assertEquals('fr', $country->code);
+        $this->assertEquals('France', $country->translate('en')->name);
+        $this->assertEquals('Frankrijk', $country->translate('de')->name);
+
+        $country = Country::whereCode('fr')->first();
+        $this->assertEquals('France', $country->translate('en')->name);
+        $this->assertEquals('Frankrijk', $country->translate('de')->name);
+    }
 }
