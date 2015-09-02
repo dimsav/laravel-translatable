@@ -9,24 +9,37 @@ use Illuminate\Database\Eloquent\Model;
 
 trait Translatable
 {
-    /*
+    /**
      * Alias for getTranslation()
+     *
+     * @param strign|null $locale
+     * @param bool $withFallback
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translate($locale = null, $withFallback = false)
     {
         return $this->getTranslation($locale, $withFallback);
     }
 
-    /*
+    /**
      * Alias for getTranslation()
+     *
+     * @param string $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translateOrDefault($locale)
     {
         return $this->getTranslation($locale, true);
     }
 
-    /*
+    /**
      * Alias for getTranslationOrNew()
+     *
+     * @param string $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translateOrNew($locale)
     {
@@ -34,8 +47,8 @@ trait Translatable
     }
 
     /**
-     * @param null      $locale
-     * @param bool|null $withFallback
+     * @param string|null $locale
+     * @param bool        $withFallback
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
