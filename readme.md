@@ -124,6 +124,14 @@ class Country extends Eloquent {
     
     public $translatedAttributes = ['name'];
     protected $fillable = ['code', 'name'];
+    
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    // (optionaly)
+    // protected $with = ['translations'];
 
 }
 
