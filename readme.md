@@ -73,7 +73,7 @@ If you want to store translations of your models into the database, this package
 
 ## Tutorial
 
-Check the [tutorial](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/) about laravel-translatable in laravel-news.
+Check the tutorial about laravel-translatable in laravel-news: [*How To Add Multilingual Support to Eloquent*](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/)
 
 ## Installation in 4 steps
 
