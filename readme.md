@@ -13,6 +13,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 If you want to store translations of your models into the database, this package is for you.
 
 * [Demo](#what-is-this-package-doing)
+* [Tutorial](#tutorial)
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
 * [Documentation](#documentation)
@@ -69,6 +70,10 @@ If you want to store translations of your models into the database, this package
   
   echo $greece->translate('fr')->name; // Grèce
 ```
+
+## Tutorial
+
+Check the [tutorial](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/) about laravel-translatable in laravel-news.
 
 ## Installation in 4 steps
 
