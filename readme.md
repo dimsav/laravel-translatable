@@ -12,7 +12,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 
 If you want to store translations of your models into the database, this package is for you.
 
-* [Demo](#what-is-this-package-doing)
+* [Demo](#demo)
 * [Tutorial](#tutorial)
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
