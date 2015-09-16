@@ -382,13 +382,16 @@ trait Translatable
     }
 
     /**
+     * Return only if has translation
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $locale
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function scopeTranslatedIn(Builder $query, $locale)
+    public function scopeTranslatedIn(Builder $query, $locale = null)
     {
+        $locale = $locale ?: app()->getLocale();
+
         return $query->whereHas('translations', function (Builder $q) use ($locale) {
             $q->where($this->getLocaleKey(), '=', $locale);
         });
