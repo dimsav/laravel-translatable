@@ -290,7 +290,7 @@ trait Translatable
      *
      * @return bool
      */
-    protected function isTranslationAttribute($key)
+    public function isTranslationAttribute($key)
     {
         return in_array($key, $this->translatedAttributes);
     }
