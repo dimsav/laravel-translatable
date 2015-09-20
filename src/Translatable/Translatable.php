@@ -372,7 +372,8 @@ trait Translatable
                         ->whereNotIn($this->getTranslationsTable().'.'.$this->getRelationKey(), function (QueryBuilder $q) {
                             $q->select($this->getTranslationsTable().'.'.$this->getRelationKey())
                                 ->from($this->getTranslationsTable())
-                                ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
+                                ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale())
+                                ->whereRaw('`'.$this->getTranslationsTable().'`.`'.$this->getRelationKey().'` = `'.$this->getTable().'`.`'.$this->getKeyName().'`');
                         });
                 });
             }
