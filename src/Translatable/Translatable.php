@@ -481,6 +481,6 @@ trait Translatable
      */
     protected function locale()
     {
-        return App::make('translator')->getLocale();
+        return App::make('config')->get('translatable.locale') ? : App::make('translator')->getLocale();
     }
 }
