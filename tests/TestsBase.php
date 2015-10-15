@@ -7,12 +7,51 @@ class TestsBase extends TestCase
 {
     protected $queriesCount;
 
+    const DB_NAME     = 'translatable_test';
+    const DB_USERNAME = 'homestead';
+    const DB_PASSWORD = 'secret';
+
     public function setUp()
     {
+        $this->dropDb();
+        $this->createDb();
+
         parent::setUp();
 
         $this->resetDatabase();
         $this->countQueries();
+    }
+
+    /**
+     * return void
+     */
+    private function dropDb()
+    {
+        $this->runQuery("DROP DATABASE IF EXISTS ".static::DB_NAME);
+    }
+
+    /**
+     * return void
+     */
+    private function createDb()
+    {
+        $this->runQuery("CREATE DATABASE ".static::DB_NAME);
+    }
+
+    /**
+     * @param $query
+     * return void
+     */
+    private function runQuery($query)
+    {
+        $dbUsername = static::DB_USERNAME;
+        $dbPassword = static::DB_PASSWORD;
+
+        $command = "mysql -u $dbUsername ";
+        $command.= $dbPassword ? " -p$dbPassword" : "";
+        $command.= " -e '$query'";
+
+        exec($command);
     }
 
     public function testRunningMigration()
@@ -33,9 +72,9 @@ class TestsBase extends TestCase
         $app['config']->set('database.connections.mysql', [
             'driver'   => 'mysql',
             'host' => 'localhost',
-            'database' => 'translatable_test',
-            'username' => 'homestead',
-            'password' => 'secret',
+            'database' => static::DB_NAME,
+            'username' => static::DB_USERNAME,
+            'password' => static::DB_PASSWORD,
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
         ]);
