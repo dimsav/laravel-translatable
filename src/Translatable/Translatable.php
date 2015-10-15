@@ -405,6 +405,17 @@ trait Translatable
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $search
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeWhereTranslation(Builder $query, $search){
+        return $query->whereHas('translations', function($query) use ($search){
+            $query->where('locale', $search['locale'])->where($search['key'], $search['value']);
+        });
+    }
+
+    /**
      * Adds scope to get a list of translated attributes, using the current locale.
      *
      * Example usage: Country::scopeListsTranslations('name')->get()->toArray()
