@@ -320,6 +320,31 @@ You are awesome! Watched the repo and reply to the issues. You will help offerin
 
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
+#### How do I sort by translations?
+
+A tip here is to make the MySQL query first and then do the Eloquent one.
+
+To fetch a list of records ordered by a translated field, you can do this: 
+
+```mysql
+SELECT * from countries
+JOIN country_translations as t on t.country_id = countries.id 
+WHERE locale = 'en'
+GROUP BY countries.id
+ORDER BY t.name desc
+```
+
+The corresponding eloquent query would be:
+
+```php
+Country::join('country_translations as t', 't.country_id', '=', 'countries.id')
+    ->where('locale', 'en')
+    ->groupBy('countries.id')
+    ->orderBy('t.name', 'desc')
+    ->with('translations')
+    ->get();
+```
+
 #### Why do I get a mysql error while running the migrations?
 
 If you see the following mysql error:
