@@ -345,6 +345,19 @@ Country::join('country_translations as t', 't.country_id', '=', 'countries.id')
     ->get();
 ```
 
+#### How can I select a country by a translated field?
+
+For example, let's image we want to find the Country having a CountryTranslation name equal to 'Portugal'.
+
+```php
+Country::whereHas('translations', function ($query) {
+    $query->where('locale', 'en')
+    ->where('name', 'Portugal');
+})->first();
+```
+
+You can find more info at the Laravel [Querying Relations docs](http://laravel.com/docs/5.1/eloquent-relationships#querying-relations).
+
 #### Why do I get a mysql error while running the migrations?
 
 If you see the following mysql error:
