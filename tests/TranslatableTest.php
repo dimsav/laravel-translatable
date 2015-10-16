@@ -482,4 +482,12 @@ class TranslatableTest extends TestsBase
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
+
+    public function test_it_returns_if_attribute_is_translated()
+    {
+        $country = new Country();
+
+        $this->assertTrue($country->isTranslationAttribute('name'));
+        $this->assertFalse($country->isTranslationAttribute('some-field'));
+    }
 }
