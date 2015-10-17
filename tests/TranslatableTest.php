@@ -98,6 +98,17 @@ class TranslatableTest extends TestsBase
     /**
      * @test
      */
+    public function it_returns_null_when_the_locale_doesnt_exist()
+    {
+        /** @var Country $country */
+        $country = Country::whereCode('gr')->first();
+
+        $this->assertSame(null, $country->{'name:unknown-locale'});
+    }
+
+    /**
+     * @test
+     */
     public function it_saves_translations()
     {
         $country = Country::whereCode('gr')->first();
