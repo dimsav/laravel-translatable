@@ -12,6 +12,15 @@ class ScopesTest extends TestsBase
         $this->assertEquals($translatedCountries->count(), 1);
     }
 
+    public function test_translated_in_scope_works_with_default_locale()
+    {
+        App::setLocale('de');
+        $translatedCountries = Country::translatedIn()->get();
+
+        $this->assertSame($translatedCountries->count(), 1);
+        $this->assertSame('Griechenland', $translatedCountries->first()->name);
+    }
+
     public function test_translated_scope_returns_records_with_at_least_one_translation()
     {
         $translatedCountries = Country::translated()->get();
