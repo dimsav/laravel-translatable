@@ -305,18 +305,6 @@ class TranslatableTest extends TestsBase
         $this->assertEquals(App::make('config')->get('translatable.translation_suffix'), 'Translation');
     }
 
-    public function test_translated_in_scope_returns_only_translated_records_for_this_locale()
-    {
-        $translatedCountries = Country::translatedIn('fr')->get();
-        $this->assertEquals($translatedCountries->count(), 1);
-    }
-
-    public function test_translated_scope_returns_records_with_at_least_one_translation()
-    {
-        $translatedCountries = Country::translated()->get();
-        $this->assertEquals($translatedCountries->count(), 2);
-    }
-
     public function test_getting_translation_does_not_create_translation()
     {
         $country = Country::with('translations')->find(1);
@@ -360,32 +348,6 @@ class TranslatableTest extends TestsBase
         ]);
 
         $this->assertSame($country->getTranslation('en')->name, 'Not fillable');
-    }
-
-    public function test_lists_of_translated_fields()
-    {
-        App::setLocale('de');
-        $list = [[
-            'id' => '1',
-            'name' => 'Griechenland',
-        ]];
-        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
-    }
-
-    public function test_lists_of_translated_fields_with_fallback()
-    {
-        App::make('config')->set('translatable.fallback_locale', 'en');
-        App::setLocale('de');
-        $country = new Country();
-        $country->useTranslationFallback = true;
-        $list = [[
-            'id' => '1',
-            'name' => 'Griechenland',
-        ],[
-            'id' => '2',
-            'name' => 'France',
-        ]];
-        $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
 
     public function test_it_returns_if_attribute_is_translated()
