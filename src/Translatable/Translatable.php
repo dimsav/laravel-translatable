@@ -148,7 +148,7 @@ trait Translatable
         }
 
         if ($this->isTranslationAttribute($key)) {
-            if ($this->getTranslation() === null) {
+            if ($this->getTranslation($locale) === null) {
                 return;
             }
 
