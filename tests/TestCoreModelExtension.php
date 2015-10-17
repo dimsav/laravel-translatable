@@ -13,10 +13,7 @@ class TestCoreModelExtension extends TestsBase
 {
     // Saving
 
-    /**
-     * @test
-     */
-    public function it_saves_empty_instances()
+    public function test_test_it_saves_empty_instances()
     {
         $company = new Company();
         $company->save();
@@ -27,10 +24,7 @@ class TestCoreModelExtension extends TestsBase
         $this->assertGreaterThan(0, $country->id);
     }
 
-    /**
-     * @test
-     */
-    public function it_saves_translations_when_existing_and_dirty()
+    public function test_it_saves_translations_when_existing_and_dirty()
     {
         $country = Country::find(1);
         $country->code = 'make_model_dirty';
@@ -42,11 +36,7 @@ class TestCoreModelExtension extends TestsBase
 
     // Failing saving
 
-    /**
-     * @test
-     * @expectedException \Exception
-     */
-    public function it_throws_query_exception_if_code_is_null()
+    public function test_it_throws_query_exception_if_code_is_null()
     {
         $country = new Country();
         $country->name = 'Belgium';
@@ -55,10 +45,9 @@ class TestCoreModelExtension extends TestsBase
     }
 
     /**
-     * @test
      * @expectedException \Exception
      */
-    public function it_throws_query_exception_if_saving_and_name_is_null()
+    public function test_it_throws_query_exception_if_saving_and_name_is_null()
     {
         $country = new Country();
         $country->code = 'be';
@@ -66,10 +55,7 @@ class TestCoreModelExtension extends TestsBase
         $country->save();
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_false_if_exists_and_dirty_and_parent_save_returns_false()
+    public function test_it_returns_false_if_exists_and_dirty_and_parent_save_returns_false()
     {
         $that = $this;
         $event = App::make('events');
@@ -83,10 +69,7 @@ class TestCoreModelExtension extends TestsBase
         $this->assertFalse($country->save());
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_false_if_does_not_exist_and_parent_save_returns_false()
+    public function test_it_returns_false_if_does_not_exist_and_parent_save_returns_false()
     {
         $that = $this;
         $event = App::make('events');
@@ -101,10 +84,9 @@ class TestCoreModelExtension extends TestsBase
     // Filling
 
     /**
-     * @test
      * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function it_throws_exception_if_filling_a_protected_property()
+    public function test_it_throws_exception_if_filling_a_protected_property()
     {
         $country = new CountryGuarded();
         $this->assertTrue($country->totallyGuarded());
@@ -113,10 +95,7 @@ class TestCoreModelExtension extends TestsBase
 
     // Deleting
 
-    /**
-     * @test
-     */
-    public function it_deletes_translations()
+    public function test_it_deletes_translations()
     {
         $city = City::find(1);
         $cityId = $city->id;
@@ -129,10 +108,7 @@ class TestCoreModelExtension extends TestsBase
         $this->assertEquals(0, count($translations));
     }
 
-    /**
-     * @test
-     */
-    public function it_does_not_delete_translations_when_attempting_to_delete_translatable()
+    public function test_it_does_not_delete_translations_when_attempting_to_delete_translatable()
     {
         $country = Country::find(1);
         $countryId = $country->id;
@@ -150,10 +126,7 @@ class TestCoreModelExtension extends TestsBase
         $this->assertEquals(4, count($translations));
     }
 
-    /**
-     * @test
-     */
-    public function it_does_not_delete_translations_while_force_deleting()
+    public function test_it_does_not_delete_translations_while_force_deleting()
     {
         $country = CountryStrict::find(2);
         $country->forceDelete();
@@ -161,20 +134,14 @@ class TestCoreModelExtension extends TestsBase
         $this->assertEquals(0, count($after));
     }
 
-    /**
-     * @test
-     */
-    public function to_array_returs_translated_attributes()
+    public function test_to_array_returs_translated_attributes()
     {
         $country = Country::find(1);
         $this->assertArrayHasKey('name', $country->toArray());
         $this->assertArrayHasKey('code', $country->toArray());
     }
 
-    /**
-     * @test
-     */
-    public function to_array_wont_break_if_no_translations_exist()
+    public function test_to_array_wont_break_if_no_translations_exist()
     {
         $country = new Country(['code' => 'test']);
         $country->save();
@@ -183,10 +150,7 @@ class TestCoreModelExtension extends TestsBase
 
     // Performance
 
-    /**
-     * @test
-     */
-    public function it_passes_the_N_plus_1_problem()
+    public function test_it_passes_the_N_plus_1_problem()
     {
         $countries = Country::with('translations')->get();
         foreach ($countries as $country) {
@@ -198,10 +162,7 @@ class TestCoreModelExtension extends TestsBase
 
     // Forms
 
-    /**
-     * @test
-     */
-    public function it_fakes_isset_for_translated_attributes()
+    public function test_it_fakes_isset_for_translated_attributes()
     {
         $country = Country::find(1);
         $this->assertEquals(true, isset($country->name));
@@ -209,10 +170,7 @@ class TestCoreModelExtension extends TestsBase
 
     // Hidden attributes
 
-    /**
-     * @test
-     */
-    public function it_should_hide_attributes_after_to_array()
+    public function test_it_should_hide_attributes_after_to_array()
     {
         $country = Country::find(1);
 

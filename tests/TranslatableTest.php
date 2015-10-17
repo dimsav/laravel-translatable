@@ -6,10 +6,7 @@ use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
 class TranslatableTest extends TestsBase
 {
-    /**
-     * @test
-     */
-    public function it_finds_the_default_translation_class()
+    public function test_it_finds_the_default_translation_class()
     {
         $country = new Country();
         $this->assertEquals(
@@ -17,10 +14,7 @@ class TranslatableTest extends TestsBase
             $country->getTranslationModelNameDefault());
     }
 
-    /**
-     * @test
-     */
-    public function it_finds_the_translation_class_with_suffix_set()
+    public function test_it_finds_the_translation_class_with_suffix_set()
     {
         App::make('config')->set('translatable.translation_suffix', 'Trans');
         $country = new Country();
@@ -29,10 +23,7 @@ class TranslatableTest extends TestsBase
             $country->getTranslationModelName());
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_custom_TranslationModelName()
+    public function test_it_returns_custom_TranslationModelName()
     {
         $country = new Country();
 
@@ -48,10 +39,7 @@ class TranslatableTest extends TestsBase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_relation_key()
+    public function test_it_returns_relation_key()
     {
         $country = new Country();
         $this->assertEquals('country_id', $country->getRelationKey());
@@ -60,10 +48,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('my_awesome_key', $country->getRelationKey());
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_the_translation()
+    public function test_it_returns_the_translation()
     {
         /** @var Country $country */
         $country = Country::whereCode('gr')->first();
@@ -83,10 +68,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Greece', $englishTranslation->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_the_translation_with_accessor()
+    public function test_it_returns_the_translation_with_accessor()
     {
         /** @var Country $country */
         $country = Country::whereCode('gr')->first();
@@ -95,10 +77,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Greece', $country->{'name:en'});
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_null_when_the_locale_doesnt_exist()
+    public function test_it_returns_null_when_the_locale_doesnt_exist()
     {
         /** @var Country $country */
         $country = Country::whereCode('gr')->first();
@@ -106,10 +85,7 @@ class TranslatableTest extends TestsBase
         $this->assertSame(null, $country->{'name:unknown-locale'});
     }
 
-    /**
-     * @test
-     */
-    public function it_saves_translations()
+    public function test_it_saves_translations()
     {
         $country = Country::whereCode('gr')->first();
 
@@ -120,10 +96,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('1234', $country->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_saves_translations_with_mutator()
+    public function test_it_saves_translations_with_mutator()
     {
         $country = Country::whereCode('gr')->first();
 
@@ -142,10 +115,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('5678', $translation->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_uses_default_locale_to_return_translations()
+    public function test_it_uses_default_locale_to_return_translations()
     {
         $country = Country::whereCode('gr')->first();
 
@@ -159,10 +129,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('abcd', $country->translate('el')->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_creates_translations()
+    public function test_it_creates_translations()
     {
         $country = new Country();
         $country->code = 'be';
@@ -176,10 +143,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgium', $country->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_creates_translations_using_the_shortcut()
+    public function test_it_creates_translations_using_the_shortcut()
     {
         $country = new Country();
         $country->code = 'be';
@@ -190,10 +154,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgium', $country->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_creates_translations_using_mass_assignment()
+    public function test_it_creates_translations_using_mass_assignment()
     {
         $data = [
             'code' => 'be',
@@ -204,10 +165,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgium', $country->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_creates_translations_using_mass_assignment_and_locales()
+    public function test_it_creates_translations_using_mass_assignment_and_locales()
     {
         $data = [
             'code' => 'be',
@@ -224,10 +182,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_skips_mass_assignment_if_attributes_non_fillable()
+    public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $data = [
             'code' => 'be',
@@ -240,20 +195,14 @@ class TranslatableTest extends TestsBase
         $this->assertNull($country->translate('fr'));
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_if_object_has_translation()
+    public function test_it_returns_if_object_has_translation()
     {
         $country = Country::find(1);
         $this->assertTrue($country->hasTranslation('en'));
         $this->assertFalse($country->hasTranslation('abc'));
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_default_translation()
+    public function test_it_returns_default_translation()
     {
         App::make('config')->set('translatable.fallback_locale', 'de');
 
@@ -263,10 +212,7 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('ch', false), null);
     }
 
-    /**
-     * @test
-     */
-    public function fallback_option_in_config_overrides_models_fallback_option()
+    public function test_fallback_option_in_config_overrides_models_fallback_option()
     {
         App::make('config')->set('translatable.fallback_locale', 'de');
 
@@ -283,10 +229,7 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('ch'), null);
     }
 
-    /**
-     * @test
-     */
-    public function configuration_defines_if_fallback_is_used()
+    public function test_configuration_defines_if_fallback_is_used()
     {
         App::make('config')->set('translatable.fallback_locale', 'de');
         App::make('config')->set('translatable.use_fallback', true);
@@ -295,10 +238,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->getTranslation('ch')->locale, 'de');
     }
 
-    /**
-     * @test
-     */
-    public function useTranslationFallback_overrides_configuration()
+    public function test_useTranslationFallback_overrides_configuration()
     {
         App::make('config')->set('translatable.fallback_locale', 'de');
         App::make('config')->set('translatable.use_fallback', true);
@@ -307,10 +247,7 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('ch'), null);
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_null_if_fallback_is_not_defined()
+    public function test_it_returns_null_if_fallback_is_not_defined()
     {
         App::make('config')->set('translatable.fallback_locale', 'ch');
 
@@ -318,10 +255,7 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('pl', true), null);
     }
 
-    /**
-     * @test
-     */
-    public function it_fills_a_non_default_language_with_fallback_set()
+    public function test_it_fills_a_non_default_language_with_fallback_set()
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
 
@@ -335,10 +269,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->translate('en')->name, 'Greece');
     }
 
-    /**
-     * @test
-     */
-    public function it_creates_a_new_translation()
+    public function test_it_creates_a_new_translation()
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
 
@@ -349,19 +280,13 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->translate('en')->name, 'Greece');
     }
 
-    /**
-     * @test
-     */
-    public function the_locale_key_is_locale_by_default()
+    public function test_the_locale_key_is_locale_by_default()
     {
         $country = Country::find(1);
         $this->assertEquals($country->getLocaleKey(), 'locale');
     }
 
-    /**
-     * @test
-     */
-    public function the_locale_key_can_be_overridden_in_configuration()
+    public function test_the_locale_key_can_be_overridden_in_configuration()
     {
         App::make('config')->set('translatable.locale_key', 'language_id');
 
@@ -369,55 +294,37 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->getLocaleKey(), 'language_id');
     }
 
-    /**
-     * @test
-     */
-    public function the_locale_key_can_be_customized_per_model()
+    public function test_the_locale_key_can_be_customized_per_model()
     {
         $country = CountryWithCustomLocaleKey::find(1);
         $this->assertEquals($country->getLocaleKey(), 'language_id');
     }
 
-    /**
-     * @test
-     */
-    public function it_reads_the_configuration()
+    public function test_it_reads_the_configuration()
     {
         $this->assertEquals(App::make('config')->get('translatable.translation_suffix'), 'Translation');
     }
 
-    /**
-     * @test
-     */
-    public function translated_in_scope_returns_only_translated_records_for_this_locale()
+    public function test_translated_in_scope_returns_only_translated_records_for_this_locale()
     {
         $translatedCountries = Country::translatedIn('fr')->get();
         $this->assertEquals($translatedCountries->count(), 1);
     }
 
-    /**
-     * @test
-     */
-    public function translated_scope_returns_records_with_at_least_one_translation()
+    public function test_translated_scope_returns_records_with_at_least_one_translation()
     {
         $translatedCountries = Country::translated()->get();
         $this->assertEquals($translatedCountries->count(), 2);
     }
 
-    /**
-     * @test
-     */
-    public function getting_translation_does_not_create_translation()
+    public function test_getting_translation_does_not_create_translation()
     {
         $country = Country::with('translations')->find(1);
         $translation = $country->getTranslation('abc', false);
         $this->assertSame($translation, null);
     }
 
-    /**
-     * @test
-     */
-    public function getting_translated_field_does_not_create_translation()
+    public function test_getting_translated_field_does_not_create_translation()
     {
         $this->app->setLocale('en');
         $country = new Country(['code' => 'pl']);
@@ -429,28 +336,21 @@ class TranslatableTest extends TestsBase
     }
 
     /**
-     * @test
      * @expectedException Dimsav\Translatable\Exception\LocalesNotDefinedException
      */
-    public function if_locales_are_not_defined_throw_exception()
+    public function test_if_locales_are_not_defined_throw_exception()
     {
         $this->app->config->set('translatable.locales', []);
         new Country(['code' => 'pl']);
     }
 
-    /**
-     * @test
-     */
-    public function it_has_methods_that_return_always_a_translation()
+    public function test_it_has_methods_that_return_always_a_translation()
     {
         $country = Country::find(1)->first();
         $this->assertSame('abc', $country->translateOrNew('abc')->locale);
     }
 
-    /**
-     * @test
-     */
-    public function configuration_overrides_fillable()
+    public function test_configuration_overrides_fillable()
     {
         App::make('config')->set('translatable.always_fillable', true);
 
@@ -462,10 +362,7 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('en')->name, 'Not fillable');
     }
 
-    /**
-     * @test
-     */
-    public function lists_of_translated_fields()
+    public function test_lists_of_translated_fields()
     {
         App::setLocale('de');
         $list = [[
@@ -475,10 +372,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
     }
 
-    /**
-     * @test
-     */
-    public function lists_of_translated_fields_with_fallback()
+    public function test_lists_of_translated_fields_with_fallback()
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
         App::setLocale('de');
@@ -494,10 +388,7 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_if_attribute_is_translated()
+    public function test_it_returns_if_attribute_is_translated()
     {
         $country = new Country();
 
@@ -505,10 +396,7 @@ class TranslatableTest extends TestsBase
         $this->assertFalse($country->isTranslationAttribute('some-field'));
     }
 
-    /**
-     * @test
-     */
-    public function config_overrides_apps_locale()
+    public function test_config_overrides_apps_locale()
     {
         $country = Country::find(1);
         App::make('config')->set('translatable.locale', 'de');
