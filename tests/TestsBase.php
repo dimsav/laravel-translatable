@@ -51,7 +51,7 @@ class TestsBase extends TestCase
         $command.= $dbPassword ? " -p$dbPassword" : "";
         $command.= " -e '$query'";
 
-        exec($command);
+        exec($command . " 2>/dev/null");
     }
 
     public function testRunningMigration()
