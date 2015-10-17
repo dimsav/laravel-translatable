@@ -446,12 +446,12 @@ trait Translatable
         $attributes = parent::toArray();
 
         $hiddenAttributes = $this->getHidden();
-        
+
         foreach ($this->translatedAttributes as $field) {
             if (in_array($field, $hiddenAttributes)) {
                 continue;
             }
-            
+
             if ($translations = $this->getTranslation()) {
                 $attributes[$field] = $translations->$field;
             }
@@ -481,6 +481,6 @@ trait Translatable
      */
     protected function locale()
     {
-        return App::make('translator')->getLocale();
+        return App::make('config')->get('translatable.locale') ? : App::make('translator')->getLocale();
     }
 }
