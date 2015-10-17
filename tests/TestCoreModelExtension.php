@@ -36,6 +36,9 @@ class TestCoreModelExtension extends TestsBase
 
     // Failing saving
 
+    /**
+     * @expectedException \Exception
+     */
     public function test_it_throws_query_exception_if_code_is_null()
     {
         $country = new Country();
