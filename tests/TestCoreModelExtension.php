@@ -13,7 +13,7 @@ class TestCoreModelExtension extends TestsBase
 {
     // Saving
 
-    public function test_test_it_saves_empty_instances()
+    public function test_it_saves_empty_instances()
     {
         $company = new Company();
         $company->save();
