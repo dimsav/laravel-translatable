@@ -504,4 +504,15 @@ class TranslatableTest extends TestsBase
         $this->assertTrue($country->isTranslationAttribute('name'));
         $this->assertFalse($country->isTranslationAttribute('some-field'));
     }
+
+    /**
+     * @test
+     */
+    public function config_overrides_apps_locale()
+    {
+        $country = Country::find(1);
+        App::make('config')->set('translatable.locale', 'de');
+
+        $this->assertSame('Griechenland', $country->name);
+    }
 }
