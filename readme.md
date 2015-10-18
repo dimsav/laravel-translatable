@@ -251,6 +251,28 @@ $translation = $germany->getNewTranslation('it');
 $germany->translations();
 ```
 
+### Available scopes
+
+```php
+// Returns all countries having translations in english
+Country::translatedIn('en')->get();
+
+// Returns all countries having translations
+Country::translated()->get();
+
+// Eager loads translation relationship only for the default
+// and fallback (if enabled) locale
+Country::withTranslation()->get();
+
+// Returns an array containing pairs of country ids and the translated
+// name attribute. For example: 
+// [
+//     ['id' => 1, 'name' => 'Greece'], 
+//     ['id' => 2, 'name' => 'Belgium']
+// ]
+Country::listsTranslations('name')->get()->toArray();
+```
+
 ### Magic properties
 
 To use the magic properties, you have to define the property `$translatedAttributes` in your

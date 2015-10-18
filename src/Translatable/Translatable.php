@@ -409,7 +409,7 @@ trait Translatable
     /**
      * Adds scope to get a list of translated attributes, using the current locale.
      *
-     * Example usage: Country::scopeListsTranslations('name')->get()->toArray()
+     * Example usage: Country::listsTranslations('name')->get()->toArray()
      * Will return an array with items:
      *  [
      *      'id' => '1',                // The id of country
