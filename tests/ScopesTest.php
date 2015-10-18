@@ -55,7 +55,6 @@ class ScopesTest extends TestsBase
 
     public function test_scope_withTranslation_without_fallback()
     {
-        $this->countQueries();
         $result = Country::withTranslation()->first();
         $loadedTranslations = $result->toArray()['translations'];
         $this->assertCount(1, $loadedTranslations);
@@ -67,7 +66,6 @@ class ScopesTest extends TestsBase
         App::make('config')->set('translatable.fallback_locale', 'de');
         App::make('config')->set('translatable.use_fallback', true);
 
-        $this->countQueries();
         $result = Country::withTranslation()->first();
         $loadedTranslations = $result->toArray()['translations'];
         $this->assertCount(2, $loadedTranslations);
