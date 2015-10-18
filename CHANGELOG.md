@@ -5,7 +5,7 @@
 - Added option to override default locale #158 
 - Added default value in translatedIn() scope #148 
 - Added new scope [withTranslation()](https://github.com/dimsav/laravel-translatable/blob/384844af32928e41a09451aded8d5aa490d3c99f/src/Translatable/Translatable.php#L449-L458) (including [tests](https://github.com/dimsav/laravel-translatable/blob/c6c57e5d265a3b3ba2a882f073900fd8300ae5c6/tests/ScopesTest.php#L56-L74)) to decrease the number of mysql calls made.
-- Added documentation about scopes.
+- Added [documentation](https://github.com/dimsav/laravel-translatable/blob/0715f46613769570b65b97ac9ffec10f9bf06d8d/readme.md#available-scopes) about scopes.
 
 ### v.5.1.2
 
