@@ -441,6 +441,23 @@ trait Translatable
     }
 
     /**
+     * This scope eager loads the translations for the default and the fallback locale only.
+     * We can use this as a shortcut to improve performance in our application.
+     *
+     * @param Builder $query
+     */
+    public function scopeWithTranslations(Builder $query)
+    {
+        $query->with(['translations' => function($query){
+            $query->where('locale', $this->locale());
+
+            if ($this->useFallback()) {
+                return $query->orWhere('locale', $this->getFallbackLocale());
+            }
+        }]);
+    }
+
+    /**
      * @return array
      */
     public function toArray()

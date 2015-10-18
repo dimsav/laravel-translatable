@@ -53,4 +53,26 @@ class ScopesTest extends TestsBase
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
 
+    public function test_scope_withTranslations_without_fallback()
+    {
+        $this->countQueries();
+        $result = Country::withTranslations()->first();
+        $loadedTranslations = $result->toArray()['translations'];
+        $this->assertCount(1, $loadedTranslations);
+        $this->assertSame('Greece', $loadedTranslations[0]['name']);
+    }
+
+    public function test_scope_withTranslations_with_fallback()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'de');
+        App::make('config')->set('translatable.use_fallback', true);
+
+        $this->countQueries();
+        $result = Country::withTranslations()->first();
+        $loadedTranslations = $result->toArray()['translations'];
+        $this->assertCount(2, $loadedTranslations);
+        $this->assertSame('Greece', $loadedTranslations[0]['name']);
+        $this->assertSame('Griechenland', $loadedTranslations[1]['name']);
+    }
+
 }
