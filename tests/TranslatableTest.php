@@ -84,6 +84,38 @@ class TranslatableTest extends TestsBase
 
         $this->assertSame(null, $country->{'name:unknown-locale'});
     }
+    
+    /**
+     * @test
+     */
+    public function it_returns_the_parent_by_translation_value()
+    {
+        /** @var Country $country */
+        $country = Country::whereTranslation('name', 'Greece')->first();
+        $englishTranslation = $country->translate('el');
+        $this->assertEquals('Ελλάδα', $englishTranslation->name);
+        $englishTranslation = $country->translate('en');
+        $this->assertEquals('Greece', $englishTranslation->name);
+        $this->app->setLocale('el');
+        $englishTranslation = $country->translate();
+        $this->assertEquals('Ελλάδα', $englishTranslation->name);
+        $this->app->setLocale('en');
+        $englishTranslation = $country->translate();
+        $this->assertEquals('Greece', $englishTranslation->name);
+        
+        /** @var Country $country */
+        $country = Country::whereTranslation('name', 'Greece'. 'el')->first();
+        $englishTranslation = $country->translate('el');
+        $this->assertEquals('Ελλάδα', $englishTranslation->name);
+        $englishTranslation = $country->translate('en');
+        $this->assertEquals('Greece', $englishTranslation->name);
+        $this->app->setLocale('el');
+        $englishTranslation = $country->translate();
+        $this->assertEquals('Ελλάδα', $englishTranslation->name);
+        $this->app->setLocale('en');
+        $englishTranslation = $country->translate();
+        $this->assertEquals('Greece', $englishTranslation->name);
+    }
 
     public function test_it_saves_translations()
     {
