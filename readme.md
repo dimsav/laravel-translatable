@@ -88,7 +88,7 @@ composer require dimsav/laravel-translatable
 Next, add the service provider to `app/config/app.php`
 
 ```
-'Dimsav\Translatable\TranslatableServiceProvider',
+Dimsav\Translatable\TranslatableServiceProvider::class,
 ```
 
 ### Step 2: Migrations
