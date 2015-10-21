@@ -90,9 +90,31 @@ class TestsBase extends TestCase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('illuminate.query', function () use ($that) {
+        $event->listen('illuminate.query', function ($query, $bindings) use ($that) {
             $that->queriesCount++;
+            $bindings = $this->formatBindingsForSqlInjection($bindings);
+            $query    = $this->insertBindingsIntoQuery($query, $bindings);
+            $query = $this->beautifyQuery($query);
+            // echo("\n--- Query {$that->queriesCount}--- $query\n");
         });
+    }
+
+    private function beautifyQuery($query)
+    {
+        $capitalizeWords = ['select ', ' from ', ' where ', ' on ', ' join '];
+        $newLineWords = ['select ', 'from ', 'where ', 'join '];
+        foreach ($capitalizeWords as $word) {
+            $query = str_replace($word, strtoupper($word), $query);
+        }
+
+        foreach ($newLineWords as $word) {
+            $query = str_replace($word, "\n$word", $query);
+            $word = strtoupper($word);
+            $query = str_replace($word, "\n$word", $query);
+        }
+
+
+        return $query;
     }
 
     private function resetDatabase()
@@ -117,5 +139,39 @@ class TestsBase extends TestCase
             '--database' => 'mysql',
             '--path'     => $migrationsPath,
         ]);
+    }
+
+    /**
+     * @param $bindings
+     *
+     * @return mixed
+     */
+    private function formatBindingsForSqlInjection($bindings)
+    {
+        foreach ($bindings as $i => $binding) {
+            if ($binding instanceof DateTime) {
+                $bindings[$i] = $binding->format('\'Y-m-d H:i:s\'');
+            } else {
+                if (is_string($binding)) {
+                    $bindings[$i] = "'$binding'";
+                }
+            }
+        }
+        return $bindings;
+    }
+    /**
+     * @param $query
+     * @param $bindings
+     *
+     * @return string
+     */
+    private function insertBindingsIntoQuery($query, $bindings)
+    {
+        if (empty($bindings)) {
+            return $query;
+        }
+
+        $query = str_replace(array('%', '?'), array('%%', '%s'), $query);
+        return vsprintf($query, $bindings);
     }
 }
