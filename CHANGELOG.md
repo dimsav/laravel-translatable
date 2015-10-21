@@ -2,7 +2,7 @@
 
 ### v.5.3
 
-- Added whereTranslation() scope. 
+- Added whereTranslation() scope. #168
 
 ### v.5.2
 
