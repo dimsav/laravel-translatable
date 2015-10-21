@@ -2,25 +2,25 @@
 
 ### v.5.3
 
-- Added whereTranslation() scope. #168
+- Added whereTranslation() scope. [#168](https://github.com/dimsav/laravel-translatable/issues/168)
 
 ### v.5.2
 
-- Added option to override default locale #158 
-- Added default value in translatedIn() scope #148 
+- Added option to override default locale [#158](https://github.com/dimsav/laravel-translatable/issues/158) 
+- Added default value in translatedIn() scope [#148](https://github.com/dimsav/laravel-translatable/issues/148)
 - Added new scope [withTranslation()](https://github.com/dimsav/laravel-translatable/blob/384844af32928e41a09451aded8d5aa490d3c99f/src/Translatable/Translatable.php#L449-L458) (including [tests](https://github.com/dimsav/laravel-translatable/blob/c6c57e5d265a3b3ba2a882f073900fd8300ae5c6/tests/ScopesTest.php#L56-L74)) to decrease the number of mysql calls made.
 - Added [documentation](https://github.com/dimsav/laravel-translatable/blob/0715f46613769570b65b97ac9ffec10f9bf06d8d/readme.md#available-scopes) about scopes.
 
 ### v.5.1.2
 
 - Fixed db in tests is dropped and recreated to make tests more stable (https://github.com/dimsav/laravel-translatable/commit/3cc29a21c27726a2d14463b3ec0d55c26487eb58)
-- Fixed bug when using syntax `$country->{'name:en'}` and locale doesn't exist #150 
-- Method isTranslationAttribute() is now public #151
+- Fixed bug when using syntax `$country->{'name:en'}` and locale doesn't exist [#150](https://github.com/dimsav/laravel-translatable/issues/150)
+- Method isTranslationAttribute() is now public [#151](https://github.com/dimsav/laravel-translatable/issues/151)
 
 ### v.5.1.1
 
-- Fixed compatibility with Lumen #121
-- Fixed making an attribute on a translatable model hidden does not hide it #133
+- Fixed compatibility with Lumen [#121](https://github.com/dimsav/laravel-translatable/issues/121)
+- Fixed making an attribute on a translatable model hidden does not hide it [#133](https://github.com/dimsav/laravel-translatable/issues/133)
 
 ### v. 5.1
 
@@ -39,7 +39,7 @@
 ### v. 4.5
 
 - Added scope to list translated attributes in the current locale.
-- Force fire "saved" event when the original model is not saved, but the translation is. #85
+- Force fire "saved" event when the original model is not saved, but the translation is. [#85](https://github.com/dimsav/laravel-translatable/issues/85]
 
 ### v. 4.4
 
@@ -76,7 +76,7 @@
 - Added method `hasTranslation($locale)`. See [#19](https://github.com/dimsav/laravel-translatable/issues/19).
 
 ### v. 3.0
-- Fixed bug #7. Model's Translations were deleted when the model delete failed.
+- Fixed bug [#7](https://github.com/dimsav/laravel-translatable/issues/7). Model's Translations were deleted when the model delete failed.
 
 ### v. 2.0
 - Translatable is now a trait and can be used as add-on to your models.
