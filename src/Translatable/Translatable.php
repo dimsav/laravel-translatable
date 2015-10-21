@@ -449,10 +449,10 @@ trait Translatable
     public function scopeWithTranslation(Builder $query)
     {
         $query->with(['translations' => function($query){
-            $query->where('locale', $this->locale());
+            $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
             if ($this->useFallback()) {
-                return $query->orWhere('locale', $this->getFallbackLocale());
+                return $query->orWhere($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale());
             }
         }]);
     }
