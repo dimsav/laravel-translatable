@@ -1,5 +1,9 @@
 ## Version History
 
+### v.5.3
+
+- Added whereTranslation() scope. 
+
 ### v.5.2
 
 - Added option to override default locale #158 

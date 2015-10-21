@@ -73,4 +73,22 @@ class ScopesTest extends TestsBase
         $this->assertSame('Griechenland', $loadedTranslations[1]['name']);
     }
 
+    public function test_whereTranslation_filters_by_translation()
+    {
+        /** @var Country $country */
+        $country = Country::whereTranslation('name', 'Greece')->first();
+        $this->assertSame('gr', $country->code);
+    }
+
+    public function test_whereTranslation_filters_by_translation_and_locale()
+    {
+        Country::create(['code' => 'some-code', 'name' => 'Griechenland']);
+
+        /** @var Country $country */
+        $this->assertSame(2, Country::whereTranslation('name', 'Griechenland')->count());
+
+        $result = Country::whereTranslation('name', 'Griechenland', 'de')->get();
+        $this->assertSame(1, $result->count());
+        $this->assertSame('gr', $result->first()->code);
+    }
 }
