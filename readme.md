@@ -307,7 +307,7 @@ $germany->{'name:de'} // 'Deutschland'
 If you want to fallback to a default translation when a translation has not been found, enable this in the configuration
 using the `use_fallback` key. And to select the default locale, use the `fallback_locale` key.
 
-Example:
+Configuration example:
 
 ```php
 return [
@@ -327,6 +327,40 @@ class Country {
 }
 ```
 
+#### Country based fallback
+
+Since version v5.3 it is possible to use country based locales. For example, you can have the following locales:
+
+- English: `en`
+- Spanish: `es`
+- Mexican Spanish: `es-MX`
+- Colombian Spanish: `es-CO`
+
+To configuration for these locales looks like this:
+
+```php
+    'locales' => [ 
+        'en',
+        'es' => [
+            'MX',
+            'CO',
+        ],
+    ];
+```
+
+We can also configure the "glue" between the language and country. If for instance we prefer the format `es_MX` instead of `es-MX`, 
+the configuration should look like this:
+
+```php
+   'locale_separator' => '_',
+```
+
+What applies for the fallback of the locales using the `en-MX` format? 
+
+Let's say our fallback locale is `en`. Now, when we try to fetch from the database the translation for the 
+locale `es-MX` but it doesn't exist,  we won't get as fallback the translation for `en`. Translatable will use as a 
+fallback `es` (the first part of `es-MX`) and only if nothing is found, the translation for `en` is returned.
+ 
 ## FAQ
 
 #### I need some example code!

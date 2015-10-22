@@ -395,4 +395,20 @@ class TranslatableTest extends TestsBase
         $this->assertSame('Chips', $frenchFries->getTranslation('en_GB')->name);
     }
 
+    public function test_fallback_for_country_based_locales()
+    {
+        $this->app->config->set('translatable.use_fallback', true);
+        $this->app->config->set('translatable.fallback_locale', 'fr');
+        $this->app->config->set('translatable.locales', ['en' => ['US', 'GB'], 'fr']);
+        $this->app->config->set('translatable.locale_separator', '-');
+        $data = [
+            'id' => 1,
+            'fr' => ['name' => 'frites'],
+            'en-GB' => ['name' => 'chips'],
+            'en' => ['name' => 'french fries'],
+        ];
+        Food::create($data);
+        $fries = Food::find(1);
+        $this->assertSame('french fries', $fries->getTranslation('en-US')->name);
+    }
 }
