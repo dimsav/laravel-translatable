@@ -12,7 +12,7 @@ trait Translatable
     /**
      * Alias for getTranslation()
      *
-     * @param strign|null $locale
+     * @param string|null $locale
      * @param bool $withFallback
      *
      * @return \Illuminate\Database\Eloquent\Model|null
@@ -316,15 +316,33 @@ trait Translatable
      */
     protected function getLocales()
     {
-        $config = App::make('config');
-        $locales = (array) $config->get('translatable.locales', []);
+        $localesConfig = (array) App::make('config')->get('translatable.locales');
 
-        if (empty($locales)) {
+        if (empty($localesConfig)) {
             throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
                 ' and that the locales configuration is defined.');
         }
 
+        $locales = [];
+        foreach ($localesConfig as $key => $locale) {
+            if (is_array($locale)) {
+                $locales[] = $key;
+                foreach ($locale as $countryLocale) {
+                    $locales[] = $key.$this->getLocaleSeparator().$countryLocale;
+                }
+            } else {
+                $locales[] = $locale;
+            }
+        }
+
         return $locales;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLocaleSeparator() {
+        return App::make('config')->get('translatable.locale_separator', '-');
     }
 
     /**

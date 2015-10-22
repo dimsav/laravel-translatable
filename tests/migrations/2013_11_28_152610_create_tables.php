@@ -56,6 +56,21 @@ class CreateTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('foods', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+
+        Schema::create('food_translations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('food_id')->unsigned();
+            $table->string('name');
+            $table->string('locale')->index();
+
+            $table->unique(['food_id', 'locale']);
+            $table->foreign('food_id')->references('id')->on('foods')->onDelete('cascade');
+        });
+
         Schema::create('continent_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('continent_id')->unsigned();
@@ -80,5 +95,7 @@ class CreateTables extends Migration
 
         Schema::dropIfExists('continent_translations');
         Schema::dropIfExists('continents');
+        Schema::dropIfExists('food_translations');
+        Schema::dropIfExists('foods');
     }
 }

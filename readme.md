@@ -201,7 +201,7 @@ class Country extends Eloquent
 ### Available methods 
 
 ```php
-// This is how we determine the current locale.
+// Before we get started, this is how we determine the current locale.
 // It is set by laravel or other packages.
 App::getLocale(); // 'fr' 
 
