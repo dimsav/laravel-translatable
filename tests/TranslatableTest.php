@@ -3,6 +3,7 @@
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
+use Dimsav\Translatable\Test\Model\Food;
 
 class TranslatableTest extends TestsBase
 {
@@ -364,5 +365,50 @@ class TranslatableTest extends TestsBase
         App::make('config')->set('translatable.locale', 'de');
 
         $this->assertSame('Griechenland', $country->name);
+    }
+
+    public function test_locales_as_array_keys_are_properly_detected()
+    {
+        $this->app->config->set('translatable.locales', ['en' => ['US','GB']]);
+
+        $data = [
+            'en' => ['name' => 'French fries'],
+            'en-US' => ['name' => 'American french fries'],
+            'en-GB' => ['name' => 'Chips'],
+        ];
+        $frenchFries = Food::create($data);
+
+        $this->assertSame('French fries', $frenchFries->getTranslation('en')->name);
+        $this->assertSame('Chips', $frenchFries->getTranslation('en-GB')->name);
+        $this->assertSame('American french fries', $frenchFries->getTranslation('en-US')->name);
+    }
+
+    public function test_locale_separator_can_be_configured()
+    {
+        $this->app->config->set('translatable.locales', ['en' => ['GB']]);
+        $this->app->config->set('translatable.locale_separator', '_');
+        $data = [
+            'en_GB' => ['name' => 'Chips'],
+        ];
+        $frenchFries = Food::create($data);
+
+        $this->assertSame('Chips', $frenchFries->getTranslation('en_GB')->name);
+    }
+
+    public function test_fallback_for_country_based_locales()
+    {
+        $this->app->config->set('translatable.use_fallback', true);
+        $this->app->config->set('translatable.fallback_locale', 'fr');
+        $this->app->config->set('translatable.locales', ['en' => ['US', 'GB'], 'fr']);
+        $this->app->config->set('translatable.locale_separator', '-');
+        $data = [
+            'id' => 1,
+            'fr' => ['name' => 'frites'],
+            'en-GB' => ['name' => 'chips'],
+            'en' => ['name' => 'french fries'],
+        ];
+        Food::create($data);
+        $fries = Food::find(1);
+        $this->assertSame('french fries', $fries->getTranslation('en-US')->name);
     }
 }

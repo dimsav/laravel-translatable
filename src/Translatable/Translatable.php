@@ -12,7 +12,7 @@ trait Translatable
     /**
      * Alias for getTranslation()
      *
-     * @param strign|null $locale
+     * @param string|null $locale
      * @param bool $withFallback
      *
      * @return \Illuminate\Database\Eloquent\Model|null
@@ -55,16 +55,16 @@ trait Translatable
     public function getTranslation($locale = null, $withFallback = null)
     {
         $locale = $locale ?: $this->locale();
-
         $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
+        $fallbackLocale = $this->getFallbackLocale($locale);
 
         if ($this->getTranslationByLocaleKey($locale)) {
             $translation = $this->getTranslationByLocaleKey($locale);
         } elseif ($withFallback
-            && $this->getFallbackLocale()
-            && $this->getTranslationByLocaleKey($this->getFallbackLocale())
+            && $fallbackLocale
+            && $this->getTranslationByLocaleKey($fallbackLocale)
         ) {
-            $translation = $this->getTranslationByLocaleKey($this->getFallbackLocale());
+            $translation = $this->getTranslationByLocaleKey($fallbackLocale);
         } else {
             $translation = null;
         }
@@ -266,11 +266,41 @@ trait Translatable
     }
 
     /**
+     * @param null $locale
+     *
      * @return string
      */
-    private function getFallbackLocale()
+    private function getFallbackLocale($locale = null)
     {
+        if ($locale && $this->isLocaleCountryBased($locale)) {
+            if ($fallback = $this->getLanguageFromCountryBasedLocale($locale)) {
+                return $fallback;
+            }
+        }
+
         return App::make('config')->get('translatable.fallback_locale');
+    }
+
+    /**
+     * @param $locale
+     *
+     * @return bool
+     */
+    private function isLocaleCountryBased($locale)
+    {
+        return strpos($locale, $this->getLocaleSeparator()) !== false;
+    }
+
+    /**
+     * @param $locale
+     *
+     * @return string
+     */
+    private function getLanguageFromCountryBasedLocale($locale)
+    {
+        $parts = explode($this->getLocaleSeparator(), $locale);
+
+        return array_get($parts, 0);
     }
 
     /**
@@ -316,15 +346,33 @@ trait Translatable
      */
     protected function getLocales()
     {
-        $config = App::make('config');
-        $locales = (array) $config->get('translatable.locales', []);
+        $localesConfig = (array) App::make('config')->get('translatable.locales');
 
-        if (empty($locales)) {
+        if (empty($localesConfig)) {
             throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
                 ' and that the locales configuration is defined.');
         }
 
+        $locales = [];
+        foreach ($localesConfig as $key => $locale) {
+            if (is_array($locale)) {
+                $locales[] = $key;
+                foreach ($locale as $countryLocale) {
+                    $locales[] = $key.$this->getLocaleSeparator().$countryLocale;
+                }
+            } else {
+                $locales[] = $locale;
+            }
+        }
+
         return $locales;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLocaleSeparator() {
+        return App::make('config')->get('translatable.locale_separator', '-');
     }
 
     /**
