@@ -469,21 +469,23 @@ trait Translatable
      */
     public function scopeListsTranslations(Builder $query, $translationField)
     {
-        $withFallback = $this->useFallback();
+        $withFallback     = $this->useFallback();
+        $translationTable = $this->getTranslationsTable();
+        $localeKey        = $this->getLocaleKey();
 
         $query
-            ->select($this->getTable().'.'.$this->getKeyName(), $this->getTranslationsTable().'.'.$translationField)
-            ->leftJoin($this->getTranslationsTable(), $this->getTranslationsTable().'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
-            ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale())
+            ->select($this->getTable().'.'.$this->getKeyName(), $translationTable.'.'.$translationField)
+            ->leftJoin($translationTable, $translationTable.'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
+            ->where($translationTable.'.'.$localeKey, $this->locale())
         ;
         if ($withFallback) {
-            $query->orWhere(function (Builder $q) {
-                $q->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale())
-                    ->whereNotIn($this->getTranslationsTable().'.'.$this->getRelationKey(), function (QueryBuilder $q) {
-                        $q->select($this->getTranslationsTable().'.'.$this->getRelationKey())
-                            ->from($this->getTranslationsTable())
-                            ->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
-                    });
+            $query->orWhere(function (Builder $q) use ($translationTable, $localeKey) {
+                $q->where($translationTable.'.'.$localeKey, $this->getFallbackLocale())
+                  ->whereNotIn($translationTable.'.'.$this->getRelationKey(), function (QueryBuilder $q) use ($translationTable, $localeKey) {
+                      $q->select($translationTable.'.'.$this->getRelationKey())
+                        ->from($translationTable)
+                        ->where($translationTable.'.'.$localeKey, $this->locale());
+                  });
             });
         }
     }
