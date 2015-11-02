@@ -111,7 +111,7 @@ trait Translatable
     /**
      * @return string
      */
-    public function getTranslationForeignKey() {
+    private function getTranslationForeignKey() {
         return $this->translationForeignKey ?: ($this->primaryKey !== 'id' ? $this->primaryKey : false);
     }
 
