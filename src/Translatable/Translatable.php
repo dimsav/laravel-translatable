@@ -506,7 +506,7 @@ trait Translatable
             }
         }]);
     }
-s
+
 
     /**
      * This scope filters results by checking the translation fields.
