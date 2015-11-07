@@ -170,7 +170,7 @@ trait Translatable
             $locale = $this->locale();
         }
 
-        if (in_array($key, $this->translatedAttributes)) {
+        if ($this->isTranslationAttribute($key)) {
             $this->getTranslationOrNew($locale)->$key = $value;
         } else {
             parent::setAttribute($key, $value);
@@ -506,7 +506,7 @@ trait Translatable
             }
         }]);
     }
-
+s
 
     /**
      * This scope filters results by checking the translation fields.
