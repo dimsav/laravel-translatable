@@ -426,7 +426,7 @@ trait Translatable
      */
     public function __isset($key)
     {
-        return (in_array($key, $this->translatedAttributes) || parent::__isset($key));
+        return ($this->isTranslationAttribute($key) || parent::__isset($key));
     }
 
     /**
