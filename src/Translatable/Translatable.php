@@ -170,7 +170,7 @@ trait Translatable
             $locale = $this->locale();
         }
 
-        if (in_array($key, $this->translatedAttributes)) {
+        if ($this->isTranslationAttribute($key)) {
             $this->getTranslationOrNew($locale)->$key = $value;
         } else {
             parent::setAttribute($key, $value);
@@ -426,7 +426,7 @@ trait Translatable
      */
     public function __isset($key)
     {
-        return (in_array($key, $this->translatedAttributes) || parent::__isset($key));
+        return ($this->isTranslationAttribute($key) || parent::__isset($key));
     }
 
     /**
