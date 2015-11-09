@@ -111,9 +111,16 @@ trait Translatable
     /**
      * @return string
      */
+    private function getTranslationForeignKey() {
+        return $this->translationForeignKey ?: ($this->primaryKey !== 'id' ? $this->primaryKey : false);
+    }
+
+    /**
+     * @return string
+     */
     public function getRelationKey()
     {
-        return $this->translationForeignKey ?: $this->getForeignKey();
+        return $this->getTranslationForeignKey() ?: $this->getForeignKey();
     }
 
     /**
