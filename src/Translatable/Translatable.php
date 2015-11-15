@@ -113,7 +113,15 @@ trait Translatable
      */
     public function getRelationKey()
     {
-        return $this->translationForeignKey ?: $this->getForeignKey();
+        if ($this->translationForeignKey) {
+            $key = $this->translationForeignKey;
+        } elseif ($this->primaryKey !== 'id') {
+            $key = $this->primaryKey;
+        } else {
+            $key = $this->getForeignKey();
+        }
+
+        return $key;
     }
 
     /**

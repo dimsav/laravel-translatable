@@ -78,6 +78,21 @@ class CreateTables extends Migration
             $table->string('locale')->index();
             $table->timestamps();
         });
+
+        Schema::create('vegetables', function (Blueprint $table) {
+            $table->increments('identity');
+            $table->timestamps();
+        });
+
+        Schema::create('vegetable_translations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('vegetable_identity')->unsigned();
+            $table->string('name');
+            $table->string('locale')->index();
+
+            $table->unique(['vegetable_identity', 'locale']);
+            $table->foreign('vegetable_identity')->references('identity')->on('vegetables')->onDelete('cascade');
+        });
     }
 
     /**
@@ -97,5 +112,7 @@ class CreateTables extends Migration
         Schema::dropIfExists('continents');
         Schema::dropIfExists('food_translations');
         Schema::dropIfExists('foods');
+        Schema::dropIfExists('vegetable_translations');
+        Schema::dropIfExists('vegetables');
     }
 }

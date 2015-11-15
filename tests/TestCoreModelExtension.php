@@ -8,6 +8,7 @@ use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\City;
 use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\Company;
+use Dimsav\Translatable\Test\Model\Vegetable;
 
 class TestCoreModelExtension extends TestsBase
 {
@@ -184,5 +185,11 @@ class TestCoreModelExtension extends TestsBase
         // in Eloquent
         $country->setHidden(['name']);
         $this->assertEquals(false, isset($country->toArray()['name']));
+    }
+
+    public function test_it_finds_custom_primary_keys()
+    {
+        $vegetable = new Vegetable;
+        $this->assertSame('vegetable_identity', $vegetable->getRelationKey());
     }
 }
