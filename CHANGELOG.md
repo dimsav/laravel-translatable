@@ -1,5 +1,9 @@
 ## Version History
 
+### v.5.4
+
+- Added compatibility with custom primary key. #174
+
 ### v.5.3
 
 - Added whereTranslation() scope. [#168](https://github.com/dimsav/laravel-translatable/issues/168)
