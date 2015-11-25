@@ -550,9 +550,9 @@ trait Translatable
     public function scopeWhereTranslationLike($query, $key, $value, $locale = null)
     {
         return $query->whereHas('translations', function ($query) use ($key, $value, $locale) {
-            $query->where($this->getTranslationsTable().'.'.$key, 'ILIKE', $value);
+            $query->where($this->getTranslationsTable().'.'.$key, 'LIKE', $value);
             if ($locale) {
-                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), 'ILIKE', $locale);
+                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), 'LIKE', $locale);
             }
         });
     }
