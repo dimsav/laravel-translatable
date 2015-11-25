@@ -274,6 +274,9 @@ Country::listsTranslations('name')->get()->toArray();
 
 // Filters countries by checking the translation against the given value 
 Country::whereTranslation('name', 'Greece')->first();
+
+// Filters countries by checking the translation against the given value 
+Country::whereTranslationLike('name', '%Gree%')->first();
 ```
 
 ### Magic properties

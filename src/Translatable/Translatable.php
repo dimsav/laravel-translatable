@@ -538,6 +538,27 @@ trait Translatable
 
 
     /**
+     * This scope filters results by checking the translation fields.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $key
+     * @param string                                $value
+     * @param string                                $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeWhereTranslationLike($query, $key, $value, $locale = null)
+    {
+        return $query->whereHas('translations', function ($query) use ($key, $value, $locale) {
+            $query->where($this->getTranslationsTable().'.'.$key, 'ILIKE', $value);
+            if ($locale) {
+                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), 'ILIKE', $locale);
+            }
+        });
+    }
+
+
+    /**
      * @return array
      */
     public function toArray()
