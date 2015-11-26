@@ -242,11 +242,12 @@ trait Translatable
     public function fill(array $attributes)
     {
         $totallyGuarded = $this->totallyGuarded();
+        $fillable = $this->getFillable();
 
         foreach ($attributes as $key => $values) {
             if ($this->isKeyALocale($key)) {
                 foreach ($values as $translationAttribute => $translationValue) {
-                    if ($this->alwaysFillable() || $this->isFillable($translationAttribute)) {
+                    if (in_array($key . '.' . $translationAttribute, $fillable)) {
                         $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
                     } elseif ($totallyGuarded) {
                         throw new MassAssignmentException($key);
@@ -257,6 +258,28 @@ trait Translatable
         }
 
         return parent::fill($attributes);
+    }
+
+    /**
+     * Get the fillable attributes for the model.
+     *
+     * @return array
+     */
+    public function getFillable()
+    {
+        $fillable = parent::getFillable();
+        $locales = $this->getLocales();
+
+        foreach ($this->translatedAttributes as $attribute) {
+            if ($this->alwaysFillable() || $this->isFillable($attribute)) {
+                foreach ($locales as $locale) {
+                    $fillable[] = $locale . '.' . $attribute;
+                }
+                unset($fillable[array_search($attribute, $fillable)]);
+            }
+        }
+
+        return $fillable;
     }
 
     /**
