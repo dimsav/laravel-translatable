@@ -247,7 +247,7 @@ trait Translatable
         foreach ($attributes as $key => $values) {
             if ($this->isKeyALocale($key)) {
                 foreach ($values as $translationAttribute => $translationValue) {
-                    if (in_array($key . '.' . $translationAttribute, $fillable)) {
+                    if (in_array($this->getFillableLocalizedAttributeKey($translationAttribute, $key), $fillable)) {
                         $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
                     } elseif ($totallyGuarded) {
                         throw new MassAssignmentException($key);
@@ -273,13 +273,25 @@ trait Translatable
         foreach ($this->translatedAttributes as $attribute) {
             if ($this->alwaysFillable() || $this->isFillable($attribute)) {
                 foreach ($locales as $locale) {
-                    $fillable[] = $locale . '.' . $attribute;
+                    $fillable[] = $this->getFillableLocalizedAttributeKey($attribute, $locale);
                 }
                 unset($fillable[array_search($attribute, $fillable)]);
             }
         }
 
         return $fillable;
+    }
+
+    /**
+     * Get the localized attribute key for use in the $fillable array.
+     *
+     * @param string $key
+     * @param string $locale
+     * @return array
+     */
+    protected function getFillableLocalizedAttributeKey($key, $locale)
+    {
+        return $locale . '.' . $key;
     }
 
     /**
