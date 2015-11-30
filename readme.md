@@ -275,7 +275,7 @@ Country::listsTranslations('name')->get()->toArray();
 // Filters countries by checking the translation against the given value 
 Country::whereTranslation('name', 'Greece')->first();
 
-// Filters countries by checking the translation against the given value 
+// Filters countries by checking the translation against the given string with wildcards
 Country::whereTranslationLike('name', '%Gree%')->first();
 ```
 
