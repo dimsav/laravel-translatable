@@ -84,7 +84,6 @@ class ScopesTest extends TestsBase
     {
         Country::create(['code' => 'some-code', 'name' => 'Griechenland']);
 
-        /** @var Country $country */
         $this->assertSame(2, Country::whereTranslation('name', 'Griechenland')->count());
 
         $result = Country::whereTranslation('name', 'Griechenland', 'de')->get();
