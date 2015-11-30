@@ -2,11 +2,11 @@
 
 ### v.5.4
 
-- Added compatibility with custom primary key. #174
+- Added compatibility with custom primary key [#174](https://github.com/dimsav/laravel-translatable/issues/174)
 
 ### v.5.3
 
-- Added whereTranslation() scope. [#168](https://github.com/dimsav/laravel-translatable/issues/168)
+- Added whereTranslation() scope [#168](https://github.com/dimsav/laravel-translatable/issues/168)
 
 ### v.5.2
 
@@ -35,7 +35,7 @@
 
 - Applied PSR-2 code style.
 
-### v. 5
+### v. 5.0
 
 - Laravel 5 ready
 - Added configuration option for returning fallback translations
@@ -43,7 +43,7 @@
 ### v. 4.5
 
 - Added scope to list translated attributes in the current locale.
-- Force fire "saved" event when the original model is not saved, but the translation is. [#85](https://github.com/dimsav/laravel-translatable/issues/85]
+- Force fire "saved" event when the original model is not saved, but the translation is [#85](https://github.com/dimsav/laravel-translatable/issues/85)
 
 ### v. 4.4
 
