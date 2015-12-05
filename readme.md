@@ -1,6 +1,7 @@
 Laravel-Translatable
 ====================
 
+
 [![Total Downloads](https://poser.pugx.org/dimsav/laravel-translatable/downloads.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![Build Status](https://travis-ci.org/dimsav/laravel-translatable.svg?branch=v4.3)](https://travis-ci.org/dimsav/laravel-translatable)
 [![Code Coverage](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/badges/coverage.png?s=da6f88287610ff41bbfaf1cd47119f4333040e88)](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/)
@@ -18,6 +19,8 @@ If you want to store translations of your models into the database, this package
 * [Configuration](#configuration)
 * [Documentation](#documentation)
 * [Support](#faq)
+
+[![268022096_e52a1c90e6_q](https://cloud.githubusercontent.com/assets/1785686/11608638/a870ca5e-9b77-11e5-8250-2c03f8f1814c.jpg)](http://dimsav.tip.me)
 
 ## Laravel compatibility
 
