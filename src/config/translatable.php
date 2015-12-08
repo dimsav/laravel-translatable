@@ -42,6 +42,19 @@ return [
     |
     */
     'locale' => null,
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Locale provider
+    |--------------------------------------------------------------------------
+    |
+    | The full path of a locale provider Class, responsible for returning
+    | the current locale value. This alternative is useful in some cms
+    | cases, where content locale and website locale can be different.
+    | The class must implement a public locale() method.
+    |
+    */
+    'locale_provider' => null,
 
     /*
     |--------------------------------------------------------------------------
