@@ -206,6 +206,7 @@ trait Translatable
                 // false. So we have to save the translations
                 if ($saved = $this->saveTranslations()) {
                     $this->fireModelEvent('saved', false);
+                    $this->fireModelEvent('updated', false);
                 }
 
                 return $saved;
