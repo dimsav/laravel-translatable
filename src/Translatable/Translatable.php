@@ -580,7 +580,13 @@ trait Translatable
      */
     protected function locale()
     {
-        return App::make('config')->get('translatable.locale')
+        $config = App::make('config');
+
+        if($config->get("translatable.locale_provider")) {
+            return App::make($config->get("translatable.locale_provider"))->locale();
+        }
+
+        return $config->get('translatable.locale')
             ?: App::make('translator')->getLocale();
     }
 }
