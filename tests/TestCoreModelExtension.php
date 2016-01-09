@@ -152,18 +152,6 @@ class TestCoreModelExtension extends TestsBase
         $country->toArray();
     }
 
-    // Performance
-
-    public function test_it_passes_the_N_plus_1_problem()
-    {
-        $countries = Country::with('translations')->get();
-        foreach ($countries as $country) {
-            $country->name;
-        }
-        $this->assertGreaterThan(2, count($countries));
-        $this->assertEquals(2, $this->queriesCount);
-    }
-
     // Forms
 
     public function test_it_fakes_isset_for_translated_attributes()
