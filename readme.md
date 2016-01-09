@@ -20,8 +20,6 @@ If you want to store translations of your models into the database, this package
 * [Documentation](#documentation)
 * [Support](#faq)
 
-[![268022096_e52a1c90e6_q](https://cloud.githubusercontent.com/assets/1785686/11608638/a870ca5e-9b77-11e5-8250-2c03f8f1814c.jpg)](http://dimsav.tip.me)
-
 ## Laravel compatibility
 
  Laravel  | Translatable
