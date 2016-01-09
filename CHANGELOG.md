@@ -5,6 +5,7 @@
 - Added scope whereTranslationLike() [#183](https://github.com/dimsav/laravel-translatable/pull/183)
 - Fire 'updated' event when saving translations. [#190](https://github.com/dimsav/laravel-translatable/pull/190)
 - setAttribute() returns the model itself, which is now the default in eloquent. [#201](https://github.com/dimsav/laravel-translatable/issues/201)
+- Dropped support for laravel 5.0
 
 ### v.5.4
 
