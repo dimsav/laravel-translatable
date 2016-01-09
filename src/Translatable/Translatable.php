@@ -181,8 +181,10 @@ trait Translatable
         if ($this->isTranslationAttribute($key)) {
             $this->getTranslationOrNew($locale)->$key = $value;
         } else {
-            parent::setAttribute($key, $value);
+            return parent::setAttribute($key, $value);
         }
+
+        return $this;
     }
 
     /**

@@ -192,4 +192,11 @@ class TestCoreModelExtension extends TestsBase
         $vegetable = new Vegetable;
         $this->assertSame('vegetable_identity', $vegetable->getRelationKey());
     }
+    
+    public function test_setAttribute_returns_this()
+    {
+        $country = new Country;
+        $this->assertSame($country, $country->setAttribute('code', 'ch'));
+        $this->assertSame($country, $country->setAttribute('name', 'China'));
+    }
 }
