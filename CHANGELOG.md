@@ -1,5 +1,10 @@
 ## Version History
 
+### v.5.5
+
+- Added scope whereTranslationLike() [#183](https://github.com/dimsav/laravel-translatable/pull/183)
+- Fire 'updated' event when saving translations. [#190](https://github.com/dimsav/laravel-translatable/pull/190)
+
 ### v.5.4
 
 - Added compatibility with custom primary key [#174](https://github.com/dimsav/laravel-translatable/issues/174)
