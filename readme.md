@@ -367,6 +367,13 @@ Let's say our fallback locale is `en`. Now, when we try to fetch from the databa
 locale `es-MX` but it doesn't exist,  we won't get as fallback the translation for `en`. Translatable will use as a 
 fallback `es` (the first part of `es-MX`) and only if nothing is found, the translation for `en` is returned.
  
+#### Add ons
+
+Thanks to the community a few packages have been written to make usage of Translatable easier when working with forms:
+
+- [TypiCMS/TranslatableBootForms](https://github.com/TypiCMS/TranslatableBootForms)
+- [Propaganistas/Laravel-Translatable-Bootforms](https://github.com/Propaganistas/Laravel-Translatable-Bootforms)
+ 
 ## FAQ
 
 #### I need some example code!
