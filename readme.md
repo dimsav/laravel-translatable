@@ -129,9 +129,8 @@ Schema::create('country_translations', function(Blueprint $table)
 class Country extends Eloquent {
     
     use \Dimsav\Translatable\Translatable;
-    
-    public $translatedAttributes = ['name'];
-    protected $fillable = ['code', 'name'];
+
+    protected $fillable = ['code'];
     
     /**
      * The relations to eager load on every query.
@@ -151,8 +150,6 @@ class CountryTranslation extends Eloquent {
 
 }
 ```
-
-The array `$translatedAttributes` contains the names of the fields being translated in the "Translation" model.
 
 ### Step 4: Configuration
 
@@ -283,18 +280,6 @@ Country::whereTranslationLike('name', '%Gree%')->first();
 ```
 
 ### Magic properties
-
-To use the magic properties, you have to define the property `$translatedAttributes` in your
- main model:
-
- ```php
- class Country extends Eloquent {
-
-     use \Dimsav\Translatable\Translatable;
-
-     public $translatedAttributes = ['name'];
- }
- ```
 
 ```php
 // Again we start by having a country instance

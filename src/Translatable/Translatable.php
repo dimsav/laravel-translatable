@@ -234,6 +234,25 @@ trait Translatable
 
         return $translation;
     }
+    
+    /**
+     * Get the fillable attributes for the model.
+     *
+     * @return array
+     */
+    public function getFillable()
+    {
+        $translationModel = new $this->getTranslationModelName();
+        $locales = $this->getLocales();
+
+        foreach ($translationModel->fillable as $translationFillable) {
+            foreach ($locales as $locale) {
+                $this->fillable[] = "$locale.$translationFillable";
+            }
+        }
+
+        return parent::getFillable();
+    }
 
     /**
      * @param array $attributes
@@ -249,7 +268,7 @@ trait Translatable
         foreach ($attributes as $key => $values) {
             if ($this->isKeyALocale($key)) {
                 foreach ($values as $translationAttribute => $translationValue) {
-                    if ($this->alwaysFillable() || $this->isFillable($translationAttribute)) {
+                    if ($this->isFillable($translationAttribute)) {
                         $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
                     } elseif ($totallyGuarded) {
                         throw new MassAssignmentException($key);
@@ -327,14 +346,34 @@ trait Translatable
     }
 
     /**
+     * @return array
+      */
+    public function getTranslationAttributes()
+    {
+        $translationModel = new $this->getTranslationModelName();
+
+        return collect($translationModel->attributes)
+            ->keys()
+            ->diff([
+                $translationModel->getKeyName(),
+                $translationModel->getCreatedAtColumn(),
+                $translationModel->getUpdatedAtColumn(),
+                method_exists($translationModel, 'getDeletedAtColumn') ? $translationModel->getDeletedAtColumn() : '',
+                'locale',
+                $this->getRelationKey()
+            ])
+            ->toArray();
+    }
+
+    /**
      * @param string $key
      *
      * @return bool
      */
     public function isTranslationAttribute($key)
     {
-        return in_array($key, $this->translatedAttributes);
-    }
+        return in_array($key, $this->getTranslationAttributes());
+     }
 
     /**
      * @param string $key
@@ -570,7 +609,7 @@ trait Translatable
 
         $hiddenAttributes = $this->getHidden();
 
-        foreach ($this->translatedAttributes as $field) {
+        foreach ($this->getTranslationAttributes() as $field) {
             if (in_array($field, $hiddenAttributes)) {
                 continue;
             }
@@ -581,14 +620,6 @@ trait Translatable
         }
 
         return $attributes;
-    }
-
-    /**
-     * @return bool
-     */
-    private function alwaysFillable()
-    {
-        return App::make('config')->get('translatable.always_fillable', false);
     }
 
     /**
