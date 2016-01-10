@@ -194,6 +194,10 @@ trait Translatable
      */
     public function save(array $options = [])
     {
+        if ($this->fireModelEvent('saving') === false) {
+            return false;
+        }
+        
         if ($this->exists) {
             if (count($this->getDirty()) > 0) {
                 // If $this->exists and dirty, parent::save() has to return true. If not,
