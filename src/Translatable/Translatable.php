@@ -245,11 +245,12 @@ trait Translatable
     public function fill(array $attributes)
     {
         $totallyGuarded = $this->totallyGuarded();
+        $fillable = $this->getFillable();
 
         foreach ($attributes as $key => $values) {
             if ($this->isKeyALocale($key)) {
                 foreach ($values as $translationAttribute => $translationValue) {
-                    if ($this->alwaysFillable() || $this->isFillable($translationAttribute)) {
+                    if (in_array($this->getFillableLocalizedAttributeKey($translationAttribute, $key), $fillable)) {
                         $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
                     } elseif ($totallyGuarded) {
                         throw new MassAssignmentException($key);
@@ -260,6 +261,40 @@ trait Translatable
         }
 
         return parent::fill($attributes);
+    }
+
+    /**
+     * Get the fillable attributes for the model.
+     *
+     * @return array
+     */
+    public function getFillable()
+    {
+        $fillable = parent::getFillable();
+        $locales = $this->getLocales();
+
+        foreach ($this->translatedAttributes as $attribute) {
+            if ($this->alwaysFillable() || $this->isFillable($attribute)) {
+                foreach ($locales as $locale) {
+                    $fillable[] = $this->getFillableLocalizedAttributeKey($attribute, $locale);
+                }
+                unset($fillable[array_search($attribute, $fillable)]);
+            }
+        }
+
+        return $fillable;
+    }
+
+    /**
+     * Get the localized attribute key for use in the $fillable array.
+     *
+     * @param string $key
+     * @param string $locale
+     * @return array
+     */
+    protected function getFillableLocalizedAttributeKey($key, $locale)
+    {
+        return $locale . '.' . $key;
     }
 
     /**
