@@ -371,8 +371,8 @@ fallback `es` (the first part of `es-MX`) and only if nothing is found, the tran
 
 Thanks to the community a few packages have been written to make usage of Translatable easier when working with forms:
 
-- [TypiCMS/TranslatableBootForms](https://github.com/TypiCMS/TranslatableBootForms)
 - [Propaganistas/Laravel-Translatable-Bootforms](https://github.com/Propaganistas/Laravel-Translatable-Bootforms)
+- [TypiCMS/TranslatableBootForms](https://github.com/TypiCMS/TranslatableBootForms)
  
 ## FAQ
 
