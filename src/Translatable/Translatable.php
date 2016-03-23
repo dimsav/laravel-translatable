@@ -163,7 +163,7 @@ trait Translatable
             $locale = $this->locale();
         }
 
-        if ($this->isTranslationAttribute($key)) {
+        if ($this->isTranslated && $this->isTranslationAttribute($key)) {
             if ($this->getTranslation($locale) === null) {
                 return;
             }
