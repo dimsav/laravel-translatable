@@ -11,13 +11,6 @@ trait Translatable
 {
     
     /**
-     * Avoid duplicate to translate
-     *
-     * @var bool
-     */
-    protected $isTranslated = false;
-    
-    /**
      * Alias for getTranslation()
      *
      * @param string|null $locale
@@ -65,6 +58,10 @@ trait Translatable
         $locale = $locale ?: $this->locale();
         $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
         $fallbackLocale = $this->getFallbackLocale($locale);
+        
+        if($this->isJoinTranslated()){
+            return null;
+        }
 
         if ($this->getTranslationByLocaleKey($locale)) {
             $translation = $this->getTranslationByLocaleKey($locale);
@@ -163,7 +160,7 @@ trait Translatable
             $locale = $this->locale();
         }
 
-        if ($this->isTranslated && $this->isTranslationAttribute($key)) {
+        if ($this->isTranslationAttribute($key)) {
             if ($this->getTranslation($locale) === null) {
                 return;
             }
@@ -583,7 +580,7 @@ trait Translatable
                 continue;
             }
 
-            if ($this->isTranslated && $translations = $this->getTranslation()) {
+            if ($translations = $this->getTranslation()) {
                 $attributes[$field] = $translations->$field;
             }
         }
@@ -634,10 +631,21 @@ trait Translatable
             $locale = $instance->locale();
         }
 
-        // avoid translation again
-        $instance->isTranslated = true;
-
         return $query->join($translationModel->getTable() . ' as t', 't.' . $instance->translationForeignKey, '=', $instance->getTable() . '.' . $instance->getKeyName())
             ->where($instance->localeKey, $locale);
+    }
+    
+    /**
+     * Check if translation was with a inner join
+     *
+     * @return bool
+     */
+    protected function isJoinTranslated(){
+        foreach($this->translatedAttributes as $translatedAttribute){
+            if(isset($this->original[$translatedAttribute]) && !empty($this->original[$translatedAttribute])){
+                return true;
+            }
+        }
+        return false;
     }
 }
