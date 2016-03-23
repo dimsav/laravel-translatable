@@ -612,7 +612,7 @@ trait Translatable
         return App::make('config')->get('translatable.locale')
             ?: App::make('translator')->getLocale();
     }
-    
+
     /**
      * Inner join with the translation table
      *
@@ -624,15 +624,17 @@ trait Translatable
     {
         // models
         $instance = new static;
-        $translationModel = new $instance->translationModel();
+
+        $translationModelName = $instance->getTranslationModelName();
+        $translationModel = new $translationModelName();
 
         // locale
         if (is_null($locale)) {
             $locale = $instance->locale();
         }
 
-        return $query->join($translationModel->getTable() . ' as t', 't.' . $instance->translationForeignKey, '=', $instance->getTable() . '.' . $instance->getKeyName())
-            ->where($instance->localeKey, $locale);
+        return $query->join($translationModel->getTable() . ' as t', 't.' . $instance->getRelationKey(), '=', $instance->getTable() . '.' . $instance->getKeyName())
+            ->where($instance->getLocaleKey(), $locale);
     }
     
     /**
