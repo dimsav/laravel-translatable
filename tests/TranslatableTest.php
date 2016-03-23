@@ -411,4 +411,18 @@ class TranslatableTest extends TestsBase
         $fries = Food::find(1);
         $this->assertSame('french fries', $fries->getTranslation('en-US')->name);
     }
+
+    public function test_it_returns_the_translation_with_inner_join()
+    {
+        DB::enableQueryLog();
+        $this->app->setLocale('el');
+
+        /** @var Country $country */
+        $country = Country::JoinTranslation()->first();
+
+        $this->assertEquals('Ελλάδα', $country->name);
+
+        $queries = DB::getQueryLog();
+        $this->assertEquals(1, count($queries), 'You have with innerjoin more than one query');
+    }
 }
