@@ -9,6 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 
 trait Translatable
 {
+    
+    /**
+     * Avoid duplicate to translate
+     *
+     * @var bool
+     */
+    protected $isTranslated = false;
+    
     /**
      * Alias for getTranslation()
      *
@@ -575,7 +583,7 @@ trait Translatable
                 continue;
             }
 
-            if ($translations = $this->getTranslation()) {
+            if ($this->isTranslated && $translations = $this->getTranslation()) {
                 $attributes[$field] = $translations->$field;
             }
         }
@@ -606,5 +614,30 @@ trait Translatable
     {
         return App::make('config')->get('translatable.locale')
             ?: App::make('translator')->getLocale();
+    }
+    
+    /**
+     * Inner join with the translation table
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param null $locale
+     * @return this
+     */
+    public static function scopeJoinTranslation(Builder $query, $locale = null)
+    {
+        // models
+        $instance = new static;
+        $translationModel = new $instance->translationModel();
+
+        // locale
+        if (is_null($locale)) {
+            $locale = $instance->locale();
+        }
+
+        // avoid translation again
+        $instance->isTranslated = true;
+
+        return $query->join($translationModel->getTable() . ' as t', 't.' . $instance->translationForeignKey, '=', $instance->getTable() . '.' . $instance->getKeyName())
+            ->where($instance->localeKey, $locale);
     }
 }
