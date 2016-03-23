@@ -419,7 +419,6 @@ class TranslatableTest extends TestsBase
 
         /** @var Country $country */
         $country = Country::JoinTranslation()->first();
-
         $this->assertEquals('Ελλάδα', $country->name);
 
         $queries = DB::getQueryLog();

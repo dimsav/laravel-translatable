@@ -162,7 +162,7 @@ trait Translatable
 
         if ($this->isTranslationAttribute($key)) {
             if ($this->getTranslation($locale) === null) {
-                return;
+                return parent::getAttribute($key);
             }
 
             return $this->getTranslation($locale)->$key;
