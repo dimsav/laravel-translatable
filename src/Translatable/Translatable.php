@@ -59,23 +59,19 @@ trait Translatable
         $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
         $fallbackLocale = $this->getFallbackLocale($locale);
 
-        if ($this->getTranslationByLocaleKey($locale)) {
-            $translation = $this->getTranslationByLocaleKey($locale);
-        } elseif ($withFallback
-            && $fallbackLocale
-            && $this->getTranslationByLocaleKey($fallbackLocale)
-        ) {
-            $translation = $this->getTranslationByLocaleKey($fallbackLocale);
-        } elseif($withFallback
-            && $fallbackLocale
-            && $this->getTranslationByLocaleKey($configFallbackLocale)
-        ) {
-               $translation = $this->getTranslationByLocaleKey($configFallbackLocale);
-        } else {
-            $translation = null;
+        if ($translation = $this->getTranslationByLocaleKey($locale)) {
+            return $translation;
+        }
+        if ($withFallback && $fallbackLocale) {
+            if ($translation = $this->getTranslationByLocaleKey($fallbackLocale)) {
+                return $translation;
+            }
+            if ($translation = $this->getTranslationByLocaleKey($configFallbackLocale)) {
+                return $translation;
+            }
         }
 
-        return $translation;
+        return null;
     }
 
     /**
