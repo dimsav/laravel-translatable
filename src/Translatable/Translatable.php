@@ -54,22 +54,24 @@ trait Translatable
      */
     public function getTranslation($locale = null, $withFallback = null)
     {
+        $configFallbackLocale = $this->getFallbackLocale($locale);
         $locale = $locale ?: $this->locale();
         $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
         $fallbackLocale = $this->getFallbackLocale($locale);
 
-        if ($this->getTranslationByLocaleKey($locale)) {
-            $translation = $this->getTranslationByLocaleKey($locale);
-        } elseif ($withFallback
-            && $fallbackLocale
-            && $this->getTranslationByLocaleKey($fallbackLocale)
-        ) {
-            $translation = $this->getTranslationByLocaleKey($fallbackLocale);
-        } else {
-            $translation = null;
+        if ($translation = $this->getTranslationByLocaleKey($locale)) {
+            return $translation;
+        }
+        if ($withFallback && $fallbackLocale) {
+            if ($translation = $this->getTranslationByLocaleKey($fallbackLocale)) {
+                return $translation;
+            }
+            if ($translation = $this->getTranslationByLocaleKey($configFallbackLocale)) {
+                return $translation;
+            }
         }
 
-        return $translation;
+        return null;
     }
 
     /**
