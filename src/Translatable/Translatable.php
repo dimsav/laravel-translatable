@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\Relation;
 trait Translatable
 {
     /**
@@ -511,7 +511,7 @@ trait Translatable
      */
     public function scopeWithTranslation(Builder $query)
     {
-        $query->with(['translations' => function($query){
+        $query->with(['translations' => function(Relation $query){
             $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
             if ($this->useFallback()) {
@@ -531,9 +531,9 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function scopeWhereTranslation($query, $key, $value, $locale = null)
+    public function scopeWhereTranslation(Builder $query, $key, $value, $locale = null)
     {
-        return $query->whereHas('translations', function ($query) use ($key, $value, $locale) {
+        return $query->whereHas('translations', function (Builder $query) use ($key, $value, $locale) {
             $query->where($this->getTranslationsTable().'.'.$key, $value);
             if ($locale) {
                 $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $locale);
@@ -552,9 +552,9 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function scopeWhereTranslationLike($query, $key, $value, $locale = null)
+    public function scopeWhereTranslationLike(Builder $query, $key, $value, $locale = null)
     {
-        return $query->whereHas('translations', function ($query) use ($key, $value, $locale) {
+        return $query->whereHas('translations', function (Builder $query) use ($key, $value, $locale) {
             $query->where($this->getTranslationsTable().'.'.$key, 'LIKE', $value);
             if ($locale) {
                 $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), 'LIKE', $locale);
