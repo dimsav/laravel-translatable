@@ -1,8 +1,6 @@
 <?php
 
 use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
 class ScopesTest extends TestsBase
 {
