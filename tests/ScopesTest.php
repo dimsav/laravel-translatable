@@ -21,6 +21,27 @@ class ScopesTest extends TestsBase
         $this->assertSame('Griechenland', $translatedCountries->first()->name);
     }
 
+    public function test_not_translated_in_scope_returns_only_not_translated_records_for_this_locale()
+    {
+        $notTranslatedCountries = Country::notTranslatedIn('en')->get();
+        $this->assertCount(2, $notTranslatedCountries);
+
+        foreach($notTranslatedCountries as $notTranslatedCountry) {
+            $this->assertFalse($notTranslatedCountry->hasTranslation('en'));
+        }
+    }
+
+    public function test_not_translated_in_scope_works_with_default_locale()
+    {
+        App::setLocale('en');
+        $notTranslatedCountries = Country::notTranslatedIn()->get();
+        $this->assertCount(2, $notTranslatedCountries);
+
+        foreach($notTranslatedCountries as $notTranslatedCountry) {
+            $this->assertFalse($notTranslatedCountry->hasTranslation('en'));
+        }
+    }
+
     public function test_translated_scope_returns_records_with_at_least_one_translation()
     {
         $translatedCountries = Country::translated()->get();

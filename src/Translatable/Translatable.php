@@ -459,6 +459,21 @@ trait Translatable
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeNotTranslatedIn(Builder $query, $locale = null)
+    {
+        $locale = $locale ?: $this->locale();
+
+        return $query->whereDoesntHave('translations', function (Builder $q) use ($locale) {
+            $q->where($this->getLocaleKey(), '=', $locale);
+        });
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
