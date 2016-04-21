@@ -260,6 +260,9 @@ $germany->translations();
 // Returns all countries having translations in english
 Country::translatedIn('en')->get();
 
+// Returns all countries not being translated in english
+Country::notTranslatedIn('en')->get();
+
 // Returns all countries having translations
 Country::translated()->get();
 
