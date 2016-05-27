@@ -418,7 +418,7 @@ class TranslatableTest extends TestsBase
         $this->app->setLocale('el');
 
         /** @var Country $country */
-        $country = Country::JoinTranslation()->first();
+        $country = Country::joinTranslation()->first();
         $this->assertEquals('Ελλάδα', $country->name);
 
         $queries = DB::getQueryLog();
