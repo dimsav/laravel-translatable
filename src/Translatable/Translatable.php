@@ -523,18 +523,27 @@ trait Translatable
      * We can use this as a shortcut to improve performance in our application.
      *
      * @param Builder $query
+     * @param array $fields
+     *
+     * @return Builder
      */
-    public function scopeWithTranslation(Builder $query)
+    public function scopeWithTranslation(Builder $query, $fields = [])
     {
-        $query->with(['translations' => function(Relation $query){
+        $query->with(['translations' => function(Relation $query) use($fields){
             $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
             if ($this->useFallback()) {
-                return $query->orWhere($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale());
+                $query->orWhere($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale());
             }
-        }]);
-    }
 
+            if(count($fields) > 0) {
+                $query->select(array_merge([$this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->translationForeignKey], $fields));
+            }
+
+            return $query;
+        }]);
+
+    }
 
     /**
      * This scope filters results by checking the translation fields.
