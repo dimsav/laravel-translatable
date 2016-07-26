@@ -146,8 +146,15 @@ class Country extends Eloquent {
 // models/CountryTranslation.php
 class CountryTranslation extends Eloquent {
 
+    use CompositeKeys;
+
     public $timestamps = false;
     protected $fillable = ['name'];
+
+    protected $primaryKey = [
+        'id',
+        'locale'
+    ];
 
 }
 ```
