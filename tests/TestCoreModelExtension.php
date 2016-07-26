@@ -1,13 +1,13 @@
 <?php
 
+use Dimsav\Translatable\Test\Model\City;
+use Dimsav\Translatable\Test\Model\CityTranslation;
+use Dimsav\Translatable\Test\Model\Company;
 use Dimsav\Translatable\Test\Model\Continent;
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryGuarded;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryTranslation;
-use Dimsav\Translatable\Test\Model\City;
-use Dimsav\Translatable\Test\Model\CityTranslation;
-use Dimsav\Translatable\Test\Model\Company;
 use Dimsav\Translatable\Test\Model\Vegetable;
 
 class TestCoreModelExtension extends TestsBase
@@ -177,13 +177,13 @@ class TestCoreModelExtension extends TestsBase
 
     public function test_it_finds_custom_primary_keys()
     {
-        $vegetable = new Vegetable;
+        $vegetable = new Vegetable();
         $this->assertSame('vegetable_identity', $vegetable->getRelationKey());
     }
-    
+
     public function test_setAttribute_returns_this()
     {
-        $country = new Country;
+        $country = new Country();
         $this->assertSame($country, $country->setAttribute('code', 'ch'));
         $this->assertSame($country, $country->setAttribute('name', 'China'));
     }

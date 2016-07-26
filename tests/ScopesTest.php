@@ -1,8 +1,6 @@
 <?php
 
 use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
 class ScopesTest extends TestsBase
 {
@@ -31,7 +29,7 @@ class ScopesTest extends TestsBase
     {
         App::setLocale('de');
         $list = [[
-            'id' => '1',
+            'id'   => '1',
             'name' => 'Griechenland',
         ]];
         $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
@@ -44,10 +42,10 @@ class ScopesTest extends TestsBase
         $country = new Country();
         $country->useTranslationFallback = true;
         $list = [[
-            'id' => '1',
+            'id'   => '1',
             'name' => 'Griechenland',
-        ],[
-            'id' => '2',
+        ], [
+            'id'   => '2',
             'name' => 'France',
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());

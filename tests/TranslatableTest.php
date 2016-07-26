@@ -170,8 +170,8 @@ class TranslatableTest extends TestsBase
     {
         $data = [
             'code' => 'be',
-            'en' => ['name' => 'Belgium'],
-            'fr' => ['name' => 'Belgique'],
+            'en'   => ['name' => 'Belgium'],
+            'fr'   => ['name' => 'Belgique'],
         ];
         $country = Country::create($data);
         $this->assertEquals('be', $country->code);
@@ -187,8 +187,8 @@ class TranslatableTest extends TestsBase
     {
         $data = [
             'code' => 'be',
-            'en' => ['name' => 'Belgium'],
-            'fr' => ['name' => 'Belgique'],
+            'en'   => ['name' => 'Belgium'],
+            'fr'   => ['name' => 'Belgique'],
         ];
         $country = CountryStrict::create($data);
         $this->assertEquals('be', $country->code);
@@ -263,8 +263,8 @@ class TranslatableTest extends TestsBase
         $country = new Country();
         $country->fill([
             'code' => 'gr',
-            'en' => ['name' => 'Greece'],
-            'de' => ['name' => 'Griechenland'],
+            'en'   => ['name' => 'Greece'],
+            'de'   => ['name' => 'Griechenland'],
         ]);
 
         $this->assertEquals($country->translate('en')->name, 'Greece');
@@ -344,7 +344,7 @@ class TranslatableTest extends TestsBase
         App::make('config')->set('translatable.always_fillable', true);
 
         $country = new CountryStrict([
-            'en' => ['name' => 'Not fillable'],
+            'en'   => ['name' => 'Not fillable'],
             'code' => 'te',
         ]);
 
@@ -369,10 +369,10 @@ class TranslatableTest extends TestsBase
 
     public function test_locales_as_array_keys_are_properly_detected()
     {
-        $this->app->config->set('translatable.locales', ['en' => ['US','GB']]);
+        $this->app->config->set('translatable.locales', ['en' => ['US', 'GB']]);
 
         $data = [
-            'en' => ['name' => 'French fries'],
+            'en'    => ['name' => 'French fries'],
             'en-US' => ['name' => 'American french fries'],
             'en-GB' => ['name' => 'Chips'],
         ];
@@ -402,10 +402,10 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.locales', ['en' => ['US', 'GB'], 'fr']);
         $this->app->config->set('translatable.locale_separator', '-');
         $data = [
-            'id' => 1,
-            'fr' => ['name' => 'frites'],
+            'id'    => 1,
+            'fr'    => ['name' => 'frites'],
             'en-GB' => ['name' => 'chips'],
-            'en' => ['name' => 'french fries'],
+            'en'    => ['name' => 'french fries'],
         ];
         Food::create($data);
         $fries = Food::find(1);

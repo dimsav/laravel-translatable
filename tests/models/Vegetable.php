@@ -1,4 +1,6 @@
-<?php namespace Dimsav\Translatable\Test\Model;
+<?php
+
+namespace Dimsav\Translatable\Test\Model;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -10,5 +12,4 @@ class Vegetable extends Eloquent
     protected $primaryKey = 'vegetable_identity';
 
     public $translatedAttributes = ['name'];
-
 }
