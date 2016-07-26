@@ -150,6 +150,7 @@ class CountryTranslation extends Eloquent {
 
     public $timestamps = false;
     protected $fillable = ['name'];
+    public $incrementing = false;
 
     protected $primaryKey = [
         'id',
