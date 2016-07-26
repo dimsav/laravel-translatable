@@ -1,4 +1,6 @@
-<?php namespace Dimsav\Translatable;
+<?php
+
+namespace Dimsav\Translatable;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -7,7 +9,8 @@ trait CompositeKeys
     /**
      * Set the keys for a save update query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function setKeysForSaveQuery(Builder $query)
@@ -28,6 +31,7 @@ trait CompositeKeys
      * Get the primary key value for a save query.
      *
      * @param mixed $keyName
+     *
      * @return mixed
      */
     protected function getKeyForSaveQuery($keyName = null)
