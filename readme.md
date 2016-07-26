@@ -74,6 +74,7 @@ If you want to store translations of your models into the database, this package
   echo $greece->translate('fr')->name; // Grèce
 ```
 
+
 ## Tutorial
 
 Check the tutorial about laravel-translatable in laravel-news: [*How To Add Multilingual Support to Eloquent*](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/)
@@ -146,8 +147,15 @@ class Country extends Eloquent {
 // models/CountryTranslation.php
 class CountryTranslation extends Eloquent {
 
+    use CompositeKeys;
+
     public $timestamps = false;
     protected $fillable = ['name'];
+
+    protected $primaryKey = [
+        'id',
+        'locale'
+    ];
 
 }
 ```
