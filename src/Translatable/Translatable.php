@@ -7,6 +7,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+
 trait Translatable
 {
     /**
@@ -58,6 +59,10 @@ trait Translatable
         $locale = $locale ?: $this->locale();
         $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
         $fallbackLocale = $this->getFallbackLocale($locale);
+
+        if ($this->isJoinTranslated()) {
+            return;
+        }
 
         if ($translation = $this->getTranslationByLocaleKey($locale)) {
             return $translation;
@@ -159,7 +164,7 @@ trait Translatable
 
         if ($this->isTranslationAttribute($key)) {
             if ($this->getTranslation($locale) === null) {
-                return;
+                return parent::getAttribute($key);
             }
 
             return $this->getTranslation($locale)->$key;
@@ -240,9 +245,9 @@ trait Translatable
     /**
      * @param array $attributes
      *
-     * @return $this
-     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     *
+     * @return $this
      */
     public function fill(array $attributes)
     {
@@ -274,8 +279,6 @@ trait Translatable
                 return $translation;
             }
         }
-
-        return;
     }
 
     /**
@@ -341,9 +344,9 @@ trait Translatable
     /**
      * @param string $key
      *
-     * @return bool
-     *
      * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
+     *
+     * @return bool
      */
     protected function isKeyALocale($key)
     {
@@ -353,9 +356,9 @@ trait Translatable
     }
 
     /**
-     * @return array
-     *
      * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
+     *
+     * @return array
      */
     protected function getLocales()
     {
@@ -384,7 +387,8 @@ trait Translatable
     /**
      * @return string
      */
-    protected function getLocaleSeparator() {
+    protected function getLocaleSeparator()
+    {
         return App::make('config')->get('translatable.locale_separator', '-');
     }
 
@@ -439,12 +443,12 @@ trait Translatable
      */
     public function __isset($key)
     {
-        return ($this->isTranslationAttribute($key) || parent::__isset($key));
+        return $this->isTranslationAttribute($key) || parent::__isset($key);
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $locale
+     * @param string                                $locale
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
@@ -577,7 +581,7 @@ trait Translatable
         });
     }
 
-
+    
     /**
      * @return array
      */
@@ -623,5 +627,44 @@ trait Translatable
     {
         return App::make('config')->get('translatable.locale')
             ?: App::make('translator')->getLocale();
+    }
+
+    /**
+     * Inner join with the translation table.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param null                                  $locale
+     *
+     * @return this
+     */
+    public static function scopeJoinTranslation(Builder $query, $locale = null)
+    {
+        $instance = new static();
+
+        $translationModelName = $instance->getTranslationModelName();
+        $translationModel = new $translationModelName();
+
+        if (is_null($locale)) {
+            $locale = $instance->locale();
+        }
+
+        return $query->join($translationModel->getTable().' as t', 't.'.$instance->getRelationKey(), '=', $instance->getTable().'.'.$instance->getKeyName())
+            ->where($instance->getLocaleKey(), $locale);
+    }
+
+    /**
+     * Check if translation was with a inner join.
+     *
+     * @return bool
+     */
+    private function isJoinTranslated()
+    {
+        foreach ($this->translatedAttributes as $translatedAttribute) {
+            if (isset($this->original[$translatedAttribute]) && !empty($this->original[$translatedAttribute])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
