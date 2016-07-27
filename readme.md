@@ -63,13 +63,13 @@ Check the tutorial about laravel-translatable in laravel-news: [*How To Add Mult
 Add the package in your composer.json by executing the command.
 
 ```bash
-composer require dimsav/laravel-translatable
+composer require approached/laravel-translatable
 ```
 
 Next, add the service provider to `app/config/app.php`
 
 ```
-Dimsav\Translatable\TranslatableServiceProvider::class,
+Approached\Translatable\TranslatableServiceProvider::class,
 ```
 
 ### Step 2: Migrations
@@ -98,7 +98,7 @@ Schema::create('country_translations', function(Blueprint $table)
 
 ### Step 3: Models
 
-1. The translatable model `Country` should [use the trait](http://www.sitepoint.com/using-traits-in-php-5-4/) `Dimsav\Translatable\Translatable`. 
+1. The translatable model `Country` should [use the trait](http://www.sitepoint.com/using-traits-in-php-5-4/) `Approached\Translatable\Translatable`.
 2. The convention for the translation model is `CountryTranslation`.
 
 
@@ -106,7 +106,7 @@ Schema::create('country_translations', function(Blueprint $table)
 // models/Country.php
 class Country extends Eloquent {
     
-    use \Dimsav\Translatable\Translatable;
+    use \Approached\Translatable\Translatable;
     
     public $translatedAttributes = ['name'];
     protected $fillable = ['code', 'name'];
@@ -144,7 +144,7 @@ The array `$translatedAttributes` contains the names of the fields being transla
 
 Laravel 4.*
 ```bash
-php artisan config:publish dimsav/laravel-translatable
+php artisan config:publish approached/laravel-translatable
 ```
 
 Laravel 5.*
@@ -152,7 +152,7 @@ Laravel 5.*
 php artisan vendor:publish 
 ```
 
-With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/translatable.php`.
+With this command, initialize the configuration and modify the created file, located under `app/config/packages/approached/laravel-translatable/translatable.php`.
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
 
@@ -171,7 +171,7 @@ To use a custom class as translation model, define the translation class (includ
 
 namespace MyApp\Models;
 
-use Dimsav\Translatable\Translatable;
+use Approached\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Country extends Eloquent
@@ -279,7 +279,7 @@ To use the magic properties, you have to define the property `$translatedAttribu
  ```php
  class Country extends Eloquent {
 
-     use \Dimsav\Translatable\Translatable;
+     use \Approached\Translatable\Translatable;
 
      public $translatedAttributes = ['name'];
  }
@@ -367,11 +367,11 @@ Thanks to the community a few packages have been written to make usage of Transl
 
 #### I need some example code!
 
-Examples for all the package features can be found [in the code](https://github.com/dimsav/laravel-translatable/tree/master/tests/models) used for the [tests](https://github.com/dimsav/laravel-translatable/tree/master/tests).
+Examples for all the package features can be found [in the code](https://github.com/approached/laravel-translatable/tree/master/tests/models) used for the [tests](https://github.com/approached/laravel-translatable/tree/master/tests).
 
 #### I need help!
 
-Got any question or suggestion? Feel free to open an [Issue](https://github.com/dimsav/laravel-translatable/issues/new).
+Got any question or suggestion? Feel free to open an [Issue](https://github.com/approached/laravel-translatable/issues/new).
 
 #### I want to help!
 
@@ -379,7 +379,7 @@ You are awesome! Watched the repo and reply to the issues. You will help offerin
 
 #### I am getting collisions with other trait methods!
 
-Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
+Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/approached/9659552).
 
 #### How do I sort by translations?
 
