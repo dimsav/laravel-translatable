@@ -1,14 +1,14 @@
 <?php
 
-use Dimsav\Translatable\Test\Model\City;
-use Dimsav\Translatable\Test\Model\CityTranslation;
-use Dimsav\Translatable\Test\Model\Company;
-use Dimsav\Translatable\Test\Model\Continent;
-use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryGuarded;
-use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryTranslation;
-use Dimsav\Translatable\Test\Model\Vegetable;
+use Approached\Translatable\Test\Model\City;
+use Approached\Translatable\Test\Model\CityTranslation;
+use Approached\Translatable\Test\Model\Company;
+use Approached\Translatable\Test\Model\Continent;
+use Approached\Translatable\Test\Model\Country;
+use Approached\Translatable\Test\Model\CountryGuarded;
+use Approached\Translatable\Test\Model\CountryStrict;
+use Approached\Translatable\Test\Model\CountryTranslation;
+use Approached\Translatable\Test\Model\Vegetable;
 
 class TestCoreModelExtension extends TestsBase
 {
@@ -64,7 +64,7 @@ class TestCoreModelExtension extends TestsBase
         $that = $this;
         $event = App::make('events');
         $event->listen('eloquent*', function ($model) use ($that) {
-            return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
+            return get_class($model) == 'Approached\Translatable\Test\Model\Country' ? false : true;
         });
 
         $country = Country::find(1);
@@ -78,7 +78,7 @@ class TestCoreModelExtension extends TestsBase
         $that = $this;
         $event = App::make('events');
         $event->listen('eloquent*', function ($model) use ($that) {
-            return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
+            return get_class($model) == 'Approached\Translatable\Test\Model\Continent' ? false : true;
         });
 
         $continent = new Continent();

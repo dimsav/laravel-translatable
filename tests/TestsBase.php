@@ -1,6 +1,6 @@
 <?php
 
-use Dimsav\Translatable\Test\Model\Country;
+use Approached\Translatable\Test\Model\Country;
 use Orchestra\Testbench\TestCase;
 
 class TestsBase extends TestCase
@@ -62,7 +62,7 @@ class TestsBase extends TestCase
 
     protected function getPackageProviders($app)
     {
-        return ['Dimsav\Translatable\TranslatableServiceProvider'];
+        return ['Approached\Translatable\TranslatableServiceProvider'];
     }
 
     protected function getEnvironmentSetUp($app)

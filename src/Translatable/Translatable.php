@@ -1,7 +1,7 @@
-<?php namespace Dimsav\Translatable;
+<?php namespace Approached\Translatable;
 
 use App;
-use Dimsav\Translatable\Exception\LocalesNotDefinedException;
+use Approached\Translatable\Exception\LocalesNotDefinedException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
@@ -344,7 +344,7 @@ trait Translatable
     /**
      * @param string $key
      *
-     * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
+     * @throws \Approached\Translatable\Exception\LocalesNotDefinedException
      *
      * @return bool
      */
@@ -356,7 +356,7 @@ trait Translatable
     }
 
     /**
-     * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
+     * @throws \Approached\Translatable\Exception\LocalesNotDefinedException
      *
      * @return array
      */
@@ -365,7 +365,7 @@ trait Translatable
         $localesConfig = (array) App::make('config')->get('translatable.locales');
 
         if (empty($localesConfig)) {
-            throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
+            throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish approached/laravel-translatable" '.
                 ' and that the locales configuration is defined.');
         }
 
