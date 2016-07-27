@@ -1,17 +1,7 @@
 Laravel-Translatable
 ====================
 
-
-[![Total Downloads](https://poser.pugx.org/dimsav/laravel-translatable/downloads.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
-[![Build Status](https://travis-ci.org/dimsav/laravel-translatable.svg?branch=v4.3)](https://travis-ci.org/dimsav/laravel-translatable)
-[![Code Coverage](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/badges/coverage.png?s=da6f88287610ff41bbfaf1cd47119f4333040e88)](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/)
-[![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
-[![License](https://poser.pugx.org/dimsav/laravel-translatable/license.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee/mini.png)](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee)
-
-This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
-
-If you want to store translations of your models into the database, this package is for you.
+This is a Laravel package for translatable models. If you want to store translations of your models into the database, this package is for you.
 
 * [Demo](#demo)
 * [Tutorial](#tutorial)
@@ -19,18 +9,6 @@ If you want to store translations of your models into the database, this package
 * [Configuration](#configuration)
 * [Documentation](#documentation)
 * [Support](#faq)
-
-## Laravel compatibility
-
- Laravel  | Translatable
-:---------|:----------
- 5.2      | 5.5
- 5.1      | 5.0 - 5.5
- 5.0      | 5.0 - 5.4
- 4.2.x    | 4.4.x
- 4.1.x    | 4.4.x
- 4.0.x    | 4.3.x
-
 
 ## Demo
 
