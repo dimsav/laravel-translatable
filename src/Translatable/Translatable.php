@@ -1,4 +1,6 @@
-<?php namespace Approached\Translatable;
+<?php
+
+namespace Approached\Translatable;
 
 use App;
 use Approached\Translatable\Exception\LocalesNotDefinedException;
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 trait Translatable
 {
     /**
-     * Alias for getTranslation()
+     * Alias for getTranslation().
      *
      * @param string|null $locale
      * @param bool $withFallback
@@ -24,7 +26,7 @@ trait Translatable
     }
 
     /**
-     * Alias for getTranslation()
+     * Alias for getTranslation().
      *
      * @param string $locale
      *
@@ -36,7 +38,7 @@ trait Translatable
     }
 
     /**
-     * Alias for getTranslationOrNew()
+     * Alias for getTranslationOrNew().
      *
      * @param string $locale
      *
@@ -75,8 +77,6 @@ trait Translatable
                 return $translation;
             }
         }
-
-        return null;
     }
 
     /**
@@ -501,15 +501,14 @@ trait Translatable
      */
     public function scopeListsTranslations(Builder $query, $translationField)
     {
-        $withFallback     = $this->useFallback();
+        $withFallback = $this->useFallback();
         $translationTable = $this->getTranslationsTable();
-        $localeKey        = $this->getLocaleKey();
+        $localeKey = $this->getLocaleKey();
 
         $query
             ->select($this->getTable().'.'.$this->getKeyName(), $translationTable.'.'.$translationField)
             ->leftJoin($translationTable, $translationTable.'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
-            ->where($translationTable.'.'.$localeKey, $this->locale())
-        ;
+            ->where($translationTable.'.'.$localeKey, $this->locale());
         if ($withFallback) {
             $query->orWhere(function (Builder $q) use ($translationTable, $localeKey) {
                 $q->where($translationTable.'.'.$localeKey, $this->getFallbackLocale())
@@ -530,7 +529,7 @@ trait Translatable
      */
     public function scopeWithTranslation(Builder $query)
     {
-        $query->with(['translations' => function(Relation $query){
+        $query->with(['translations' => function (Relation $query) {
             $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
             if ($this->useFallback()) {
@@ -538,7 +537,6 @@ trait Translatable
             }
         }]);
     }
-
 
     /**
      * This scope filters results by checking the translation fields.
@@ -560,7 +558,6 @@ trait Translatable
         });
     }
 
-
     /**
      * This scope filters results by checking the translation fields.
      *
@@ -581,7 +578,6 @@ trait Translatable
         });
     }
 
-    
     /**
      * @return array
      */
@@ -660,7 +656,7 @@ trait Translatable
     private function isJoinTranslated()
     {
         foreach ($this->translatedAttributes as $translatedAttribute) {
-            if (isset($this->original[$translatedAttribute]) && !empty($this->original[$translatedAttribute])) {
+            if (isset($this->original[$translatedAttribute]) && ! empty($this->original[$translatedAttribute])) {
                 return true;
             }
         }

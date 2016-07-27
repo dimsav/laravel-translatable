@@ -24,7 +24,7 @@ class ScopesTest extends TestsBase
         $notTranslatedCountries = Country::notTranslatedIn('en')->get();
         $this->assertCount(2, $notTranslatedCountries);
 
-        foreach($notTranslatedCountries as $notTranslatedCountry) {
+        foreach ($notTranslatedCountries as $notTranslatedCountry) {
             $this->assertFalse($notTranslatedCountry->hasTranslation('en'));
         }
     }
@@ -35,7 +35,7 @@ class ScopesTest extends TestsBase
         $notTranslatedCountries = Country::notTranslatedIn()->get();
         $this->assertCount(2, $notTranslatedCountries);
 
-        foreach($notTranslatedCountries as $notTranslatedCountry) {
+        foreach ($notTranslatedCountries as $notTranslatedCountry) {
             $this->assertFalse($notTranslatedCountry->hasTranslation('en'));
         }
     }

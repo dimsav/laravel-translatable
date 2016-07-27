@@ -16,7 +16,7 @@ trait CompositeKeys
     protected function setKeysForSaveQuery(Builder $query)
     {
         $keys = $this->getKeyName();
-        if (!is_array($keys)) {
+        if (! is_array($keys)) {
             return parent::setKeysForSaveQuery($query);
         }
 
