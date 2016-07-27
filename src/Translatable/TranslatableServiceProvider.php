@@ -1,4 +1,6 @@
-<?php namespace Dimsav\Translatable;
+<?php
+
+namespace Approached\Translatable;
 
 use Illuminate\Support\ServiceProvider;
 

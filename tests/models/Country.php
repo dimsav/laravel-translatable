@@ -1,6 +1,8 @@
-<?php namespace Dimsav\Translatable\Test\Model;
+<?php
 
-use Dimsav\Translatable\Translatable;
+namespace Approached\Translatable\Test\Model;
+
+use Approached\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Country extends Eloquent
@@ -37,7 +39,7 @@ class Country extends Eloquent
      *
      * @var array
      */
-    public $fillable = ['code','name'];
+    public $fillable = ['code', 'name'];
 
     /**
      * The database field being used to define the locale parameter in the translation model.

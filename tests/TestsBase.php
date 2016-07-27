@@ -1,13 +1,13 @@
 <?php
 
+use Approached\Translatable\Test\Model\Country;
 use Orchestra\Testbench\TestCase;
-use Dimsav\Translatable\Test\Model\Country;
 
 class TestsBase extends TestCase
 {
     protected $queriesCount;
 
-    const DB_NAME     = 'translatable_test';
+    const DB_NAME = 'translatable_test';
     const DB_USERNAME = 'homestead';
     const DB_PASSWORD = 'secret';
 
@@ -23,19 +23,19 @@ class TestsBase extends TestCase
     }
 
     /**
-     * return void
+     * return void.
      */
     private function dropDb()
     {
-        $this->runQuery("DROP DATABASE IF EXISTS ".static::DB_NAME);
+        $this->runQuery('DROP DATABASE IF EXISTS '.static::DB_NAME);
     }
 
     /**
-     * return void
+     * return void.
      */
     private function createDb()
     {
-        $this->runQuery("CREATE DATABASE ".static::DB_NAME);
+        $this->runQuery('CREATE DATABASE '.static::DB_NAME);
     }
 
     /**
@@ -48,10 +48,10 @@ class TestsBase extends TestCase
         $dbPassword = static::DB_PASSWORD;
 
         $command = "mysql -u $dbUsername ";
-        $command.= $dbPassword ? " -p$dbPassword" : "";
-        $command.= " -e '$query'";
+        $command .= $dbPassword ? " -p$dbPassword" : '';
+        $command .= " -e '$query'";
 
-        exec($command . " 2>/dev/null");
+        exec($command.' 2>/dev/null');
     }
 
     public function testRunningMigration()
@@ -62,7 +62,7 @@ class TestsBase extends TestCase
 
     protected function getPackageProviders($app)
     {
-        return ['Dimsav\Translatable\TranslatableServiceProvider'];
+        return ['Approached\Translatable\TranslatableServiceProvider'];
     }
 
     protected function getEnvironmentSetUp($app)
@@ -70,12 +70,12 @@ class TestsBase extends TestCase
         $app['path.base'] = __DIR__.'/..';
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
-            'driver'   => 'mysql',
-            'host' => 'localhost',
-            'database' => static::DB_NAME,
-            'username' => static::DB_USERNAME,
-            'password' => static::DB_PASSWORD,
-            'charset' => 'utf8',
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => static::DB_NAME,
+            'username'  => static::DB_USERNAME,
+            'password'  => static::DB_PASSWORD,
+            'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
         ]);
         $app['config']->set('translatable.locales', ['el', 'en', 'fr', 'de', 'id']);
@@ -93,7 +93,7 @@ class TestsBase extends TestCase
         $event->listen('illuminate.query', function ($query, $bindings) use ($that) {
             $that->queriesCount++;
             $bindings = $this->formatBindingsForSqlInjection($bindings);
-            $query    = $this->insertBindingsIntoQuery($query, $bindings);
+            $query = $this->insertBindingsIntoQuery($query, $bindings);
             $query = $this->beautifyQuery($query);
             // echo("\n--- Query {$that->queriesCount}--- $query\n");
         });
@@ -112,7 +112,6 @@ class TestsBase extends TestCase
             $word = strtoupper($word);
             $query = str_replace($word, "\n$word", $query);
         }
-
 
         return $query;
     }
@@ -157,8 +156,10 @@ class TestsBase extends TestCase
                 }
             }
         }
+
         return $bindings;
     }
+
     /**
      * @param $query
      * @param $bindings
@@ -171,7 +172,8 @@ class TestsBase extends TestCase
             return $query;
         }
 
-        $query = str_replace(array('%', '?'), array('%%', '%s'), $query);
+        $query = str_replace(['%', '?'], ['%%', '%s'], $query);
+
         return vsprintf($query, $bindings);
     }
 }

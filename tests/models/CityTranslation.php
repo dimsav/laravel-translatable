@@ -1,4 +1,6 @@
-<?php namespace Dimsav\Translatable\Test\Model;
+<?php
+
+namespace Approached\Translatable\Test\Model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 

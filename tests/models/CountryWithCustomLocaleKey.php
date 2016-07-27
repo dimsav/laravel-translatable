@@ -1,6 +1,8 @@
-<?php namespace Dimsav\Translatable\Test\Model;
+<?php
 
-use Dimsav\Translatable\Translatable;
+namespace Approached\Translatable\Test\Model;
+
+use Approached\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class CountryWithCustomLocaleKey extends Eloquent
@@ -9,7 +11,7 @@ class CountryWithCustomLocaleKey extends Eloquent
 
     public $table = 'countries';
     public $translatedAttributes = ['name'];
-    public $translationModel = 'Dimsav\Translatable\Test\Model\CountryTranslation';
+    public $translationModel = 'Approached\Translatable\Test\Model\CountryTranslation';
 
     /*
      * You can customize per model, which attribute will

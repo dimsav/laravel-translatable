@@ -1,10 +1,10 @@
 <?php
 
+use Approached\Translatable\Test\Model\City;
+use Approached\Translatable\Test\Model\CityTranslation;
+use Approached\Translatable\Test\Model\Country;
+use Approached\Translatable\Test\Model\CountryTranslation;
 use Illuminate\Database\Migrations\Migration;
-use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryTranslation;
-use Dimsav\Translatable\Test\Model\City;
-use Dimsav\Translatable\Test\Model\CityTranslation;
 
 class AddSeeds extends Migration
 {

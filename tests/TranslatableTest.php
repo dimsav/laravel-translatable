@@ -1,9 +1,9 @@
 <?php
 
-use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
-use Dimsav\Translatable\Test\Model\Food;
+use Approached\Translatable\Test\Model\Country;
+use Approached\Translatable\Test\Model\CountryStrict;
+use Approached\Translatable\Test\Model\CountryWithCustomLocaleKey;
+use Approached\Translatable\Test\Model\Food;
 
 class TranslatableTest extends TestsBase
 {
@@ -11,7 +11,7 @@ class TranslatableTest extends TestsBase
     {
         $country = new Country();
         $this->assertEquals(
-            'Dimsav\Translatable\Test\Model\CountryTranslation',
+            'Approached\Translatable\Test\Model\CountryTranslation',
             $country->getTranslationModelNameDefault());
     }
 
@@ -20,7 +20,7 @@ class TranslatableTest extends TestsBase
         App::make('config')->set('translatable.translation_suffix', 'Trans');
         $country = new Country();
         $this->assertEquals(
-            'Dimsav\Translatable\Test\Model\CountryTrans',
+            'Approached\Translatable\Test\Model\CountryTrans',
             $country->getTranslationModelName());
     }
 
@@ -325,7 +325,7 @@ class TranslatableTest extends TestsBase
     }
 
     /**
-     * @expectedException Dimsav\Translatable\Exception\LocalesNotDefinedException
+     * @expectedException Approached\Translatable\Exception\LocalesNotDefinedException
      */
     public function test_if_locales_are_not_defined_throw_exception()
     {
@@ -369,7 +369,7 @@ class TranslatableTest extends TestsBase
 
     public function test_locales_as_array_keys_are_properly_detected()
     {
-        $this->app->config->set('translatable.locales', ['en' => ['US','GB']]);
+        $this->app->config->set('translatable.locales', ['en' => ['US', 'GB']]);
 
         $data = [
             'en' => ['name' => 'French fries'],
@@ -425,5 +425,18 @@ class TranslatableTest extends TestsBase
         Food::create($data);
         $fritesArray = Food::find(1)->toArray();
         $this->assertSame('frites', $fritesArray['name']);
+    }
+
+    public function test_it_returns_the_translation_with_inner_join()
+    {
+        DB::enableQueryLog();
+        $this->app->setLocale('el');
+
+        /** @var Country $country */
+        $country = Country::joinTranslation()->first();
+        $this->assertEquals('Ελλάδα', $country->name);
+
+        $queries = DB::getQueryLog();
+        $this->assertEquals(1, count($queries), 'You have with innerjoin more than one query');
     }
 }
