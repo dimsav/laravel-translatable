@@ -647,7 +647,7 @@ trait Translatable
     public function forgetTranslation($locales)
     {
         if(!is_array($locales)) {
-            $locales = array($locales);
+            $locales = [$locales];
         }
 
         $modelTranslation = $this->getTranslationModelName();
