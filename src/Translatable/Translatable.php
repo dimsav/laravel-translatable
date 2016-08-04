@@ -624,4 +624,58 @@ trait Translatable
         return App::make('config')->get('translatable.locale')
             ?: App::make('translator')->getLocale();
     }
+
+    /**
+     * Removes all translations for this model.
+     */
+    public function forgetTranslations()
+    {
+        $modelTranslation = $this->getTranslationModelName();
+        $modelTranslation::where($this->getRelationKey(), "=", $this->id)->delete();
+
+        // we need to manually "reload" the collection built from the relationship
+        // otherwise $this->translations()->get() would NOT be the same as $this->translations
+        $this->load("translations");
+    }
+
+    /**
+     * Removes one translation for this model.
+     *
+     * @param mixed $locales    The locales to be deleted (array or single string)
+     *                          (e.g., ["en", "de"] would remove these translations).
+     */
+    public function forgetTranslation($locales)
+    {
+        if(!is_array($locales)) {
+            $locales = array($locales);
+        }
+
+        $modelTranslation = $this->getTranslationModelName();
+        $modelTranslation::where($this->getRelationKey(), "=", $this->id)->whereIn($this->getLocaleKey(), $locales)->delete();
+
+        // we need to manually "reload" the collection built from the relationship
+        // otherwise $this->translations()->get() would NOT be the same as $this->translations
+        $this->load("translations");
+    }
+
+    /**
+     * Deletes the translations for this model, which are not listed in $locales.
+     *
+     * @param mixed $locales    The locales to be left untouched (array or single string)
+     *                          (e.g., ["en", "de"] would remove all locales but these).
+     */
+    public function syncTranslations($locales)
+    {
+        if(!is_array($locales)) {
+            $locales = array($locales);
+        }
+
+        $modelTranslation = $this->getTranslationModelName();
+        $modelTranslation::where($this->getRelationKey(), "=", $this->id)->whereNotIn($this->getLocaleKey(), $locales)->delete();
+
+        // we need to manually "reload" the collection built from the relationship
+        // otherwise $this->translations()->get() would NOT be the same as $this->translations
+        $this->load("translations");
+    }
+
 }
