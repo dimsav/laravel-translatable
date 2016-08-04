@@ -635,7 +635,7 @@ trait Translatable
 
         // we need to manually "reload" the collection built from the relationship
         // otherwise $this->translations()->get() would NOT be the same as $this->translations
-        $this->load("translations");
+        $this->load('translations');
     }
 
     /**
@@ -646,7 +646,7 @@ trait Translatable
      */
     public function forgetTranslation($locales)
     {
-        if(!is_array($locales)) {
+        if (!is_array($locales)) {
             $locales = [$locales];
         }
 
@@ -661,12 +661,12 @@ trait Translatable
     /**
      * Deletes the translations for this model, which are not listed in $locales.
      *
-     * @param mixed $locales The locales to be left untouched (array or single string) 
+     * @param mixed $locales The locales to be left untouched (array or single string)
      *                       (e.g., ["en", "de"] would remove all locales but these).
      */
     public function syncTranslations($locales)
     {
-        if(!is_array($locales)) {
+        if (!is_array($locales)) {
             $locales = [$locales];
         }
 
@@ -677,5 +677,4 @@ trait Translatable
         // otherwise $this->translations()->get() would NOT be the same as $this->translations
         $this->load('translations');
     }
-
 }
