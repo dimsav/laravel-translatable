@@ -1,0 +1,8 @@
+preset: recommended
+
+risky: true
+
+linting: true
+
+enabled:
+  - phpdoc_annotation_without_dot
