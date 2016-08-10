@@ -369,7 +369,7 @@ class TranslatableTest extends TestsBase
 
     public function test_locales_as_array_keys_are_properly_detected()
     {
-        $this->app->config->set('translatable.locales', ['en' => ['US','GB']]);
+        $this->app->config->set('translatable.locales', ['en' => ['US', 'GB']]);
 
         $data = [
             'en' => ['name' => 'French fries'],
