@@ -4,5 +4,5 @@ risky: true
 
 linting: true
 
-enabled:
+disabled:
   - phpdoc_annotation_without_dot
