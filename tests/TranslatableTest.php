@@ -4,6 +4,7 @@ use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 use Dimsav\Translatable\Test\Model\Food;
+use Dimsav\Translatable\Test\Model\Person;
 
 class TranslatableTest extends TestsBase
 {
@@ -425,5 +426,13 @@ class TranslatableTest extends TestsBase
         Food::create($data);
         $fritesArray = Food::find(1)->toArray();
         $this->assertSame('frites', $fritesArray['name']);
+    }
+
+    public function test_it_should_mutate_the_translated_attribute_if_a_mutator_is_set_on_model()
+    {
+        $person = new Person(['name' => 'john doe']);
+        $person->save();
+        $person = Person::find(1);
+        $this->assertEquals('John doe', $person->name);
     }
 }

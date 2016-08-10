@@ -165,6 +165,14 @@ trait Translatable
                 return null;
             }
 
+            // If the given $key has a mutator, we push it to $attributes and then call getAttributeValue
+            // on it. This way, we can use Eloquent's checking for Mutation, type casting, and
+            // Date fields.
+            if ($this->hasGetMutator($key)) {
+                $this->attributes[ $key ] = $this->getTranslation($locale)->$key;
+                return $this->getAttributeValue($key);
+            }
+            
             return $this->getTranslation($locale)->$key;
         }
 
