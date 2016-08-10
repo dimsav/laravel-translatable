@@ -501,15 +501,14 @@ trait Translatable
      */
     public function scopeListsTranslations(Builder $query, $translationField)
     {
-        $withFallback     = $this->useFallback();
+        $withFallback = $this->useFallback();
         $translationTable = $this->getTranslationsTable();
-        $localeKey        = $this->getLocaleKey();
+        $localeKey = $this->getLocaleKey();
 
         $query
             ->select($this->getTable().'.'.$this->getKeyName(), $translationTable.'.'.$translationField)
             ->leftJoin($translationTable, $translationTable.'.'.$this->getRelationKey(), '=', $this->getTable().'.'.$this->getKeyName())
-            ->where($translationTable.'.'.$localeKey, $this->locale())
-        ;
+            ->where($translationTable.'.'.$localeKey, $this->locale());
         if ($withFallback) {
             $query->orWhere(function (Builder $q) use ($translationTable, $localeKey) {
                 $q->where($translationTable.'.'.$localeKey, $this->getFallbackLocale())
@@ -530,7 +529,7 @@ trait Translatable
      */
     public function scopeWithTranslation(Builder $query)
     {
-        $query->with(['translations' => function(Relation $query){
+        $query->with(['translations' => function(Relation $query) {
             $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
             if ($this->useFallback()) {
