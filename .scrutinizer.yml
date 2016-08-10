@@ -1,0 +1,7 @@
+checks:
+    php: true
+before_commands:
+    - "composer self-update"
+    - "composer install --prefer-source"
+tools:
+   external_code_coverage: true
