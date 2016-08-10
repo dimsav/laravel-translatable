@@ -243,9 +243,9 @@ trait Translatable
     /**
      * @param array $attributes
      *
-     * @return $this
-     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     *
+     * @return $this
      */
     public function fill(array $attributes)
     {
@@ -344,9 +344,9 @@ trait Translatable
     /**
      * @param string $key
      *
-     * @return bool
-     *
      * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
+     *
+     * @return bool
      */
     protected function isKeyALocale($key)
     {
@@ -356,9 +356,9 @@ trait Translatable
     }
 
     /**
-     * @return array
-     *
      * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
+     *
+     * @return array
      */
     protected function getLocales()
     {
@@ -387,7 +387,8 @@ trait Translatable
     /**
      * @return string
      */
-    protected function getLocaleSeparator() {
+    protected function getLocaleSeparator()
+    {
         return App::make('config')->get('translatable.locale_separator', '-');
     }
 
@@ -447,7 +448,7 @@ trait Translatable
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $locale
+     * @param string                                $locale
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
@@ -462,7 +463,7 @@ trait Translatable
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $locale
+     * @param string                                $locale
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
