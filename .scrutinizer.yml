@@ -1,7 +1,17 @@
 checks:
     php: true
-before_commands:
-    - "composer self-update"
-    - "composer install --prefer-source"
-tools:
-   external_code_coverage: true
+
+build:
+    dependencies:
+        before:
+            - composer self-update
+            - mysql -e 'create database translatable_test;'
+            - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
+            - composer install
+    tests:
+        override:
+            -
+                command: phpunit --coverage-clover=my-coverage-file
+                coverage:
+                    file: my-coverage-file
+                    format: php-clover
