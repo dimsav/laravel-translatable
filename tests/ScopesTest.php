@@ -65,7 +65,7 @@ class ScopesTest extends TestsBase
         $list = [[
             'id'   => '1',
             'name' => 'Griechenland',
-        ],[
+        ], [
             'id'   => '2',
             'name' => 'France',
         ]];

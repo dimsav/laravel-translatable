@@ -180,7 +180,7 @@ class TestCoreModelExtension extends TestsBase
         $vegetable = new Vegetable;
         $this->assertSame('vegetable_identity', $vegetable->getRelationKey());
     }
-    
+
     public function test_setAttribute_returns_this()
     {
         $country = new Country;

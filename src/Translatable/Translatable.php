@@ -13,7 +13,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 trait Translatable
 {
     /**
-     * Alias for getTranslation()
+     * Alias for getTranslation().
      *
      * @param string|null $locale
      * @param bool $withFallback
@@ -26,7 +26,7 @@ trait Translatable
     }
 
     /**
-     * Alias for getTranslation()
+     * Alias for getTranslation().
      *
      * @param string $locale
      *
@@ -38,7 +38,7 @@ trait Translatable
     }
 
     /**
-     * Alias for getTranslationOrNew()
+     * Alias for getTranslationOrNew().
      *
      * @param string $locale
      *
@@ -443,7 +443,7 @@ trait Translatable
      */
     public function __isset($key)
     {
-        return ($this->isTranslationAttribute($key) || parent::__isset($key));
+        return $this->isTranslationAttribute($key) || parent::__isset($key);
     }
 
     /**
