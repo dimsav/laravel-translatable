@@ -1,13 +1,13 @@
 <?php
 
+use Dimsav\Translatable\Test\Model\City;
+use Dimsav\Translatable\Test\Model\CityTranslation;
+use Dimsav\Translatable\Test\Model\Company;
 use Dimsav\Translatable\Test\Model\Continent;
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryGuarded;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryTranslation;
-use Dimsav\Translatable\Test\Model\City;
-use Dimsav\Translatable\Test\Model\CityTranslation;
-use Dimsav\Translatable\Test\Model\Company;
 use Dimsav\Translatable\Test\Model\Vegetable;
 
 class TestCoreModelExtension extends TestsBase

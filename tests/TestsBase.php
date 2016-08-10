@@ -1,7 +1,7 @@
 <?php
 
-use Orchestra\Testbench\TestCase;
 use Dimsav\Translatable\Test\Model\Country;
+use Orchestra\Testbench\TestCase;
 
 class TestsBase extends TestCase
 {
@@ -157,8 +157,10 @@ class TestsBase extends TestCase
                 }
             }
         }
+
         return $bindings;
     }
+
     /**
      * @param $query
      * @param $bindings
@@ -171,7 +173,7 @@ class TestsBase extends TestCase
             return $query;
         }
 
-        $query = str_replace(array('%', '?'), array('%%', '%s'), $query);
+        $query = str_replace(['%', '?'], ['%%', '%s'], $query);
         return vsprintf($query, $bindings);
     }
 }
