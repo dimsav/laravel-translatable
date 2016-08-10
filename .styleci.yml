@@ -4,5 +4,6 @@ risky: true
 
 linting: true
 
-enabled:
-  - phpdoc_annotation_without_dot
+disabled:
+  - no_useless_return
+  - simplified_null_return
