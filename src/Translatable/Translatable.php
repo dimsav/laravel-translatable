@@ -529,7 +529,7 @@ trait Translatable
      */
     public function scopeWithTranslation(Builder $query)
     {
-        $query->with(['translations' => function(Relation $query) {
+        $query->with(['translations' => function (Relation $query) {
             $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
             if ($this->useFallback()) {
@@ -537,7 +537,6 @@ trait Translatable
             }
         }]);
     }
-
 
     /**
      * This scope filters results by checking the translation fields.
@@ -559,7 +558,6 @@ trait Translatable
         });
     }
 
-
     /**
      * This scope filters results by checking the translation fields.
      *
@@ -579,7 +577,6 @@ trait Translatable
             }
         });
     }
-
 
     /**
      * @return array
