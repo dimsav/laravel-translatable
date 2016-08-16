@@ -10,7 +10,7 @@ build:
             - sudo composer self-update
             - mysql -e 'create database translatable_test;'
             - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-            - composer install
+            - composer install --prefer-dist
     tests:
         override:
             -
