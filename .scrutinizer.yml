@@ -2,6 +2,9 @@ checks:
     php: true
 
 build:
+    environment:
+        php:
+            version: 7.0
     dependencies:
         before:
             - sudo composer self-update
