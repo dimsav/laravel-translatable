@@ -17,4 +17,4 @@ build:
                 command: echo 1
 tools:
     external_code_coverage:
-        timeout: 600
+        timeout: 3600
