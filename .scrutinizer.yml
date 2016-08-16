@@ -14,7 +14,7 @@ build:
     tests:
         override:
             -
-                command: phpunit --coverage-clover=my-coverage-file --debug
-                coverage:
-                    file: my-coverage-file
-                    format: php-clover
+                command: echo 1
+tools:
+    external_code_coverage:
+        timeout: 600
