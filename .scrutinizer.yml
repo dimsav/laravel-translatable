@@ -10,11 +10,11 @@ build:
             - sudo composer self-update
             - mysql -e 'create database translatable_test;'
             - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-            - composer install --prefer-dist --debug
+            - composer install --prefer-dist
     tests:
         override:
             -
-                command: phpunit --coverage-clover=my-coverage-file
+                command: phpunit --coverage-clover=my-coverage-file --debug
                 coverage:
                     file: my-coverage-file
                     format: php-clover
