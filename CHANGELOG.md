@@ -1,8 +1,9 @@
 ## Version History
 
-### v. 5.7
+### v. 6
 
 - Translated fillable properties should only be defined in the translation model.
+  - To update from version 5, move all the fillable properties belonging to a translation to the corresponding translation models. 
 
 ### v. 5.6.1
 
