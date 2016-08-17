@@ -131,7 +131,5 @@ class CreateTables extends Migration
         Schema::dropIfExists('vegetables');
         Schema::dropIfExists('person_translations');
         Schema::dropIfExists('people');
-
     }
 }
-
