@@ -628,10 +628,9 @@ trait Translatable
     /**
      * Removes all translations for this model.
      */
-    public function forgetTranslations()
+    public function deleteTranslations()
     {
-        $modelTranslation = $this->getTranslationModelName();
-        $modelTranslation::where($this->getRelationKey(), '=', $this->id)->delete();
+        $this->translations()->delete();
 
         // we need to manually "reload" the collection built from the relationship
         // otherwise $this->translations()->get() would NOT be the same as $this->translations
