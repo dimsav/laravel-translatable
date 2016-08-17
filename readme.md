@@ -10,28 +10,21 @@ Laravel-Translatable
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee/mini.png)](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee)
 [![StyleCI](https://styleci.io/repos/16480576/shield)](https://styleci.io/repos/16480576)
 
+![Laravel Translatable](img/laravel-translatable.png)
+
+**If you want to store translations of your models into the database, this package is for you.**
+
 This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
 
-If you want to store translations of your models into the database, this package is for you.
+### Docs
 
 * [Demo](#demo)
+* [Laravel compatibility](#laravel-compatibility)
 * [Tutorial](#tutorial)
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
-* [Documentation](#documentation)
+* [Features list](#features-list)
 * [Support](#faq)
-
-## Laravel compatibility
-
- Laravel  | Translatable
-:---------|:----------
- 5.2      | 5.5 - 6.*
- 5.1      | 5.0 - 6.*
- 5.0      | 5.0 - 5.4
- 4.2.x    | 4.4.x
- 4.1.x    | 4.4.x
- 4.0.x    | 4.3.x
-
 
 ## Demo
 
@@ -74,6 +67,17 @@ If you want to store translations of your models into the database, this package
   
   echo $greece->translate('fr')->name; // Grèce
 ```
+
+## Laravel compatibility
+
+ Laravel  | Translatable
+:---------|:----------
+ 5.2      | 5.5 - 6.*
+ 5.1      | 5.0 - 6.*
+ 5.0      | 5.0 - 5.4
+ 4.2.x    | 4.4.x
+ 4.1.x    | 4.4.x
+ 4.0.x    | 4.3.x
 
 ## Tutorial
 
@@ -198,7 +202,7 @@ class Country extends Eloquent
 
 ```
 
-## Documentation
+## Features list
 
 **Please read the installation steps first, to understand what classes need to be created.**
 
