@@ -647,5 +647,4 @@ trait Translatable
         // otherwise $this->translations()->get() would NOT be the same as $this->translations
         $this->load('translations');
     }
-
 }
