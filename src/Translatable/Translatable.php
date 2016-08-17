@@ -635,31 +635,19 @@ trait Translatable
     }
 
     /**
-     * Removes all translations for this model.
-     */
-    public function deleteTranslations()
-    {
-        $this->translations()->delete();
-
-        // we need to manually "reload" the collection built from the relationship
-        // otherwise $this->translations()->get() would NOT be the same as $this->translations
-        $this->load('translations');
-    }
-
-    /**
-     * Removes one translation for this model.
+     * Deletes all translations for this model.
      *
-     * @param mixed $locales The locales to be deleted (array or single string)
-     *                       (e.g., ["en", "de"] would remove these translations).
+     * @param string|array|null $locales The locales to be deleted (array or single string)
+     *                                   (e.g., ["en", "de"] would remove these translations).
      */
-    public function forgetTranslation($locales)
+    public function deleteTranslations($locales = null)
     {
-        if (!is_array($locales)) {
-            $locales = [$locales];
+        if ($locales === null) {
+            $this->translations()->delete();
+        } else {
+            $locales = (array) $locales;
+            $this->translations()->whereIn($this->getLocaleKey(), $locales)->delete();
         }
-
-        $modelTranslation = $this->getTranslationModelName();
-        $modelTranslation::where($this->getRelationKey(), '=', $this->id)->whereIn($this->getLocaleKey(), $locales)->delete();
 
         // we need to manually "reload" the collection built from the relationship
         // otherwise $this->translations()->get() would NOT be the same as $this->translations
