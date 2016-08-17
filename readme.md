@@ -254,15 +254,12 @@ $translation = $germany->getNewTranslation('it');
 // The eloquent model relationship. Do what you want with it ;) 
 $germany->translations();
 
-// Remove all translations for the model
-// the model itself is not touched
+// Remove all translations linked to an object
 $germany->deleteTranslations();
 
-// Remove specific translations from the model
-// remove the "de"-translation
-$germany->forgetTranslation("de");
-// remove the "de" and "en"-translation
-$germany->forgetTranslation(["de", "en"]);
+// Delete one or multiple translations
+$germany->deleteTranslations('de');
+$germany->deleteTranslations(['de', 'en']);
 
 // Sync only these specific translations with the model (i.e., remove all other translations)
 // only the "de"-translation is left untouched - all other translations are deleted
