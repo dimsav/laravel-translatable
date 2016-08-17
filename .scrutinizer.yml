@@ -2,16 +2,19 @@ checks:
     php: true
 
 build:
+    environment:
+        php:
+            version: 7.0.8
     dependencies:
         before:
-            - composer self-update
+            - sudo composer self-update
             - mysql -e 'create database translatable_test;'
             - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-            - composer install
+            - composer install --prefer-dist
     tests:
         override:
             -
-                command: phpunit --coverage-clover=my-coverage-file
-                coverage:
-                    file: my-coverage-file
-                    format: php-clover
+                command: echo 1
+tools:
+    external_code_coverage:
+        timeout: 3600
