@@ -5,7 +5,6 @@ namespace Dimsav\Translatable;
 use App;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -262,8 +261,7 @@ trait Translatable
             if ($this->isKeyALocale($key)) {
                 $this->getTranslationOrNew($key)->fill($values);
                 unset($attributes[$key]);
-            }
-            elseif ($this->isTranslationAttribute($key)) {
+            } elseif ($this->isTranslationAttribute($key)) {
                 $this->getTranslationOrNew($this->locale())->fill([$key => $values]);
                 unset($attributes[$key]);
             }

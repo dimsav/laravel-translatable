@@ -10,5 +10,4 @@ class CountryTranslationGuarded extends Eloquent
     public $table = 'country_translations';
 
     protected $fillable = [];
-
 }
