@@ -170,11 +170,13 @@ trait Translatable
             // Date fields.
             if ($this->hasGetMutator($key)) {
                 $this->attributes[$key] = $this->getTranslation($locale)->$key;
+
                 return $this->getAttributeValue($key);
             }
 
             return $this->getTranslation($locale)->$key;
         }
+        
         return parent::getAttribute($key);
     }
 

@@ -51,7 +51,6 @@ class Person extends Eloquent
      */
     public $localeKey;
 
-
     /**
      * Mutate name attribute into upper-case.
      *
