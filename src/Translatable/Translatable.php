@@ -176,7 +176,7 @@ trait Translatable
 
             return $this->getTranslation($locale)->$key;
         }
-        
+
         return parent::getAttribute($key);
     }
 
