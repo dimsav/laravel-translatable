@@ -22,7 +22,7 @@ class CountryStrict extends Eloquent
      *
      * @var string Class containing the translation
      */
-    public $translationModel = 'Dimsav\Translatable\Test\Model\CountryTranslation';
+    public $translationModel = 'Dimsav\Translatable\Test\Model\StrictTranslation';
 
     /**
      * @var string Foreign key for the translation relationship
