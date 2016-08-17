@@ -260,12 +260,6 @@ $germany->deleteTranslations();
 // Delete one or multiple translations
 $germany->deleteTranslations('de');
 $germany->deleteTranslations(['de', 'en']);
-
-// Sync only these specific translations with the model (i.e., remove all other translations)
-// only the "de"-translation is left untouched - all other translations are deleted
-$germany->syncTranslation("de");
-// only the "de" and "en" translation are left untouched
-$germany->syncTranslation(["de", "en"]);
 ```
 
 ### Available scopes
