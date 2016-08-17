@@ -184,6 +184,9 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
 
+    /**
+     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
+     */
     public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $data = [
@@ -338,18 +341,6 @@ class TranslatableTest extends TestsBase
     {
         $country = Country::find(1)->first();
         $this->assertSame('abc', $country->translateOrNew('abc')->locale);
-    }
-
-    public function test_configuration_overrides_fillable()
-    {
-        App::make('config')->set('translatable.always_fillable', true);
-
-        $country = new CountryStrict([
-            'en' => ['name' => 'Not fillable'],
-            'code' => 'te',
-        ]);
-
-        $this->assertSame($country->getTranslation('en')->name, 'Not fillable');
     }
 
     public function test_it_returns_if_attribute_is_translated()

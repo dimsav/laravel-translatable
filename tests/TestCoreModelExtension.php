@@ -1,5 +1,6 @@
 <?php
 
+use Dimsav\Translatable\Test\Model;
 use Dimsav\Translatable\Test\Model\City;
 use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\Company;
@@ -94,7 +95,17 @@ class TestCoreModelExtension extends TestsBase
     {
         $country = new CountryGuarded();
         $this->assertTrue($country->totallyGuarded());
-        $country->fill(['en' => ['name' => 'Italy']]);
+        $country->fill(['code' => 'it', 'en' => ['name' => 'Italy']]);
+    }
+
+    /**
+     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
+     */
+    public function test_translation_throws_exception_if_filling_a_protected_property()
+    {
+        $country = new Country();
+        $country->translationModel = Model\CountryTranslationGuarded::class;
+        $country->fill(['code' => 'it', 'en' => ['name' => 'Italy']]);
     }
 
     // Deleting
