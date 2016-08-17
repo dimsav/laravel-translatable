@@ -426,4 +426,40 @@ class TranslatableTest extends TestsBase
         $person = Person::find(1);
         $this->assertEquals('John doe', $person->name);
     }
+
+    public function test_it_deletes_all_translations()
+    {
+        $country = Country::whereCode('gr')->first();
+        $this->assertSame(4, count($country->translations));
+
+        $country->deleteTranslations();
+
+        $this->assertSame(0, count($country->translations));
+        $country = Country::whereCode('gr')->first();
+        $this->assertSame(0, count($country->translations));
+    }
+
+    public function test_it_deletes_translations_for_given_locales()
+    {
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $count = count($country->translations);
+
+        $country->deleteTranslations('fr');
+
+        $this->assertSame($count - 1, count($country->translations));
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $this->assertSame($count - 1, count($country->translations));
+        $this->assertSame(null, $country->translate('fr'));
+    }
+
+    public function test_passing_an_empty_array_should_not_delete_translations()
+    {
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $count = count($country->translations);
+
+        $country->deleteTranslations([]);
+
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $this->assertSame($count, count($country->translations));
+    }
 }

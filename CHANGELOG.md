@@ -4,6 +4,7 @@
 
 - Translated fillable properties should only be defined in the translation model.
   - To update from version 5, move all the fillable properties belonging to a translation to the corresponding translation models. 
+- Added deleteTranslations() method for conveniently deleting translations
 
 ### v. 5.6.1
 
