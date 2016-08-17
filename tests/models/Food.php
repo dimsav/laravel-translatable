@@ -34,18 +34,11 @@ class Food extends Eloquent
     public $translationForeignKey;
 
     /**
-     * Add your translated attributes here if you want
-     * fill them with mass assignment.
-     *
-     * @var array
-     */
-    public $fillable = ['name'];
-
-    /**
      * The database field being used to define the locale parameter in the translation model.
      * Defaults to 'locale'.
      *
      * @var string
      */
     public $localeKey;
+    public $fillable = ['id'];
 }
