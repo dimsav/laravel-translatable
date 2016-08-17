@@ -39,7 +39,7 @@ class Country extends Eloquent
      *
      * @var array
      */
-    public $fillable = ['code', 'name'];
+    public $fillable = ['code'];
 
     /**
      * The database field being used to define the locale parameter in the translation model.

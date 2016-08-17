@@ -258,17 +258,13 @@ trait Translatable
      */
     public function fill(array $attributes)
     {
-        $totallyGuarded = $this->totallyGuarded();
-
         foreach ($attributes as $key => $values) {
             if ($this->isKeyALocale($key)) {
-                foreach ($values as $translationAttribute => $translationValue) {
-                    if ($this->alwaysFillable() || $this->isFillable($translationAttribute)) {
-                        $this->getTranslationOrNew($key)->$translationAttribute = $translationValue;
-                    } elseif ($totallyGuarded) {
-                        throw new MassAssignmentException($key);
-                    }
-                }
+                $this->getTranslationOrNew($key)->fill($values);
+                unset($attributes[$key]);
+            }
+            elseif ($this->isTranslationAttribute($key)) {
+                $this->getTranslationOrNew($this->locale())->fill([$key => $values]);
                 unset($attributes[$key]);
             }
         }

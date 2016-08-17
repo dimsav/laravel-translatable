@@ -1,5 +1,15 @@
 ## Version History
 
+### v5.7
+
+- Translated fillable properties should only be defined in the translation model.
+
+### v5.6.1
+
+- Added support for Lumen without Facades #259 
+- Added support for Model accessors #257 
+- Updated code style and added [styleci](https://styleci.io/) to enforce it
+
 ### v.5.6
 
 - Added scope notTranslatedIn() [#235](https://github.com/dimsav/laravel-translatable/pull/235)

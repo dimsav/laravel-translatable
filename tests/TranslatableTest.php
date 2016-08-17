@@ -184,6 +184,9 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
 
+    /**
+     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
+     */
     public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $data = [
