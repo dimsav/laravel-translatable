@@ -255,7 +255,7 @@ $germany->translations();
 
 // Remove all translations for the model
 // the model itself is not touched
-$germany->forgetTranslations();
+$germany->deleteTranslations();
 
 // Remove specific translations from the model
 // remove the "de"-translation
