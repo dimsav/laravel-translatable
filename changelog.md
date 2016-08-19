@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 6.0.1
+
+- Fix issue when trying to fetch a translation with a country based locale #264
+
 ### v. 6.0
 
 - Translated fillable properties should only be defined in the translation model.
