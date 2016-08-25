@@ -258,6 +258,11 @@ $translation = $germany->getNewTranslation('it');
 // The eloquent model relationship. Do what you want with it ;) 
 $germany->translations();
 
+// Add new translate
+$translation = $germany->getNewTranslation('vi'); // or translateOrNew('vi') 
+$germany->translations->add($translation);
+$germany->save();
+
 // Remove all translations linked to an object
 $germany->deleteTranslations();
 
