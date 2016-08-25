@@ -65,12 +65,13 @@ class TestsBase extends TestCase
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
             'driver'   => 'mysql',
-            'host' => 'localhost',
+            'host' => '127.0.0.1',
             'database' => static::DB_NAME,
             'username' => static::DB_USERNAME,
             'password' => static::DB_PASSWORD,
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
+            'strict' => false,
         ]);
         $app['config']->set('translatable.locales', ['el', 'en', 'fr', 'de', 'id']);
     }
@@ -113,24 +114,25 @@ class TestsBase extends TestCase
     private function resetDatabase()
     {
         // Relative to the testbench app folder: vendors/orchestra/testbench/src/fixture
-        $migrationsPath = 'tests/migrations';
+        $migrationsPath = __DIR__.'/migrations';
         $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
 
         // Makes sure the migrations table is created
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--path'     => $migrationsPath,
+            '--realpath'     => $migrationsPath,
         ]);
 
         // We empty all tables
         $artisan->call('migrate:reset', [
             '--database' => 'mysql',
+            '--realpath'     => $migrationsPath,
         ]);
 
         // Migrate
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--path'     => $migrationsPath,
+            '--realpath'     => $migrationsPath,
         ]);
     }
 
