@@ -11,7 +11,7 @@ before_script:
   - composer self-update
   - mysql -e 'create database translatable_test;'
   - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-  - composer require illuminate/support:"$LARAVEL_VERSION"
+  - travis_wait 30 composer require illuminate/support:"$LARAVEL_VERSION"
   - composer install
 
 script:
