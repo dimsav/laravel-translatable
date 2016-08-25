@@ -8,12 +8,12 @@ env:
   - LARAVEL_VERSION="5.3.*"
 
 before_script:
+  - phpenv config-rm xdebug.ini # turn xdebug off
   - composer self-update
   - mysql -e 'create database translatable_test;'
   - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-  - phpenv config-rm xdebug.ini # turn xdebug off
   - travis_wait 30 composer require illuminate/support:"$LARAVEL_VERSION"
-  - phpenv config-add xdebug.ini # turn xdebug on
+  - echo "extension = xdebug.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini # turn xdebug on
 
 script:
   - phpunit --coverage-clover=coverage.clover
