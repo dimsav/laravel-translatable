@@ -11,9 +11,9 @@ before_script:
   - composer self-update
   - mysql -e 'create database translatable_test;'
   - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-  - phpdismod xdebug # turn xdebug off
+  - phpenv config-rm xdebug.ini # turn xdebug off
   - travis_wait 30 composer require illuminate/support:"$LARAVEL_VERSION"
-  - phpenmod xdebug # turn xdebug on
+  - phpenv config-add xdebug.ini # turn xdebug on
 
 script:
   - phpunit --coverage-clover=coverage.clover
