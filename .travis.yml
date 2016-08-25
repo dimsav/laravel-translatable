@@ -4,15 +4,16 @@ php:
   - 7.0
 
 env:
-  - LARAVEL_VERSION="5.1.*" TESTBENCH_VERSION="3.1.*"
-  - LARAVEL_VERSION="5.2.*" TESTBENCH_VERSION="3.2.*"
+  - LARAVEL_VERSION="5.2.*"
+  - LARAVEL_VERSION="5.3.*"
 
 before_script:
+  - phpenv config-rm xdebug.ini # turn xdebug off
+  - echo "extension = xdebug.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini # turn xdebug on
   - composer self-update
   - mysql -e 'create database translatable_test;'
   - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
-  - composer require orchestra/testbench:"$TESTBENCH_VERSION" illuminate/support:"$LARAVEL_VERSION"
-  - composer install
+  - travis_wait 30 composer require illuminate/support:"$LARAVEL_VERSION"
 
 script:
   - phpunit --coverage-clover=coverage.clover
