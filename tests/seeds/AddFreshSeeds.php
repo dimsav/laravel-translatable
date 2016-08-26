@@ -4,14 +4,10 @@ use Dimsav\Translatable\Test\Model\City;
 use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryTranslation;
-use Illuminate\Database\Migrations\Migration;
 
-class AddSeeds extends Migration
+class AddFreshSeeds
 {
-    /**
-     * Run the migrations.
-     */
-    public function up()
+    public function run()
     {
         $countries = [
             ['id' => 1, 'code' => 'gr'],
@@ -88,12 +84,5 @@ class AddSeeds extends Migration
             $translation->name = $data['name'];
             $translation->save();
         }
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down()
-    {
     }
 }

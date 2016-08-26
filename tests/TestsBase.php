@@ -13,23 +13,51 @@ class TestsBase extends TestCase
 
     public function setUp()
     {
-        $this->dropDb();
-        $this->createDb();
+        $this->makeSureDatabaseExists();
 
         parent::setUp();
 
-        $this->resetDatabase();
-        $this->countQueries();
+        $this->makeSureSchemaIsCreated();
+        $this->enableQueryCounter();
+        $this->refreshSeedData();
     }
 
-    private function dropDb()
+    private function refreshSeedData()
     {
-        $this->runQuery('DROP DATABASE IF EXISTS '.static::DB_NAME);
+        $this->truncateAllTablesButMigrations();
+        $seeder = new AddFreshSeeds;
+        $seeder->run();
     }
 
-    private function createDb()
+    private function makeSureDatabaseExists()
     {
-        $this->runQuery('CREATE DATABASE '.static::DB_NAME);
+        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
+    }
+
+    private function makeSureSchemaIsCreated()
+    {
+        $migrationsPath = __DIR__.'/migrations';
+        $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
+
+        // Makes sure the migrations table is created
+        $artisan->call('migrate', [
+            '--database' => 'mysql',
+            '--realpath'     => $migrationsPath,
+        ]);
+    }
+
+    private function truncateAllTablesButMigrations()
+    {
+        $db = $this->app->make('db');
+        $db->statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        foreach ($tables = $db->select('SHOW TABLES') as $table) {
+            $table = $table->{'Tables_in_'.static::DB_NAME};
+            if ($table != 'migrations') {
+                $db->table($table)->truncate();
+            }
+        }
+        $db->statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -81,7 +109,7 @@ class TestsBase extends TestCase
         return ['Eloquent' => 'Illuminate\Database\Eloquent\Model'];
     }
 
-    protected function countQueries()
+    protected function enableQueryCounter()
     {
         $that = $this;
         $event = App::make('events');
@@ -109,31 +137,6 @@ class TestsBase extends TestCase
         }
 
         return $query;
-    }
-
-    private function resetDatabase()
-    {
-        // Relative to the testbench app folder: vendors/orchestra/testbench/src/fixture
-        $migrationsPath = __DIR__.'/migrations';
-        $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
-
-        // Makes sure the migrations table is created
-        $artisan->call('migrate', [
-            '--database' => 'mysql',
-            '--realpath'     => $migrationsPath,
-        ]);
-
-        // We empty all tables
-        $artisan->call('migrate:reset', [
-            '--database' => 'mysql',
-            '--realpath'     => $migrationsPath,
-        ]);
-
-        // Migrate
-        $artisan->call('migrate', [
-            '--database' => 'mysql',
-            '--realpath'     => $migrationsPath,
-        ]);
     }
 
     /**
