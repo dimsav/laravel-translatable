@@ -12,7 +12,7 @@ use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 trait Translatable
 {
     protected $defaultLocale;
-    
+
     /**
      * Alias for getTranslation().
      *
@@ -623,13 +623,13 @@ trait Translatable
     protected function locale()
     {
         if ($this->defaultLocale) {
-            return $this->defaultLocale;    
+            return $this->defaultLocale;
         }
-        
+
         return app()->make('config')->get('translatable.locale')
             ?: app()->make('translator')->getLocale();
     }
-    
+
     /**
      * Set the default locale on the model.
      *
