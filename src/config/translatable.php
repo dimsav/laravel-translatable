@@ -91,4 +91,13 @@ return [
     */
     'locale_key' => 'locale',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Make translated attributes always fillable
+    |--------------------------------------------------------------------------
+    |
+    | When running toArray (json etc) will load the translations even if not loaded with relation.
+    |
+    */
+    'load_translations_to_array' => true
 ];

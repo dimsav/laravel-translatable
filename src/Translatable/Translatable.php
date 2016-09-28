@@ -588,6 +588,12 @@ trait Translatable
     {
         $attributes = parent::toArray();
 
+        // do not add translations when the relation is not loaded (user decides when the translations is loaded)
+        // automatic load is default behaviour
+        if (!app()->make('config')->get("translatable.load_translations_to_array", true) && !$this->relationLoaded("translations")) {
+            return $attributes;
+        }
+
         $hiddenAttributes = $this->getHidden();
 
         foreach ($this->translatedAttributes as $field) {
