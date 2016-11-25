@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class Person extends Eloquent
 {
     protected $table = 'people';
+    public $fillable = ['name'];
 
     use Translatable;
 

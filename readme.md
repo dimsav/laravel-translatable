@@ -392,6 +392,12 @@ Thanks to the community a few packages have been written to make usage of Transl
  
 ## FAQ
 
+#### Running package unit test
+
+Change database user/password configuration [in the code](https://github.com/dimsav/laravel-translatable/tree/master/tests/TestsBase.php#L11).
+
+Run `phpunit` to run default tests
+
 #### I need some example code!
 
 Examples for all the package features can be found [in the code](https://github.com/dimsav/laravel-translatable/tree/master/tests/models) used for the [tests](https://github.com/dimsav/laravel-translatable/tree/master/tests).
