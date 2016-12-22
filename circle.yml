@@ -19,7 +19,7 @@ test:
     - git checkout -- composer.json
     # turn xdebug off
     - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled
-    - composer require illuminate/support:"5.2.*" --prefer-source --no-interaction
+    - composer require illuminate/support:"5.2.*" illuminate/database:"5.2.*" --prefer-source --no-interaction
     # turn xdebug on
     - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
     - phpunit --coverage-clover=coverage.clover

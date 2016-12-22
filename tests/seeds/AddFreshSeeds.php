@@ -1,8 +1,8 @@
 <?php
 
 use Dimsav\Translatable\Test\Model\City;
-use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\CountryTranslation;
 
 class AddFreshSeeds
