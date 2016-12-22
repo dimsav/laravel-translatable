@@ -478,4 +478,31 @@ class TranslatableTest extends TestsBase
         $country = Country::whereCode('gr')->with('translations')->first();
         $this->assertSame($count, count($country->translations));
     }
+
+    public function test_fill_with_translation_key()
+    {
+        $country = new Country();
+        $country->fill([
+            'code' => 'gr',
+            'name:en' => 'Greece FILL',
+            'name:de' => 'Griechenland FILL',
+        ]);
+
+        $this->assertEquals($country->translate('en')->name, 'Greece FILL');
+        $this->assertEquals($country->translate('de')->name, 'Griechenland FILL');
+    }
+
+    public function test_fill_with_translation_key_save_success()
+    {
+        $country = Country::whereCode('gr')->first();
+        $country->fill([
+            'name:en' => 'Greece FILL',
+            'name:de' => 'Griechenland FILL',
+        ]);
+        $country->save();
+
+        $country = Country::whereCode('gr')->first();
+        $this->assertEquals($country->translate('en')->name, 'Greece FILL');
+        $this->assertEquals($country->translate('de')->name, 'Griechenland FILL');
+    }
 }
