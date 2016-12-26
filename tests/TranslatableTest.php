@@ -1,9 +1,10 @@
 <?php
 
+use Dimsav\Translatable\Test\Model\Food;
+use Dimsav\Translatable\Test\Model\Person;
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
-use Dimsav\Translatable\Test\Model\Food;
 
 class TranslatableTest extends TestsBase
 {
@@ -183,6 +184,9 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
 
+    /**
+     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
+     */
     public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $data = [
@@ -339,18 +343,6 @@ class TranslatableTest extends TestsBase
         $this->assertSame('abc', $country->translateOrNew('abc')->locale);
     }
 
-    public function test_configuration_overrides_fillable()
-    {
-        App::make('config')->set('translatable.always_fillable', true);
-
-        $country = new CountryStrict([
-            'en' => ['name' => 'Not fillable'],
-            'code' => 'te',
-        ]);
-
-        $this->assertSame($country->getTranslation('en')->name, 'Not fillable');
-    }
-
     public function test_it_returns_if_attribute_is_translated()
     {
         $country = new Country();
@@ -369,7 +361,7 @@ class TranslatableTest extends TestsBase
 
     public function test_locales_as_array_keys_are_properly_detected()
     {
-        $this->app->config->set('translatable.locales', ['en' => ['US','GB']]);
+        $this->app->config->set('translatable.locales', ['en' => ['US', 'GB']]);
 
         $data = [
             'en' => ['name' => 'French fries'],
@@ -410,5 +402,80 @@ class TranslatableTest extends TestsBase
         Food::create($data);
         $fries = Food::find(1);
         $this->assertSame('french fries', $fries->getTranslation('en-US')->name);
+    }
+
+    public function test_fallback_for_country_based_locales_with_no_base_locale()
+    {
+        $this->app->config->set('translatable.use_fallback', true);
+        $this->app->config->set('translatable.fallback_locale', 'en');
+        $this->app->config->set('translatable.locales', ['pt' => ['PT', 'BR'], 'en']);
+        $this->app->config->set('translatable.locale_separator', '-');
+        $data = [
+            'id' => 1,
+            'en' => ['name' => 'chips'],
+            'pt-PT' => ['name' => 'batatas fritas'],
+        ];
+        Food::create($data);
+        $fries = Food::find(1);
+        $this->assertSame('chips', $fries->getTranslation('pt-BR')->name);
+    }
+
+    public function test_to_array_and_fallback_with_country_based_locales_enabled()
+    {
+        $this->app->config->set('translatable.use_fallback', true);
+        $this->app->config->set('translatable.fallback_locale', 'fr');
+        $this->app->config->set('translatable.locales', ['en' => ['GB'], 'fr']);
+        $this->app->config->set('translatable.locale_separator', '-');
+        $data = [
+            'id' => 1,
+            'fr' => ['name' => 'frites'],
+        ];
+        Food::create($data);
+        $fritesArray = Food::find(1)->toArray();
+        $this->assertSame('frites', $fritesArray['name']);
+    }
+
+    public function test_it_should_mutate_the_translated_attribute_if_a_mutator_is_set_on_model()
+    {
+        $person = new Person(['name' => 'john doe']);
+        $person->save();
+        $person = Person::find(1);
+        $this->assertEquals('John doe', $person->name);
+    }
+
+    public function test_it_deletes_all_translations()
+    {
+        $country = Country::whereCode('gr')->first();
+        $this->assertSame(4, count($country->translations));
+
+        $country->deleteTranslations();
+
+        $this->assertSame(0, count($country->translations));
+        $country = Country::whereCode('gr')->first();
+        $this->assertSame(0, count($country->translations));
+    }
+
+    public function test_it_deletes_translations_for_given_locales()
+    {
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $count = count($country->translations);
+
+        $country->deleteTranslations('fr');
+
+        $this->assertSame($count - 1, count($country->translations));
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $this->assertSame($count - 1, count($country->translations));
+        $this->assertSame(null, $country->translate('fr'));
+    }
+
+    public function test_passing_an_empty_array_should_not_delete_translations()
+    {
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $count = count($country->translations);
+
+        $country->deleteTranslations([]);
+
+        $country = Country::whereCode('gr')->with('translations')->first();
+        $this->assertSame($count, count($country->translations));
     }
 }

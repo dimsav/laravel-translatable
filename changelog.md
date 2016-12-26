@@ -1,27 +1,59 @@
 ## Version History
 
-### v.5.4
+### v. 6.0.1
+
+- Fix issue when trying to fetch a translation with a country based locale #264
+
+### v. 6.0
+
+- Translated fillable properties should only be defined in the translation model.
+  - To update from version 5, move all the fillable properties belonging to a translation to the corresponding translation models. 
+- Added deleteTranslations() method for conveniently deleting translations
+
+### v. 5.6.1
+
+- Added support for Lumen without Facades #259 
+- Added support for Model accessors #257 
+- Updated code style and added [styleci](https://styleci.io/) to enforce it
+
+### v. 5.6
+
+- Added scope notTranslatedIn() [#235](https://github.com/dimsav/laravel-translatable/pull/235)
+
+### v. 5.5.1
+
+- Fixed a bug in locale fallback on toArray()
+
+### v. 5.5
+
+- Added Laravel 5.2 support
+- Dropped Laravel 5.0 support
+- Added scope whereTranslationLike() [#183](https://github.com/dimsav/laravel-translatable/pull/183)
+- Fire 'updated' event when saving translations. [#190](https://github.com/dimsav/laravel-translatable/pull/190)
+- setAttribute() returns the model itself, which is now the default in eloquent. [#201](https://github.com/dimsav/laravel-translatable/issues/201)
+
+### v. 5.4
 
 - Added compatibility with custom primary key [#174](https://github.com/dimsav/laravel-translatable/issues/174)
 
-### v.5.3
+### v. 5.3
 
 - Added whereTranslation() scope [#168](https://github.com/dimsav/laravel-translatable/issues/168)
 
-### v.5.2
+### v. 5.2
 
 - Added option to override default locale [#158](https://github.com/dimsav/laravel-translatable/issues/158) 
 - Added default value in translatedIn() scope [#148](https://github.com/dimsav/laravel-translatable/issues/148)
 - Added new scope [withTranslation()](https://github.com/dimsav/laravel-translatable/blob/384844af32928e41a09451aded8d5aa490d3c99f/src/Translatable/Translatable.php#L449-L458) (including [tests](https://github.com/dimsav/laravel-translatable/blob/c6c57e5d265a3b3ba2a882f073900fd8300ae5c6/tests/ScopesTest.php#L56-L74)) to decrease the number of mysql calls made.
 - Added [documentation](https://github.com/dimsav/laravel-translatable/blob/0715f46613769570b65b97ac9ffec10f9bf06d8d/readme.md#available-scopes) about scopes.
 
-### v.5.1.2
+### v. 5.1.2
 
 - Fixed db in tests is dropped and recreated to make tests more stable (https://github.com/dimsav/laravel-translatable/commit/3cc29a21c27726a2d14463b3ec0d55c26487eb58)
 - Fixed bug when using syntax `$country->{'name:en'}` and locale doesn't exist [#150](https://github.com/dimsav/laravel-translatable/issues/150)
 - Method isTranslationAttribute() is now public [#151](https://github.com/dimsav/laravel-translatable/issues/151)
 
-### v.5.1.1
+### v. 5.1.1
 
 - Fixed compatibility with Lumen [#121](https://github.com/dimsav/laravel-translatable/issues/121)
 - Fixed making an attribute on a translatable model hidden does not hide it [#133](https://github.com/dimsav/laravel-translatable/issues/133)

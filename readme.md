@@ -4,33 +4,27 @@ Laravel-Translatable
 
 [![Total Downloads](https://poser.pugx.org/dimsav/laravel-translatable/downloads.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![Build Status](https://travis-ci.org/dimsav/laravel-translatable.svg?branch=v4.3)](https://travis-ci.org/dimsav/laravel-translatable)
-[![Code Coverage](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/badges/coverage.png?s=da6f88287610ff41bbfaf1cd47119f4333040e88)](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/)
+[![Code Coverage](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/dimsav/laravel-translatable/?branch=master)
 [![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![License](https://poser.pugx.org/dimsav/laravel-translatable/license.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee/mini.png)](https://insight.sensiolabs.com/projects/c105358a-3211-47e8-b662-94aa98d1eeee)
+[![StyleCI](https://styleci.io/repos/16480576/shield)](https://styleci.io/repos/16480576)
+
+![Laravel Translatable](img/laravel-translatable.png)
+
+**If you want to store translations of your models into the database, this package is for you.**
 
 This is a Laravel package for translatable models. Its goal is to remove the complexity in retrieving and storing multilingual model instances. With this package you write less code, as the translations are being fetched/saved when you fetch/save your instance.
 
-If you want to store translations of your models into the database, this package is for you.
+### Docs
 
 * [Demo](#demo)
+* [Laravel compatibility](#laravel-compatibility)
 * [Tutorial](#tutorial)
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
-* [Documentation](#documentation)
+* [Features list](#features-list)
 * [Support](#faq)
-
-[![268022096_e52a1c90e6_q](https://cloud.githubusercontent.com/assets/1785686/11608638/a870ca5e-9b77-11e5-8250-2c03f8f1814c.jpg)](http://dimsav.tip.me)
-
-## Laravel compatibility
-
- Laravel  | Translatable
-:---------|:----------
- 5.x      | 5.x
- 4.2.x    | 4.4.x
- 4.1.x    | 4.4.x
- 4.0.x    | 4.3.x
-
 
 ## Demo
 
@@ -73,6 +67,18 @@ If you want to store translations of your models into the database, this package
   
   echo $greece->translate('fr')->name; // Grèce
 ```
+
+## Laravel compatibility
+
+ Laravel  | Translatable
+:---------|:----------
+ 5.3      | 6.*
+ 5.2      | 5.5 - 6.*
+ 5.1      | 5.0 - 6.*
+ 5.0      | 5.0 - 5.4
+ 4.2.x    | 4.4.x
+ 4.1.x    | 4.4.x
+ 4.0.x    | 4.3.x
 
 ## Tutorial
 
@@ -131,7 +137,7 @@ class Country extends Eloquent {
     use \Dimsav\Translatable\Translatable;
     
     public $translatedAttributes = ['name'];
-    protected $fillable = ['code', 'name'];
+    protected $fillable = ['code'];
     
     /**
      * The relations to eager load on every query.
@@ -197,7 +203,7 @@ class Country extends Eloquent
 
 ```
 
-## Documentation
+## Features list
 
 **Please read the installation steps first, to understand what classes need to be created.**
 
@@ -252,6 +258,13 @@ $translation = $germany->getNewTranslation('it');
 
 // The eloquent model relationship. Do what you want with it ;) 
 $germany->translations();
+
+// Remove all translations linked to an object
+$germany->deleteTranslations();
+
+// Delete one or multiple translations
+$germany->deleteTranslations('de');
+$germany->deleteTranslations(['de', 'en']);
 ```
 
 ### Available scopes
@@ -259,6 +272,9 @@ $germany->translations();
 ```php
 // Returns all countries having translations in english
 Country::translatedIn('en')->get();
+
+// Returns all countries not being translated in english
+Country::notTranslatedIn('en')->get();
 
 // Returns all countries having translations
 Country::translated()->get();
@@ -277,6 +293,9 @@ Country::listsTranslations('name')->get()->toArray();
 
 // Filters countries by checking the translation against the given value 
 Country::whereTranslation('name', 'Greece')->first();
+
+// Filters countries by checking the translation against the given string with wildcards
+Country::whereTranslationLike('name', '%Gree%')->first();
 ```
 
 ### Magic properties
@@ -363,6 +382,13 @@ What applies for the fallback of the locales using the `en-MX` format?
 Let's say our fallback locale is `en`. Now, when we try to fetch from the database the translation for the 
 locale `es-MX` but it doesn't exist,  we won't get as fallback the translation for `en`. Translatable will use as a 
 fallback `es` (the first part of `es-MX`) and only if nothing is found, the translation for `en` is returned.
+ 
+#### Add ons
+
+Thanks to the community a few packages have been written to make usage of Translatable easier when working with forms:
+
+- [Propaganistas/Laravel-Translatable-Bootforms](https://github.com/Propaganistas/Laravel-Translatable-Bootforms)
+- [TypiCMS/TranslatableBootForms](https://github.com/TypiCMS/TranslatableBootForms)
  
 ## FAQ
 

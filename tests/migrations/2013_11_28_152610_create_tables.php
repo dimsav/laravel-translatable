@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateTables extends Migration
 {
@@ -93,6 +93,21 @@ class CreateTables extends Migration
             $table->unique(['vegetable_identity', 'locale']);
             $table->foreign('vegetable_identity')->references('identity')->on('vegetables')->onDelete('cascade');
         });
+
+        Schema::create('people', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+
+        Schema::create('person_translations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('person_id')->unsigned();
+            $table->string('name');
+            $table->string('locale')->index();
+
+            $table->unique(['person_id', 'locale']);
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+        });
     }
 
     /**
@@ -114,5 +129,7 @@ class CreateTables extends Migration
         Schema::dropIfExists('foods');
         Schema::dropIfExists('vegetable_translations');
         Schema::dropIfExists('vegetables');
+        Schema::dropIfExists('person_translations');
+        Schema::dropIfExists('people');
     }
 }

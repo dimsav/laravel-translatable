@@ -1,0 +1,27 @@
+machine:
+  php:
+    version: 7.0.4
+
+dependencies:
+  override:
+    - mysql -e 'create database translatable_test;'
+    - echo "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret'; \n GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'localhost'; \nFLUSH PRIVILEGES; \n" | mysql -u root
+
+test:
+  override:
+    # turn xdebug off
+    - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled
+    - composer require illuminate/support:"5.3.*" --prefer-source --no-interaction
+    # turn xdebug on
+    - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
+    - phpunit
+    - rm -rf vendor composer.lock
+    - git checkout -- composer.json
+    # turn xdebug off
+    - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled
+    - composer require illuminate/support:"5.2.*" illuminate/database:"5.2.*" --prefer-source --no-interaction
+    # turn xdebug on
+    - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
+    - phpunit --coverage-clover=coverage.clover
+    - wget https://scrutinizer-ci.com/ocular.phar
+    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -7,35 +7,57 @@ class TestsBase extends TestCase
 {
     protected $queriesCount;
 
-    const DB_NAME     = 'translatable_test';
+    const DB_NAME = 'translatable_test';
     const DB_USERNAME = 'homestead';
     const DB_PASSWORD = 'secret';
 
     public function setUp()
     {
-        $this->dropDb();
-        $this->createDb();
+        $this->makeSureDatabaseExists();
 
         parent::setUp();
 
-        $this->resetDatabase();
-        $this->countQueries();
+        $this->makeSureSchemaIsCreated();
+        $this->enableQueryCounter();
+        $this->refreshSeedData();
     }
 
-    /**
-     * return void
-     */
-    private function dropDb()
+    private function refreshSeedData()
     {
-        $this->runQuery("DROP DATABASE IF EXISTS ".static::DB_NAME);
+        $this->truncateAllTablesButMigrations();
+        $seeder = new AddFreshSeeds;
+        $seeder->run();
     }
 
-    /**
-     * return void
-     */
-    private function createDb()
+    private function makeSureDatabaseExists()
     {
-        $this->runQuery("CREATE DATABASE ".static::DB_NAME);
+        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
+    }
+
+    private function makeSureSchemaIsCreated()
+    {
+        $migrationsPath = __DIR__.'/migrations';
+        $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
+
+        // Makes sure the migrations table is created
+        $artisan->call('migrate', [
+            '--database' => 'mysql',
+            '--realpath'     => $migrationsPath,
+        ]);
+    }
+
+    private function truncateAllTablesButMigrations()
+    {
+        $db = $this->app->make('db');
+        $db->statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        foreach ($tables = $db->select('SHOW TABLES') as $table) {
+            $table = $table->{'Tables_in_'.static::DB_NAME};
+            if ($table != 'migrations') {
+                $db->table($table)->truncate();
+            }
+        }
+        $db->statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -48,10 +70,10 @@ class TestsBase extends TestCase
         $dbPassword = static::DB_PASSWORD;
 
         $command = "mysql -u $dbUsername ";
-        $command.= $dbPassword ? " -p$dbPassword" : "";
-        $command.= " -e '$query'";
+        $command .= $dbPassword ? " -p$dbPassword" : '';
+        $command .= " -e '$query'";
 
-        exec($command . " 2>/dev/null");
+        exec($command.' 2>/dev/null');
     }
 
     public function testRunningMigration()
@@ -71,12 +93,13 @@ class TestsBase extends TestCase
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
             'driver'   => 'mysql',
-            'host' => 'localhost',
+            'host' => '127.0.0.1',
             'database' => static::DB_NAME,
             'username' => static::DB_USERNAME,
             'password' => static::DB_PASSWORD,
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
+            'strict' => false,
         ]);
         $app['config']->set('translatable.locales', ['el', 'en', 'fr', 'de', 'id']);
     }
@@ -86,14 +109,14 @@ class TestsBase extends TestCase
         return ['Eloquent' => 'Illuminate\Database\Eloquent\Model'];
     }
 
-    protected function countQueries()
+    protected function enableQueryCounter()
     {
         $that = $this;
         $event = App::make('events');
         $event->listen('illuminate.query', function ($query, $bindings) use ($that) {
             $that->queriesCount++;
             $bindings = $this->formatBindingsForSqlInjection($bindings);
-            $query    = $this->insertBindingsIntoQuery($query, $bindings);
+            $query = $this->insertBindingsIntoQuery($query, $bindings);
             $query = $this->beautifyQuery($query);
             // echo("\n--- Query {$that->queriesCount}--- $query\n");
         });
@@ -113,32 +136,7 @@ class TestsBase extends TestCase
             $query = str_replace($word, "\n$word", $query);
         }
 
-
         return $query;
-    }
-
-    private function resetDatabase()
-    {
-        // Relative to the testbench app folder: vendors/orchestra/testbench/src/fixture
-        $migrationsPath = 'tests/migrations';
-        $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
-
-        // Makes sure the migrations table is created
-        $artisan->call('migrate', [
-            '--database' => 'mysql',
-            '--path'     => $migrationsPath,
-        ]);
-
-        // We empty all tables
-        $artisan->call('migrate:reset', [
-            '--database' => 'mysql',
-        ]);
-
-        // Migrate
-        $artisan->call('migrate', [
-            '--database' => 'mysql',
-            '--path'     => $migrationsPath,
-        ]);
     }
 
     /**
@@ -157,8 +155,10 @@ class TestsBase extends TestCase
                 }
             }
         }
+
         return $bindings;
     }
+
     /**
      * @param $query
      * @param $bindings
@@ -171,7 +171,8 @@ class TestsBase extends TestCase
             return $query;
         }
 
-        $query = str_replace(array('%', '?'), array('%%', '%s'), $query);
+        $query = str_replace(['%', '?'], ['%%', '%s'], $query);
+
         return vsprintf($query, $bindings);
     }
 }

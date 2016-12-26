@@ -1,8 +1,6 @@
 <?php
 
 use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
 class ScopesTest extends TestsBase
 {
@@ -21,6 +19,27 @@ class ScopesTest extends TestsBase
         $this->assertSame('Griechenland', $translatedCountries->first()->name);
     }
 
+    public function test_not_translated_in_scope_returns_only_not_translated_records_for_this_locale()
+    {
+        $notTranslatedCountries = Country::notTranslatedIn('en')->get();
+        $this->assertCount(2, $notTranslatedCountries);
+
+        foreach ($notTranslatedCountries as $notTranslatedCountry) {
+            $this->assertFalse($notTranslatedCountry->hasTranslation('en'));
+        }
+    }
+
+    public function test_not_translated_in_scope_works_with_default_locale()
+    {
+        App::setLocale('en');
+        $notTranslatedCountries = Country::notTranslatedIn()->get();
+        $this->assertCount(2, $notTranslatedCountries);
+
+        foreach ($notTranslatedCountries as $notTranslatedCountry) {
+            $this->assertFalse($notTranslatedCountry->hasTranslation('en'));
+        }
+    }
+
     public function test_translated_scope_returns_records_with_at_least_one_translation()
     {
         $translatedCountries = Country::translated()->get();
@@ -31,7 +50,7 @@ class ScopesTest extends TestsBase
     {
         App::setLocale('de');
         $list = [[
-            'id' => '1',
+            'id'   => '1',
             'name' => 'Griechenland',
         ]];
         $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
@@ -44,10 +63,10 @@ class ScopesTest extends TestsBase
         $country = new Country();
         $country->useTranslationFallback = true;
         $list = [[
-            'id' => '1',
+            'id'   => '1',
             'name' => 'Griechenland',
-        ],[
-            'id' => '2',
+        ], [
+            'id'   => '2',
             'name' => 'France',
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
@@ -84,10 +103,27 @@ class ScopesTest extends TestsBase
     {
         Country::create(['code' => 'some-code', 'name' => 'Griechenland']);
 
-        /** @var Country $country */
         $this->assertSame(2, Country::whereTranslation('name', 'Griechenland')->count());
 
         $result = Country::whereTranslation('name', 'Griechenland', 'de')->get();
+        $this->assertSame(1, $result->count());
+        $this->assertSame('gr', $result->first()->code);
+    }
+
+    public function test_whereTranslationLike_filters_by_translation()
+    {
+        /** @var Country $country */
+        $country = Country::whereTranslationLike('name', '%Greec%')->first();
+        $this->assertSame('gr', $country->code);
+    }
+
+    public function test_whereTranslationLike_filters_by_translation_and_locale()
+    {
+        Country::create(['code' => 'some-code', 'name' => 'Griechenland']);
+
+        $this->assertSame(2, Country::whereTranslationLike('name', 'Griechen%')->count());
+
+        $result = Country::whereTranslationLike('name', '%riechenlan%', 'de')->get();
         $this->assertSame(1, $result->count());
         $this->assertSame('gr', $result->first()->code);
     }

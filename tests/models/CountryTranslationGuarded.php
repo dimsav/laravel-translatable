@@ -4,8 +4,10 @@ namespace Dimsav\Translatable\Test\Model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class FoodTranslation extends Eloquent
+class CountryTranslationGuarded extends Eloquent
 {
     public $timestamps = false;
-    public $fillable = ['name'];
+    public $table = 'country_translations';
+
+    protected $fillable = [];
 }

@@ -1,14 +1,15 @@
 <?php
 
-use Dimsav\Translatable\Test\Model\Continent;
-use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryGuarded;
-use Dimsav\Translatable\Test\Model\CountryStrict;
-use Dimsav\Translatable\Test\Model\CountryTranslation;
+use Dimsav\Translatable\Test\Model;
 use Dimsav\Translatable\Test\Model\City;
-use Dimsav\Translatable\Test\Model\CityTranslation;
 use Dimsav\Translatable\Test\Model\Company;
+use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\Continent;
 use Dimsav\Translatable\Test\Model\Vegetable;
+use Dimsav\Translatable\Test\Model\CountryStrict;
+use Dimsav\Translatable\Test\Model\CountryGuarded;
+use Dimsav\Translatable\Test\Model\CityTranslation;
+use Dimsav\Translatable\Test\Model\CountryTranslation;
 
 class TestCoreModelExtension extends TestsBase
 {
@@ -64,8 +65,8 @@ class TestCoreModelExtension extends TestsBase
         $that = $this;
         $event = App::make('events');
         $event->listen('eloquent*', function ($model) use ($that) {
-                return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
-            });
+            return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
+        });
 
         $country = Country::find(1);
         $country->code = 'make_model_dirty';
@@ -78,8 +79,8 @@ class TestCoreModelExtension extends TestsBase
         $that = $this;
         $event = App::make('events');
         $event->listen('eloquent*', function ($model) use ($that) {
-                return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
-            });
+            return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
+        });
 
         $continent = new Continent();
         $this->assertFalse($continent->save());
@@ -94,7 +95,17 @@ class TestCoreModelExtension extends TestsBase
     {
         $country = new CountryGuarded();
         $this->assertTrue($country->totallyGuarded());
-        $country->fill(['en' => ['name' => 'Italy']]);
+        $country->fill(['code' => 'it', 'en' => ['name' => 'Italy']]);
+    }
+
+    /**
+     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
+     */
+    public function test_translation_throws_exception_if_filling_a_protected_property()
+    {
+        $country = new Country();
+        $country->translationModel = Model\CountryTranslationGuarded::class;
+        $country->fill(['code' => 'it', 'en' => ['name' => 'Italy']]);
     }
 
     // Deleting
@@ -152,18 +163,6 @@ class TestCoreModelExtension extends TestsBase
         $country->toArray();
     }
 
-    // Performance
-
-    public function test_it_passes_the_N_plus_1_problem()
-    {
-        $countries = Country::with('translations')->get();
-        foreach ($countries as $country) {
-            $country->name;
-        }
-        $this->assertGreaterThan(2, count($countries));
-        $this->assertEquals(2, $this->queriesCount);
-    }
-
     // Forms
 
     public function test_it_fakes_isset_for_translated_attributes()
@@ -191,5 +190,12 @@ class TestCoreModelExtension extends TestsBase
     {
         $vegetable = new Vegetable;
         $this->assertSame('vegetable_identity', $vegetable->getRelationKey());
+    }
+
+    public function test_setAttribute_returns_this()
+    {
+        $country = new Country;
+        $this->assertSame($country, $country->setAttribute('code', 'ch'));
+        $this->assertSame($country, $country->setAttribute('name', 'China'));
     }
 }

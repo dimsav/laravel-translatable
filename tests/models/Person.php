@@ -5,8 +5,10 @@ namespace Dimsav\Translatable\Test\Model;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Country extends Eloquent
+class Person extends Eloquent
 {
+    protected $table = 'people';
+
     use Translatable;
 
     /**
@@ -34,18 +36,22 @@ class Country extends Eloquent
     public $translationForeignKey;
 
     /**
-     * Add your translated attributes here if you want
-     * fill them with mass assignment.
-     *
-     * @var array
-     */
-    public $fillable = ['code'];
-
-    /**
      * The database field being used to define the locale parameter in the translation model.
      * Defaults to 'locale'.
      *
      * @var string
      */
     public $localeKey;
+
+    /**
+     * Mutate name attribute into upper-case.
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
 }
