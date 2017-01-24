@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 6.1
+
+- Filling a model now supports using the 'property:locale' format in keys. 
+
 ### v. 6.0.1
 
 - Fix issue when trying to fetch a translation with a country based locale #264
