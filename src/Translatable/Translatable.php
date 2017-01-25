@@ -602,14 +602,6 @@ trait Translatable
     }
 
     /**
-     * @return bool
-     */
-    private function alwaysFillable()
-    {
-        return app()->make('config')->get('translatable.always_fillable', false);
-    }
-
-    /**
      * @return string
      */
     private function getTranslationsTable()
