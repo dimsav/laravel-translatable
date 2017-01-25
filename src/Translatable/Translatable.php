@@ -57,9 +57,9 @@ trait Translatable
     public function getTranslation($locale = null, $withFallback = null)
     {
         $configFallbackLocale = $this->getFallbackLocale();
-        $locale               = $locale ?: $this->locale();
-        $withFallback         = $withFallback === null ? $this->useFallback() : $withFallback;
-        $fallbackLocale       = $this->getFallbackLocale($locale);
+        $locale = $locale ?: $this->locale();
+        $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
+        $fallbackLocale = $this->getFallbackLocale($locale);
 
         if ($translation = $this->getTranslationByLocaleKey($locale)) {
             return $translation;
@@ -425,7 +425,7 @@ trait Translatable
      */
     public function getNewTranslation($locale)
     {
-        $modelName   = $this->getTranslationModelName();
+        $modelName = $this->getTranslationModelName();
         $translation = new $modelName();
         $translation->setAttribute($this->getLocaleKey(), $locale);
         $this->translations->add($translation);
@@ -490,16 +490,16 @@ trait Translatable
      *  [
      *      'id' => '1',                // The id of country
      *      'name' => 'Griechenland'    // The translated name
-     *  ]
+     *  ].
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $translationField
      */
     public function scopeListsTranslations(Builder $query, $translationField)
     {
-        $withFallback     = $this->useFallback();
+        $withFallback = $this->useFallback();
         $translationTable = $this->getTranslationsTable();
-        $localeKey        = $this->getLocaleKey();
+        $localeKey = $this->getLocaleKey();
 
         $query
             ->select($this->getTable().'.'.$this->getKeyName(), $translationTable.'.'.$translationField)
@@ -535,7 +535,7 @@ trait Translatable
                 if ($this->useFallback()) {
                     return $query->orWhere($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->getFallbackLocale());
                 }
-            }
+            },
         ]);
     }
 

@@ -495,5 +495,4 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->translate('en')->name, 'Turkey');
         $this->assertEquals($country->translate('de')->name, 'Türkei');
     }
-
 }
