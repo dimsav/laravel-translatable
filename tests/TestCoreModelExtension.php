@@ -149,7 +149,7 @@ class TestCoreModelExtension extends TestsBase
         $this->assertEquals(0, count($after));
     }
 
-    public function test_to_array_returs_translated_attributes()
+    public function test_to_array_returns_translated_attributes()
     {
         $country = Country::find(1);
         $this->assertArrayHasKey('name', $country->toArray());
