@@ -178,6 +178,10 @@ With this command, initialize the configuration and modify the created file, loc
 
 ## Configuration
 
+### The config file
+
+You can see the options for further customization in the [config file](src/config/translatable.php).
+
 ### The translation model
 
 The convention used to define the class of the translation model is to append the keyword `Translation`.
