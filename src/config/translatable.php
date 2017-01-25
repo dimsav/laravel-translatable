@@ -91,4 +91,14 @@ return [
     */
     'locale_key' => 'locale',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Always load translations when converting to array
+    |--------------------------------------------------------------------------
+    | Setting this to false will have a performance improvement but will
+    | not return the translations when using toArray(), unless the
+    | translations relationship is already loaded.
+    |
+     */
+    'to_array_always_loads_translations' => true,
 ];
