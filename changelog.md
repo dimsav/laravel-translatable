@@ -2,7 +2,7 @@
 
 ### v. 6.1
 
-- Filling a model now supports using the 'property:locale' format in keys. For example: 
+- Filling a model now supports using the 'property:locale' format in keys. #314 For example: 
 ```
 $country->fill(['name:en' => 'Belgium']);
 ```  
