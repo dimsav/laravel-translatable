@@ -660,12 +660,9 @@ trait Translatable
 
     /**
      * @return bool
-     *
      */
     private function toArrayAlwaysLoadsTranslations()
     {
         return app()->make('config')->get('translatable.to_array_always_loads_translations', true);
     }
-
-
 }
