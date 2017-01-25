@@ -242,6 +242,28 @@ $translation = $germany->getTranslation();
 // Same as $germany->translate('de');
 $translation = $germany->getTranslation('de', true);
 
+// To set the translation for a field you can either update the translation model.
+// Saving the model will also save all the related translations.
+$germany->translate('en')->name = 'Germany';
+$germany->save();
+
+// Alternatively we can use the shortcut
+$germany->{'name:en'} = 'Germany';
+$germany->save();
+
+// There are two ways of inserting mutliple translations into the database
+// First, using the locale as array key.
+$greece = $country->fill([
+    'en'  => ['name' => 'Greece'],
+    'fr'  => ['name' => 'Grèce'],
+]);
+
+// The second way is to use the following syntax.  
+$greece = $country->fill([
+    'name:en' => 'Greece',
+    'name:fr' => 'Grèce',
+]);
+
 // Returns true/false if the model has translation about the current locale. 
 $germany->hasTranslation();
 
