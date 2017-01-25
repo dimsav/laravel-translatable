@@ -6,6 +6,7 @@
 ```
 $country->fill(['name:en' => 'Belgium']);
 ```  
+- Added config to skip translations in toArray() for better performance when needed. #315
 
 ### v. 6.0.1
 

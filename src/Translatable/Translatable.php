@@ -586,6 +586,12 @@ trait Translatable
     {
         $attributes = parent::toArray();
 
+        if ($this->relationLoaded('translations') || $this->toArrayAlwaysLoadsTranslations()) {
+            // continue
+        } else {
+            return $attributes;
+        }
+
         $hiddenAttributes = $this->getHidden();
 
         foreach ($this->translatedAttributes as $field) {
@@ -650,5 +656,13 @@ trait Translatable
         }
 
         return [$key, $this->locale()];
+    }
+
+    /**
+     * @return bool
+     */
+    private function toArrayAlwaysLoadsTranslations()
+    {
+        return app()->make('config')->get('translatable.to_array_always_loads_translations', true);
     }
 }

@@ -435,6 +435,20 @@ class TranslatableTest extends TestsBase
         $this->assertSame('frites', $fritesArray['name']);
     }
 
+    public function test_it_skips_translations_in_to_array_when_config_is_set()
+    {
+        $this->app->config->set('translatable.to_array_always_loads_translations', false);
+        $greece = Country::whereCode('gr')->first()->toArray();
+        $this->assertFalse(isset($greece['name']));
+    }
+
+    public function test_it_returns_translations_in_to_array_when_config_is_set_but_translations_are_loaded()
+    {
+        $this->app->config->set('translatable.to_array_always_loads_translations', false);
+        $greece = Country::whereCode('gr')->with('translations')->first()->toArray();
+        $this->assertTrue(isset($greece['name']));
+    }
+
     public function test_it_should_mutate_the_translated_attribute_if_a_mutator_is_set_on_model()
     {
         $person = new Person(['name' => 'john doe']);
