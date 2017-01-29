@@ -1,7 +1,8 @@
 ## Version History
 
-### v. 6.2
+### v. 7
 
+- Added compatibility with Laravel 5.4
 - Added default locale per model #271
 
 ### v. 6.1
