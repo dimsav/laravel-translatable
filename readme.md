@@ -226,8 +226,13 @@ $germany = Country::where('code', 'de')->first();
 // So in this case, french. If no french translation is found, it returns null.
 $translation = $germany->translate();
 
-// It is possible to define a default locale per model.
-protected $defaultLocale = 'de';
+// It is possible to define a default locale per model by overriding the model constructor.
+public function __construct(array $attributes = [])
+{
+    parent::__construct($attributes);
+    
+    $this->defaultLocale = 'de';
+}
 
 // It is also possible to define a default locale for our model on the fly:
 $germany->setDefaultLocale('de');
