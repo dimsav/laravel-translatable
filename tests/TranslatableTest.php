@@ -509,4 +509,24 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->translate('en')->name, 'Turkey');
         $this->assertEquals($country->translate('de')->name, 'Türkei');
     }
+
+    public function test_it_uses_the_default_locale_from_the_model()
+    {
+        $country = new Country();
+        $country->fill([
+            'code'    => 'tn',
+            'name:en' => 'Tunisia',
+            'name:fr' => 'Tunisie',
+        ]);
+        $this->assertEquals($country->name, 'Tunisia');
+        $country->setDefaultLocale('fr');
+        $this->assertEquals($country->name, 'Tunisie');
+
+        $country->setDefaultLocale(null);
+        $country->save();
+        $country = Country::whereCode('tn')->first();
+        $this->assertEquals($country->name, 'Tunisia');
+        $country->setDefaultLocale('fr');
+        $this->assertEquals($country->name, 'Tunisie');
+    }
 }
