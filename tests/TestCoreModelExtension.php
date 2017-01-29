@@ -64,8 +64,8 @@ class TestCoreModelExtension extends TestsBase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function ($model) use ($that) {
-            return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
+        $event->listen('eloquent*', function ($event, $models) use ($that) {
+            return get_class(reset($models)) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
         });
 
         $country = Country::find(1);
@@ -78,8 +78,8 @@ class TestCoreModelExtension extends TestsBase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function ($model) use ($that) {
-            return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
+        $event->listen('eloquent*', function ($event, $models) use ($that) {
+            return get_class(reset($models)) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
         });
 
         $continent = new Continent();

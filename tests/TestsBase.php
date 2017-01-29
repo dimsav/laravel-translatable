@@ -42,7 +42,7 @@ class TestsBase extends TestCase
         // Makes sure the migrations table is created
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--realpath'     => $migrationsPath,
+            '--path'     => $migrationsPath,
         ]);
     }
 
