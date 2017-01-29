@@ -11,7 +11,7 @@ test:
   override:
     # turn xdebug off
     - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled
-    - composer require illuminate/support:"5.4.*" --prefer-source --no-interaction
+    - composer install --prefer-source --no-interaction
     # turn xdebug on
     - mv /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini_disabled /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
     - phpunit --coverage-clover=coverage.clover
