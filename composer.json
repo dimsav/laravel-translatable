@@ -12,11 +12,11 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "~5.1"
+        "illuminate/support": "5.4.*"
     },
     "require-dev": {
-        "orchestra/testbench": "~3.0",
-        "phpunit/phpunit": "~4.0"
+        "orchestra/testbench": "3.4.*",
+        "phpunit/phpunit": "~5.7"
     },
     "autoload": {
         "psr-4": {
