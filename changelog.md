@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 6.2
+
+- Added default locale per model #271
+
 ### v. 6.1
 
 - Filling a model now supports using the 'property:locale' format in keys. #314 For example: 

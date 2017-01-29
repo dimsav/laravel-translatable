@@ -214,16 +214,22 @@ class Country extends Eloquent
 ### Available methods 
 
 ```php
-// Before we get started, this is how we determine the current locale.
+// Before we get started, this is how we determine the default locale.
 // It is set by laravel or other packages.
 App::getLocale(); // 'fr' 
 
 // To use this package, first we need an instance of our model
 $germany = Country::where('code', 'de')->first();
 
-// This returns an instance of CountryTranslation of using the current locale.
+// This returns an instance of CountryTranslation of using the default locale.
 // So in this case, french. If no french translation is found, it returns null.
 $translation = $germany->translate();
+
+// It is possible to define a default locale per model.
+protected $defaultLocale = 'de';
+
+// It is also possible to define a default locale for our model on the fly:
+$germany->setDefaultLocale('de');
 
 // If an german translation exists, it returns an instance of 
 // CountryTranslation. Otherwise it returns null.
@@ -236,7 +242,7 @@ $translation = $germany->translate('de', true);
 // Alias of the above.
 $translation = $germany->translateOrDefault('de');
 
-// Returns instance of CountryTranslation of using the current locale.
+// Returns instance of CountryTranslation of using the default locale.
 // If no translation is found, it returns a fallback translation
 // if enabled in the configuration.
 $translation = $germany->getTranslation();
