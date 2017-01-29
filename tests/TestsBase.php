@@ -36,13 +36,13 @@ class TestsBase extends TestCase
 
     private function makeSureSchemaIsCreated()
     {
-        $migrationsPath = __DIR__.'/migrations';
+        $migrationsPath = '../../../../tests/migrations';
         $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
 
         // Makes sure the migrations table is created
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--realpath'     => $migrationsPath,
+            '--path'     => $migrationsPath,
         ]);
     }
 
