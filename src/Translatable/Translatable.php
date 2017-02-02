@@ -279,7 +279,7 @@ trait Translatable
      */
     public function fillTranslatableAttributeCallback($attribute, \Closure $callback)
     {
-        foreach($this->getLocales() as $locale) {
+        foreach ($this->getLocales() as $locale) {
             $attr = "$attribute:$locale";
             $this->{$attr} = $callback($attr, $locale, $attribute);
         }
