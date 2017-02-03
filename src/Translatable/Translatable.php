@@ -281,7 +281,7 @@ trait Translatable
     {
         foreach ($this->getLocales() as $locale) {
             $attr = "$attribute:$locale";
-            $this->{$attr} = $callback($attr, $locale, $attribute);
+            $this->{$attr} = $callback($attr, $locale, $attribute, $this->{$attr});
         }
 
         return $this;
