@@ -123,12 +123,20 @@ trait Translatable
     }
 
     /**
+     * @return string|null
+     */
+    public function getTranslationForeignKey()
+    {
+        return $this->translationForeignKey ?: null;
+    }
+
+    /**
      * @return string
      */
     public function getRelationKey()
     {
-        if ($this->translationForeignKey) {
-            $key = $this->translationForeignKey;
+        if ($this->getTranslationForeignKey()) {
+            $key = $this->getTranslationForeignKey();
         } elseif ($this->primaryKey !== 'id') {
             $key = $this->primaryKey;
         } else {
