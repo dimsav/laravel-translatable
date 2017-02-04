@@ -269,25 +269,6 @@ trait Translatable
     }
 
     /**
-     * Fill attribute and translations by the return value of a callback.
-     *
-     * @param string $attribute     The attribute to fill
-     *
-     * @param \Closure $callback    First argument is the translated attribute as string ("attribute:locale"), second the current locale, third the requested attribute.
-     *
-     * @return $this
-     */
-    public function fillTranslatableAttributeCallback($attribute, \Closure $callback)
-    {
-        foreach ($this->getLocales() as $locale) {
-            $attr = "$attribute:$locale";
-            $this->{$attr} = $callback($attr, $locale, $attribute, $this->{$attr});
-        }
-
-        return $this;
-    }
-
-    /**
      * @param string $key
      */
     private function getTranslationByLocaleKey($key)
