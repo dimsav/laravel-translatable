@@ -40,7 +40,7 @@ class TranslatableServiceProvider extends ServiceProvider
     {
         $this->app->singleton('translatable.locales', function($app)
         {
-            $locales = new TranslatableLocales($app->make('config'));
+            $locales = new TranslatableLocales($app['config']);
 
             return $locales;
         });
