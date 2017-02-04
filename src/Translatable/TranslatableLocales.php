@@ -58,7 +58,7 @@ class TranslatableLocales
 	 */
 	public function getLocaleSeparator()
 	{
-		return $this->config->get('translatable.locale_seperator', '-');
+		return $this->config->get('translatable.locale_separator', '-');
 	}
 
 	/**
