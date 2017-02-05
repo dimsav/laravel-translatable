@@ -2,8 +2,7 @@
 namespace Dimsav\Translatable;
 
 
-class TranslatableHelper
-{
+class TranslatableHelper {
 
 	use Translatable {
 		Translatable::getLocales as _getLocales;
@@ -25,8 +24,7 @@ class TranslatableHelper
 	 * @return array
 	 * @throws Exception\LocalesNotDefinedException
 	 */
-	public function getLocales()
-	{
+	public function getLocales() {
 		return $this->_getLocales();
 	}
 
@@ -36,8 +34,7 @@ class TranslatableHelper
 	 * @param string	$locale
 	 * @return bool
 	 */
-	public function isLocaleCountryBased($locale)
-	{
+	public function isLocaleCountryBased($locale) {
 		return $this->_isLocaleCountryBased($locale);
 	}
 
@@ -47,8 +44,7 @@ class TranslatableHelper
 	 * @param $locale	string
 	 * @return string
 	 */
-	public function getLanguageFromCountryBasedLocale($locale)
-	{
+	public function getLanguageFromCountryBasedLocale($locale) {
 		return $this->_getLanguageFromCountryBasedLocale($locale);
 	}
 
@@ -57,8 +53,7 @@ class TranslatableHelper
 	 *
 	 * @return string
 	 */
-	public function getLocaleSeparator()
-	{
+	public function getLocaleSeparator() {
 		return $this->_getLocaleSeparator();
 	}
 
@@ -67,11 +62,14 @@ class TranslatableHelper
 	 *
 	 * @return string
 	 */
-	public function current()
-	{
+	public function current() {
 		return $this->config->get('translatable.locale')
 			?: app()->make('translator')->getLocale();
 	}
 
 
 }
+
+
+
+
