@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class TranslatableServiceProvider extends ServiceProvider
 {
     /**
-     * Is loading deferred
+     * Is loading deferred.
      *
      * @var bool
      */
@@ -33,12 +33,11 @@ class TranslatableServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the helper TranslatableLocales class
+     * Register the helper TranslatableLocales class.
      */
     public function registerTranslatableHelper()
     {
-        $this->app->singleton('translatable.helper', function($app)
-        {
+        $this->app->singleton('translatable.helper', function ($app) {
             $locales = new TranslatableLocales($app['config']);
 
             return $locales;
@@ -53,7 +52,7 @@ class TranslatableServiceProvider extends ServiceProvider
     public function provides()
     {
         return  [
-            'translatable.helper'
+            'translatable.helper',
         ];
     }
 }
