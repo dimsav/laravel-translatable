@@ -7,7 +7,7 @@ class TranslatableFacade extends Facade
 {
 
 	protected static function getFacadeAccessor() {
-		return 'translatable.locales';
+		return 'translatable.helper';
 	}
 
 }

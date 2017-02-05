@@ -29,16 +29,15 @@ class TranslatableServiceProvider extends ServiceProvider
             __DIR__.'/../config/translatable.php', 'translatable'
         );
 
-        // Register the helper
-        $this->registerTranslatableLocales();
+        $this->registerTranslatableHelper();
     }
 
     /**
      * Register the helper TranslatableLocales class
      */
-    public function registerTranslatableLocales()
+    public function registerTranslatableHelper()
     {
-        $this->app->singleton('translatable.locales', function($app)
+        $this->app->singleton('translatable.helper', function($app)
         {
             $locales = new TranslatableLocales($app['config']);
 
@@ -54,7 +53,7 @@ class TranslatableServiceProvider extends ServiceProvider
     public function provides()
     {
         return  [
-            'translatable.locales'
+            'translatable.helper'
         ];
     }
 }

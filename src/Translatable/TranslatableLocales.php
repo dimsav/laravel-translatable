@@ -2,13 +2,14 @@
 namespace Dimsav\Translatable;
 
 
-class TranslatableLocales
+class TranslatableHelper
 {
 
 	use Translatable {
 		Translatable::getLocales as _getLocales;
 		Translatable::isLocaleCountryBased as _isLocaleCountryBased;
 		Translatable::getLanguageFromCountryBasedLocale as _getLanguageFromCountryBasedLocale;
+		Translatable::getLocaleSeparator as _getLocalaSeparator;
 	}
 
 	private $config;
@@ -58,7 +59,7 @@ class TranslatableLocales
 	 */
 	public function getLocaleSeparator()
 	{
-		return $this->config->get('translatable.locale_separator', '-');
+		return $this->_getLocaleSeparator();
 	}
 
 	/**
