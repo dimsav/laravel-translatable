@@ -8,7 +8,7 @@ class TranslatableHelper
         Translatable::getLocales as _getLocales;
         Translatable::isLocaleCountryBased as _isLocaleCountryBased;
         Translatable::getLanguageFromCountryBasedLocale as _getLanguageFromCountryBasedLocale;
-        Translatable::getLocaleSeparator as _getLocalaSeparator;
+        Translatable::getLocaleSeparator as _getLocaleSeparator;
     }
 
     private $config;
