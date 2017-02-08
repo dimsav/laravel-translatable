@@ -38,7 +38,7 @@ class TranslatableServiceProvider extends ServiceProvider
     public function registerTranslatableHelper()
     {
         $this->app->singleton('translatable.helper', function ($app) {
-            $locales = new TranslatableLocales($app['config']);
+            $locales = new TranslatableHelper($app['config']);
 
             return $locales;
         });
