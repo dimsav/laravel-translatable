@@ -102,10 +102,9 @@ class ScopesTest extends TestsBase
     public function test_orWhereTranslation_filters_by_translation()
     {
         $result = Country::whereTranslation('name', 'Greece')->orWhereTranslation('name', 'France')->get();
-        $loadedTranslations = $result->toArray()['translations'];
-        $this->assertCount(2, $loadedTranslations);
-        $this->assertSame('Greece', $loadedTranslations[0]['name']);
-        $this->assertSame('France', $loadedTranslations[1]['name']);
+        $this->assertCount(2, $result);
+        $this->assertSame('Greece', $result[0]->name);
+        $this->assertSame('France', $result[1]->name);
     }
 
     public function test_whereTranslation_filters_by_translation_and_locale()
@@ -129,10 +128,9 @@ class ScopesTest extends TestsBase
     public function test_orWhereTranslationLike_filters_by_translation()
     {
         $result = Country::whereTranslationLike('name', '%eece%')->orWhereTranslationLike('name', '%ance%')->get();
-        $loadedTranslations = $result->toArray()['translations'];
-        $this->assertCount(2, $loadedTranslations);
-        $this->assertSame('Greece', $loadedTranslations[0]['name']);
-        $this->assertSame('France', $loadedTranslations[1]['name']);
+        $this->assertCount(2, $result);
+        $this->assertSame('Greece', $result[0]->name);
+        $this->assertSame('France', $result[1]->name);
     }
 
     public function test_whereTranslationLike_filters_by_translation_and_locale()
