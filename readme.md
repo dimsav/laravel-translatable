@@ -20,7 +20,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 
 * [Demo](#demo)
 * [Laravel compatibility](#laravel-compatibility)
-* [Tutorial](#tutorial)
+* [Tutorials](#tutorials)
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
 * [Features list](#features-list)
@@ -81,9 +81,10 @@ This is a Laravel package for translatable models. Its goal is to remove the com
  4.1.x    | 4.4.x
  4.0.x    | 4.3.x
 
-## Tutorial
+## Tutorials
 
-Check the tutorial about laravel-translatable in laravel-news: [*How To Add Multilingual Support to Eloquent*](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/)
+- Check the tutorial about laravel-translatable in laravel-news: [*How To Add Multilingual Support to Eloquent*](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/)
+- [How To Build An Efficient and SEO Friendly Multilingual Architecture For Your Laravel Application](https://mydnic.be/post/how-to-build-an-efficient-and-seo-friendly-multilingual-architecture-for-your-laravel-application)
 
 ## Installation in 4 steps
 
