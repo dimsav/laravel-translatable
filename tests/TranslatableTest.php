@@ -529,4 +529,21 @@ class TranslatableTest extends TestsBase
         $country->setDefaultLocale('fr');
         $this->assertEquals($country->name, 'Tunisie');
     }
+
+    public function test_replicate_entity()
+    {
+        $apple = new Food();
+        $apple->fill([
+            'name:fr' => 'Pomme',
+            'name:en' => 'Apple',
+            'name:de' => 'Apfel',
+        ]);
+        $apple->save();
+
+        $replicatedApple = $apple->replicateWithTranslations();
+        $this->assertNotSame($replicatedApple->id, $apple->id);
+        $this->assertEquals($replicatedApple->translate('fr')->name, $apple->translate('fr')->name);
+        $this->assertEquals($replicatedApple->translate('en')->name, $apple->translate('en')->name);
+        $this->assertEquals($replicatedApple->translate('de')->name, $apple->translate('de')->name);
+    }
 }
