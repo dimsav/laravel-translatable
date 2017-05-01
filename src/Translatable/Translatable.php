@@ -414,10 +414,11 @@ trait Translatable
      */
     public function replicateWithTranslations(array $except = null)
     {
-        $newInstance = parent::replicate( $except );
+        $newInstance = parent::replicate($except);
+
         unset($newInstance->translations);
         foreach ($this->translations as $translation) {
-            $newTranslation  = $translation->replicate();
+            $newTranslation = $translation->replicate();
             $newInstance->translations->add($newTranslation);
         }
 
