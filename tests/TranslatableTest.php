@@ -529,4 +529,31 @@ class TranslatableTest extends TestsBase
         $country->setDefaultLocale('fr');
         $this->assertEquals($country->name, 'Tunisie');
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_true_for_isdirty_when_translations_are_dirty()
+    {
+        $country = Country::find(1)->first();
+        $this->assertFalse($country->isDirty(), 'Model should not be dirty when no changes are made');
+
+        $country->translateOrNew('de')->name = 'Griechenland Zupertoll';
+        $this->assertTrue($country->isDirty(), 'Model should be dirty when changes are made to translations');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_translations_for_getdirty()
+    {
+        $country = Country::find(1)->first();
+        $country->code = 'xx';
+        $country->translateOrNew('de')->name = 'Griechenland Zupertoll';
+
+        $dirty = $country->getDirty();
+
+        $this->assertCount(2, $dirty, 'Dirty attributes should count 2');
+        $this->assertArraySubset(['de' => 'Griechenland Zupertoll'], $dirty, 'Translated attribute value should be included in dirty');
+    }
 }
