@@ -608,16 +608,15 @@ trait Translatable
 
         return $attributes;
     }
-
+    
     /**
      * @return array
      */
-    public function getTranslationsArray()
-	{
+    public function getTranslationsArray() {
         $translations = [];
 
-        foreach ($this->translations as $translation) {
-            foreach ($this->translatedAttributes as $attr) {
+        foreach($this->translations as $translation) {
+            foreach($this->translatedAttributes as $attr) {
                 $translations[$translation->{$this->getLocaleKey()}][$attr] = $translation->{$attr};
             }
         }

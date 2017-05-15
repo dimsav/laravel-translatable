@@ -530,23 +530,22 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->name, 'Tunisie');
     }
 	
-    public function test_retriving_translatable_array()
-	{
+    public function test_retriving_translatable_array() {
         $country = new Country();
         $country->fill([
             'code'    => 'tn',
             'name:en' => 'Tunisia',
             'name:fr' => 'Tunisie',
         ]);
-
+        
         $testArr = array();
-
-        foreach ($country->translations as $translation) {
-            foreach ($country->translatedAttributes as $attr) {
+        
+        foreach($country->translations as $translation) {
+            foreach($country->translatedAttributes as $attr) {
                 $testArr[$translation->locale][$attr] = $translation->{$attr};
             }
         }
-
+        
         $this->assertEquals($testArr, $country->getTranslationsArray());
     }
 }
