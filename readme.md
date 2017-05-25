@@ -387,6 +387,21 @@ class Country {
 
 }
 ```
+#### Fallback if translation is empty 
+If translation is exists but value is empty - you can enable this option to show translation from `translatable.fallback_locale`
+
+Solves a problem when some fields are translated and some are not and you end up with missing translations!
+
+You can also define *per-model*, by setting the `$useFallbackWhenNull` property:
+
+```php
+class Country {
+
+    public $useFallbackWhenNull = true;
+
+}
+```
+
 
 #### Country based fallback
 
