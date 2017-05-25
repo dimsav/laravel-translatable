@@ -24,7 +24,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
 * [Features list](#features-list)
-* [Support](#faq)
+* [FAQ / Support](#faq)
 
 ## Demo
 
