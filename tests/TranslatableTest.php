@@ -550,7 +550,7 @@ class TranslatableTest extends TestsBase
         }
 
         $expectedTranslations = [
-            'en' => ['name' => 'Ukraine']
+            'en' => ['name' => 'Ukraine'],
         ];
 
         $this->assertEquals($modelTranslations, $expectedTranslations);
@@ -576,7 +576,7 @@ class TranslatableTest extends TestsBase
         }
 
         $expectedTranslations = [
-            'en' => ['name' => 'Ukraine']
+            'en' => ['name' => 'Ukraine'],
         ];
 
         $this->assertEquals($modelTranslations, $expectedTranslations);
