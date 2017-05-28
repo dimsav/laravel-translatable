@@ -215,6 +215,7 @@ trait Translatable
             } else {
                 // If $this->exists and not dirty, parent::save() skips saving and returns
                 // false. So we have to save the translations
+                $this->fireModelEvent('saving', false);
                 if ($saved = $this->saveTranslations()) {
                     $this->fireModelEvent('saved', false);
                     $this->fireModelEvent('updated', false);
