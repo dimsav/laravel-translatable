@@ -258,7 +258,7 @@ trait Translatable
                 unset($attributes[$key]);
             } else {
                 list($attribute, $locale) = $this->getAttributeAndLocale($key);
-                if ($this->isTranslationAttribute($attribute)) {
+                if ($this->isTranslationAttribute($attribute) and $this->isKeyALocale($locale)) {
                     $this->getTranslationOrNew($locale)->fill([$attribute => $values]);
                     unset($attributes[$key]);
                 }
@@ -607,22 +607,6 @@ trait Translatable
         }
 
         return $attributes;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTranslationsArray()
-    {
-        $translations = [];
-
-        foreach ($this->translations as $translation) {
-            foreach ($this->translatedAttributes as $attr) {
-                $translations[$translation->{$this->getLocaleKey()}][$attr] = $translation->{$attr};
-            }
-        }
-
-        return $translations;
     }
 
     /**
