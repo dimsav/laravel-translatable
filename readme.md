@@ -109,6 +109,8 @@ In this example, we want to translate the model `Country`. We will need an extra
 ```php
 Schema::create('countries', function(Blueprint $table)
 {
+    $table->engine = 'InnoDB';
+
     $table->increments('id');
     $table->string('code');
     $table->timestamps();
@@ -116,6 +118,8 @@ Schema::create('countries', function(Blueprint $table)
 
 Schema::create('country_translations', function(Blueprint $table)
 {
+    $table->engine = 'InnoDB';
+
     $table->increments('id');
     $table->integer('country_id')->unsigned();
     $table->string('name');
