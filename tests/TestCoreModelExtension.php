@@ -195,7 +195,7 @@ class TestCoreModelExtension extends TestsBase
     public function test_setAttribute_returns_this()
     {
         $country = new Country;
-        $this->assertSame($country, $country->setAttribute('code', 'ch'));
-        $this->assertSame($country, $country->setAttribute('name', 'China'));
+        $this->assertSame($country, $country->setCustomAttribute('code', 'ch'));
+        $this->assertSame($country, $country->setCustomAttribute('name', 'China'));
     }
 }
