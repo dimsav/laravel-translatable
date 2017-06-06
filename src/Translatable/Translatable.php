@@ -638,6 +638,22 @@ trait Translatable
     }
 
     /**
+     * @return array
+     */
+    public function getTranslationsArray()
+    {
+        $translations = [];
+
+        foreach ($this->translations as $translation) {
+            foreach ($this->translatedAttributes as $attr) {
+                $translations[$translation->{$this->getLocaleKey()}][$attr] = $translation->{$attr};
+            }
+        }
+
+        return $translations;
+    }
+
+    /**
      * @return string
      */
     private function getTranslationsTable()

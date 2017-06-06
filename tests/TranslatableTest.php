@@ -530,6 +530,26 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->name, 'Tunisie');
     }
 
+    public function test_retriving_translatable_array()
+    {
+        $country = new Country();
+        $country->fill([
+            'code'    => 'tn',
+            'name:en' => 'Tunisia',
+            'name:fr' => 'Tunisie',
+        ]);
+
+        $testArr = [];
+
+        foreach ($country->translations as $translation) {
+            foreach ($country->translatedAttributes as $attr) {
+                $testArr[$translation->locale][$attr] = $translation->{$attr};
+            }
+        }
+
+        $this->assertEquals($testArr, $country->getTranslationsArray());
+    }
+
     public function test_fill_when_locale_key_unknown()
     {
         config(['translatable.locales' => ['en']]);
