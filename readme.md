@@ -304,6 +304,15 @@ $germany->deleteTranslations();
 // Delete one or multiple translations
 $germany->deleteTranslations('de');
 $germany->deleteTranslations(['de', 'en']);
+
+// Gel all the translations as array
+$germany->getTranslationsArray();
+// Returns
+[
+ 'en' => ['name' => 'Germany'],
+ 'de' => ['name' => 'Deutschland'],
+ 'fr' => ['name' => 'Allemagne'],
+];
 ```
 
 ### Available scopes

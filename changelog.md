@@ -3,7 +3,7 @@
 ### v. 7.1
 
 - Added fallback per attribute. #348
-- Added getTranslationsArray() to return #347
+- Added getTranslationsArray() #347
 - Fixed filling 'property:locale' format was not validating the locale. #356
 
 ### v. 7
