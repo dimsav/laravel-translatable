@@ -149,6 +149,31 @@ trait Translatable
     }
 
     /**
+     * @return bool|null
+     */
+    private function useFallbackWhenValueIsNull()
+    {
+        return ! empty($this->useFallbackWhenNull) ? $this->useFallbackWhenNull :
+            app()->make('config')->get('translatable.use_fallback_when_null');
+    }
+
+    /**
+     * Returns attribute value from fallback translation if
+     * value of attribute is empty and options use_fallback, use_fallback_when_null is enabled in config file or in model
+     * in model.
+     * @param $locale
+     * @param $attribute
+     * @return mixed
+     */
+    private function getAttributeWithFallback($locale, $attribute)
+    {
+        $value = $this->getTranslation($locale)->$attribute;
+        $getFallbackIfNull = $this->useFallback() && $this->useFallbackWhenValueIsNull();
+
+        return empty($value) && $getFallbackIfNull ? $this->getTranslation($this->getFallbackLocale(), true)->$attribute : $value;
+    }
+
+    /**
      * @param string $key
      *
      * @return mixed
@@ -166,12 +191,12 @@ trait Translatable
             // on it. This way, we can use Eloquent's checking for Mutation, type casting, and
             // Date fields.
             if ($this->hasGetMutator($attribute)) {
-                $this->attributes[$attribute] = $this->getTranslation($locale)->$attribute;
+                $this->attributes[$attribute] = $this->getAttributeWithFallback($locale, $attribute);
 
                 return $this->getAttributeValue($attribute);
             }
 
-            return $this->getTranslation($locale)->$attribute;
+            return $this->getAttributeWithFallback($locale, $attribute);
         }
 
         return parent::getAttribute($key);
