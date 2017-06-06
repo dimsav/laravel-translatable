@@ -149,28 +149,31 @@ trait Translatable
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    private function useFallbackWhenValueIsNull()
+    private function usePropertyFallback()
     {
-        return ! empty($this->useFallbackWhenNull) ? $this->useFallbackWhenNull :
-            app()->make('config')->get('translatable.use_fallback_when_null');
+        return app()->make('config')->get('translatable.use_property_fallback', false);
     }
 
     /**
-     * Returns attribute value from fallback translation if
-     * value of attribute is empty and options use_fallback, use_fallback_when_null is enabled in config file or in model
+     * Returns the attribute value from fallback translation if value of attribute
+     * is empty and the property fallback is enabled in the configuration.
      * in model.
      * @param $locale
      * @param $attribute
      * @return mixed
      */
-    private function getAttributeWithFallback($locale, $attribute)
+    private function getAttributeOrFallback($locale, $attribute)
     {
         $value = $this->getTranslation($locale)->$attribute;
-        $getFallbackIfNull = $this->useFallback() && $this->useFallbackWhenValueIsNull();
 
-        return empty($value) && $getFallbackIfNull ? $this->getTranslation($this->getFallbackLocale(), true)->$attribute : $value;
+        $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
+        if (empty($value) && $usePropertyFallback) {
+            return $this->getTranslation($this->getFallbackLocale(), true)->$attribute;
+        }
+
+        return $value;
     }
 
     /**
@@ -191,12 +194,12 @@ trait Translatable
             // on it. This way, we can use Eloquent's checking for Mutation, type casting, and
             // Date fields.
             if ($this->hasGetMutator($attribute)) {
-                $this->attributes[$attribute] = $this->getAttributeWithFallback($locale, $attribute);
+                $this->attributes[$attribute] = $this->getAttributeOrFallback($locale, $attribute);
 
                 return $this->getAttributeValue($attribute);
             }
 
-            return $this->getAttributeWithFallback($locale, $attribute);
+            return $this->getAttributeOrFallback($locale, $attribute);
         }
 
         return parent::getAttribute($key);

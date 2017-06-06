@@ -387,21 +387,25 @@ class Country {
 
 }
 ```
-#### Fallback if translation is empty 
-If translation is exists but value is empty - you can enable this option to show translation from `translatable.fallback_locale`
 
-Solves a problem when some fields are translated and some are not and you end up with missing translations!
+#### Fallback per property 
 
-You can also define *per-model*, by setting the `$useFallbackWhenNull` property:
+Even though we try having all models nicely translated, some fields might left empty. What's the result? You end up with missing translations for those fields!
+
+The property fallback feature is here to help. When enabled, translatable will return the value of the fallback language 
+for those empty properties. 
+
+The feature is enabled by default on new installations. If your config file was setup before v7.1, make sure to add 
+the following line to enable the feature:
 
 ```php
-class Country {
-
-    public $useFallbackWhenNull = true;
-
-}
+'use_property_fallback' => true,
 ```
 
+Of course the fallback locales must be enabled to use this feature.
+ 
+ If the property fallback is enabled in the configuration, then translatable
+ will return the translation of the fallback locale for the fields where the translation is empty. 
 
 #### Country based fallback
 

@@ -533,26 +533,9 @@ class TranslatableTest extends TestsBase
     public function test_it_uses_fallback_locale_if_default_is_empty()
     {
         App::make('config')->set('translatable.use_fallback', true);
-        App::make('config')->set('translatable.use_fallback_when_null', true);
+        App::make('config')->set('translatable.use_property_fallback', true);
         App::make('config')->set('translatable.fallback_locale', 'en');
         $country = new Country();
-        $country->fill([
-            'code' => 'tn',
-            'name:en' => 'Tunisia',
-            'name:fr' => '',
-        ]);
-        $this->app->setLocale('en');
-        $this->assertEquals('Tunisia', $country->name);
-        $this->app->setLocale('fr');
-        $this->assertEquals('Tunisia', $country->name);
-    }
-
-    public function test_it_uses_fallback_locale_if_default_is_empty_overrides_configuration()
-    {
-        App::make('config')->set('translatable.use_fallback', true);
-        App::make('config')->set('translatable.fallback_locale', 'en');
-        $country = new Country();
-        $country->useFallbackWhenNull = true;
         $country->fill([
             'code' => 'tn',
             'name:en' => 'Tunisia',

@@ -55,7 +55,18 @@ return [
     |
     */
     'use_fallback' => false,
-    'use_fallback_when_null' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Use fallback per property
+    |--------------------------------------------------------------------------
+    |
+    | The property fallback feature will return the translated value of
+    | the fallback locale if the property is empty for the selected
+    | locale. Note that 'use_fallback' must be enabled.
+    |
+     */
+    'use_property_fallback' => true,
 
     /*
     |--------------------------------------------------------------------------
