@@ -530,6 +530,60 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->name, 'Tunisie');
     }
 
+
+    public function test_fill_when_locale_key_unknown()
+    {
+        config(['translatable.locales' => ['en']]);
+
+        $country = new Country();
+        $country->fill([
+            'code' => 'ua',
+            'en'   => ['name' => 'Ukraine'],
+            'ua'   => ['name' => 'Україна'], // "ua" is unknown, so must be ignored
+        ]);
+
+        $modelTranslations = [];
+
+        foreach ($country->translations as $translation) {
+            foreach ($country->translatedAttributes as $attr) {
+                $modelTranslations[$translation->locale][$attr] = $translation->{$attr};
+            }
+        }
+
+        $expectedTranslations = [
+            'en' => ['name' => 'Ukraine'],
+        ];
+
+        $this->assertEquals($modelTranslations, $expectedTranslations);
+    }
+
+    public function test_fill_with_translation_key_when_locale_key_unknown()
+    {
+        config(['translatable.locales' => ['en']]);
+
+        $country = new Country();
+        $country->fill([
+            'code'    => 'ua',
+            'name:en' => 'Ukraine',
+            'name:ua' => 'Україна', // "ua" is unknown, so must be ignored
+        ]);
+
+        $modelTranslations = [];
+
+        foreach ($country->translations as $translation) {
+            foreach ($country->translatedAttributes as $attr) {
+                $modelTranslations[$translation->locale][$attr] = $translation->{$attr};
+            }
+        }
+
+        $expectedTranslations = [
+            'en' => ['name' => 'Ukraine'],
+        ];
+
+        $this->assertEquals($modelTranslations, $expectedTranslations);
+    }  
+      
+
     public function test_it_uses_fallback_locale_if_default_is_empty()
     {
         App::make('config')->set('translatable.use_fallback', true);
