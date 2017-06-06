@@ -530,7 +530,6 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($country->name, 'Tunisie');
     }
 
-
     public function test_fill_when_locale_key_unknown()
     {
         config(['translatable.locales' => ['en']]);
@@ -581,8 +580,7 @@ class TranslatableTest extends TestsBase
         ];
 
         $this->assertEquals($modelTranslations, $expectedTranslations);
-    }  
-      
+    }
 
     public function test_it_uses_fallback_locale_if_default_is_empty()
     {
