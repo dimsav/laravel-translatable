@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 7.1
+
+- Added fallback per attribute #348
+
 ### v. 7
 
 - Added compatibility with Laravel 5.4
