@@ -149,6 +149,34 @@ trait Translatable
     }
 
     /**
+     * @return bool
+     */
+    private function usePropertyFallback()
+    {
+        return app()->make('config')->get('translatable.use_property_fallback', false);
+    }
+
+    /**
+     * Returns the attribute value from fallback translation if value of attribute
+     * is empty and the property fallback is enabled in the configuration.
+     * in model.
+     * @param $locale
+     * @param $attribute
+     * @return mixed
+     */
+    private function getAttributeOrFallback($locale, $attribute)
+    {
+        $value = $this->getTranslation($locale)->$attribute;
+
+        $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
+        if (empty($value) && $usePropertyFallback) {
+            return $this->getTranslation($this->getFallbackLocale(), true)->$attribute;
+        }
+
+        return $value;
+    }
+
+    /**
      * @param string $key
      *
      * @return mixed
@@ -166,12 +194,12 @@ trait Translatable
             // on it. This way, we can use Eloquent's checking for Mutation, type casting, and
             // Date fields.
             if ($this->hasGetMutator($attribute)) {
-                $this->attributes[$attribute] = $this->getTranslation($locale)->$attribute;
+                $this->attributes[$attribute] = $this->getAttributeOrFallback($locale, $attribute);
 
                 return $this->getAttributeValue($attribute);
             }
 
-            return $this->getTranslation($locale)->$attribute;
+            return $this->getAttributeOrFallback($locale, $attribute);
         }
 
         return parent::getAttribute($key);
@@ -258,7 +286,7 @@ trait Translatable
                 unset($attributes[$key]);
             } else {
                 list($attribute, $locale) = $this->getAttributeAndLocale($key);
-                if ($this->isTranslationAttribute($attribute)) {
+                if ($this->isTranslationAttribute($attribute) and $this->isKeyALocale($locale)) {
                     $this->getTranslationOrNew($locale)->fill([$attribute => $values]);
                     unset($attributes[$key]);
                 }
@@ -625,6 +653,22 @@ trait Translatable
         }
 
         return $attributes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTranslationsArray()
+    {
+        $translations = [];
+
+        foreach ($this->translations as $translation) {
+            foreach ($this->translatedAttributes as $attr) {
+                $translations[$translation->{$this->getLocaleKey()}][$attr] = $translation->{$attr};
+            }
+        }
+
+        return $translations;
     }
 
     /**

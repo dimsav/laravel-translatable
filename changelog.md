@@ -1,9 +1,15 @@
 ## Version History
 
+### v. 7.1
+
+- Added fallback per attribute. #348
+- Added getTranslationsArray() #347
+- Fixed filling 'property:locale' format was not validating the locale. #356
+
 ### v. 7
 
-- Added compatibility with Laravel 5.4
-- Added default locale per model #271
+- Added compatibility with Laravel v5.4.
+- Added default locale per model. #271
 
 ### v. 6.1
 

@@ -133,11 +133,11 @@ class TranslatableTest extends TestsBase
 
     public function test_it_creates_translations()
     {
-        $country = new Country();
+        $country       = new Country();
         $country->code = 'be';
         $country->save();
 
-        $country = Country::whereCode('be')->first();
+        $country       = Country::whereCode('be')->first();
         $country->name = 'Belgium';
         $country->save();
 
@@ -147,7 +147,7 @@ class TranslatableTest extends TestsBase
 
     public function test_it_creates_translations_using_the_shortcut()
     {
-        $country = new Country();
+        $country       = new Country();
         $country->code = 'be';
         $country->name = 'Belgium';
         $country->save();
@@ -158,7 +158,7 @@ class TranslatableTest extends TestsBase
 
     public function test_it_creates_translations_using_mass_assignment()
     {
-        $data = [
+        $data    = [
             'code' => 'be',
             'name' => 'Belgium',
         ];
@@ -169,10 +169,10 @@ class TranslatableTest extends TestsBase
 
     public function test_it_creates_translations_using_mass_assignment_and_locales()
     {
-        $data = [
+        $data    = [
             'code' => 'be',
-            'en' => ['name' => 'Belgium'],
-            'fr' => ['name' => 'Belgique'],
+            'en'   => ['name' => 'Belgium'],
+            'fr'   => ['name' => 'Belgique'],
         ];
         $country = Country::create($data);
         $this->assertEquals('be', $country->code);
@@ -189,10 +189,10 @@ class TranslatableTest extends TestsBase
      */
     public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
-        $data = [
+        $data    = [
             'code' => 'be',
-            'en' => ['name' => 'Belgium'],
-            'fr' => ['name' => 'Belgique'],
+            'en'   => ['name' => 'Belgium'],
+            'fr'   => ['name' => 'Belgique'],
         ];
         $country = CountryStrict::create($data);
         $this->assertEquals('be', $country->code);
@@ -247,7 +247,7 @@ class TranslatableTest extends TestsBase
     {
         App::make('config')->set('translatable.fallback_locale', 'de');
         App::make('config')->set('translatable.use_fallback', true);
-        $country = Country::find(1);
+        $country                         = Country::find(1);
         $country->useTranslationFallback = false;
         $this->assertSame($country->getTranslation('ch'), null);
     }
@@ -267,8 +267,8 @@ class TranslatableTest extends TestsBase
         $country = new Country();
         $country->fill([
             'code' => 'gr',
-            'en' => ['name' => 'Greece'],
-            'de' => ['name' => 'Griechenland'],
+            'en'   => ['name' => 'Greece'],
+            'de'   => ['name' => 'Griechenland'],
         ]);
 
         $this->assertEquals($country->translate('en')->name, 'Greece');
@@ -278,7 +278,7 @@ class TranslatableTest extends TestsBase
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
 
-        $country = Country::create(['code' => 'gr']);
+        $country                                = Country::create(['code' => 'gr']);
         $country->getNewTranslation('en')->name = 'Greece';
         $country->save();
 
@@ -312,7 +312,7 @@ class TranslatableTest extends TestsBase
 
     public function test_getting_translation_does_not_create_translation()
     {
-        $country = Country::with('translations')->find(1);
+        $country     = Country::with('translations')->find(1);
         $translation = $country->getTranslation('abc', false);
         $this->assertSame($translation, null);
     }
@@ -363,8 +363,8 @@ class TranslatableTest extends TestsBase
     {
         $this->app->config->set('translatable.locales', ['en' => ['US', 'GB']]);
 
-        $data = [
-            'en' => ['name' => 'French fries'],
+        $data        = [
+            'en'    => ['name' => 'French fries'],
             'en-US' => ['name' => 'American french fries'],
             'en-GB' => ['name' => 'Chips'],
         ];
@@ -379,7 +379,7 @@ class TranslatableTest extends TestsBase
     {
         $this->app->config->set('translatable.locales', ['en' => ['GB']]);
         $this->app->config->set('translatable.locale_separator', '_');
-        $data = [
+        $data        = [
             'en_GB' => ['name' => 'Chips'],
         ];
         $frenchFries = Food::create($data);
@@ -394,10 +394,10 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.locales', ['en' => ['US', 'GB'], 'fr']);
         $this->app->config->set('translatable.locale_separator', '-');
         $data = [
-            'id' => 1,
-            'fr' => ['name' => 'frites'],
+            'id'    => 1,
+            'fr'    => ['name' => 'frites'],
             'en-GB' => ['name' => 'chips'],
-            'en' => ['name' => 'french fries'],
+            'en'    => ['name' => 'french fries'],
         ];
         Food::create($data);
         $fries = Food::find(1);
@@ -411,8 +411,8 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.locales', ['pt' => ['PT', 'BR'], 'en']);
         $this->app->config->set('translatable.locale_separator', '-');
         $data = [
-            'id' => 1,
-            'en' => ['name' => 'chips'],
+            'id'    => 1,
+            'en'    => ['name' => 'chips'],
             'pt-PT' => ['name' => 'batatas fritas'],
         ];
         Food::create($data);
@@ -472,7 +472,7 @@ class TranslatableTest extends TestsBase
     public function test_it_deletes_translations_for_given_locales()
     {
         $country = Country::whereCode('gr')->with('translations')->first();
-        $count = count($country->translations);
+        $count   = count($country->translations);
 
         $country->deleteTranslations('fr');
 
@@ -485,7 +485,7 @@ class TranslatableTest extends TestsBase
     public function test_passing_an_empty_array_should_not_delete_translations()
     {
         $country = Country::whereCode('gr')->with('translations')->first();
-        $count = count($country->translations);
+        $count   = count($country->translations);
 
         $country->deleteTranslations([]);
 
@@ -545,5 +545,93 @@ class TranslatableTest extends TestsBase
         $this->assertEquals($replicatedApple->translate('fr')->name, $apple->translate('fr')->name);
         $this->assertEquals($replicatedApple->translate('en')->name, $apple->translate('en')->name);
         $this->assertEquals($replicatedApple->translate('de')->name, $apple->translate('de')->name);
+    }
+
+    public function test_getTranslationsArray()
+    {
+        Country::create([
+            'code'    => 'tn',
+            'name:en' => 'Tunisia',
+            'name:fr' => 'Tunisie',
+            'name:de' => 'Tunesien',
+        ]);
+
+        /** @var Country $country */
+        $country = Country::where('code', 'tn')->first();
+
+        $this->assertSame([
+            "de" => ["name" => "Tunesien"],
+            "en" => ["name" => "Tunisia"],
+            "fr" => ["name" => "Tunisie"],
+        ], $country->getTranslationsArray());
+    }
+
+    public function test_fill_when_locale_key_unknown()
+    {
+        config(['translatable.locales' => ['en']]);
+
+        $country = new Country();
+        $country->fill([
+            'code' => 'ua',
+            'en'   => ['name' => 'Ukraine'],
+            'ua'   => ['name' => 'Україна'], // "ua" is unknown, so must be ignored
+        ]);
+
+        $modelTranslations = [];
+
+        foreach ($country->translations as $translation) {
+            foreach ($country->translatedAttributes as $attr) {
+                $modelTranslations[$translation->locale][$attr] = $translation->{$attr};
+            }
+        }
+
+        $expectedTranslations = [
+            'en' => ['name' => 'Ukraine'],
+        ];
+
+        $this->assertEquals($modelTranslations, $expectedTranslations);
+    }
+
+    public function test_fill_with_translation_key_when_locale_key_unknown()
+    {
+        config(['translatable.locales' => ['en']]);
+
+        $country = new Country();
+        $country->fill([
+            'code'    => 'ua',
+            'name:en' => 'Ukraine',
+            'name:ua' => 'Україна', // "ua" is unknown, so must be ignored
+        ]);
+
+        $modelTranslations = [];
+
+        foreach ($country->translations as $translation) {
+            foreach ($country->translatedAttributes as $attr) {
+                $modelTranslations[$translation->locale][$attr] = $translation->{$attr};
+            }
+        }
+
+        $expectedTranslations = [
+            'en' => ['name' => 'Ukraine'],
+        ];
+
+        $this->assertEquals($modelTranslations, $expectedTranslations);
+    }
+
+    public function test_it_uses_fallback_locale_if_default_is_empty()
+    {
+        App::make('config')->set('translatable.use_fallback', true);
+        App::make('config')->set('translatable.use_property_fallback', true);
+        App::make('config')->set('translatable.fallback_locale', 'en');
+        $country = new Country();
+        $country->fill([
+            'code'    => 'tn',
+            'name:en' => 'Tunisia',
+            'name:fr' => '',
+        ]);
+        $this->app->setLocale('en');
+        $this->assertEquals('Tunisia', $country->name);
+        $this->app->setLocale('fr');
+        $this->assertEquals('Tunisia', $country->name);
     }
 }
