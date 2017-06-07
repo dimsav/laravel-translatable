@@ -26,6 +26,13 @@
             "tests"
         ]
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dimsav\\Translatable\\TranslatableServiceProvider"
+            ]
+        }
+    },
 
     "minimum-stability": "dev"
 }
