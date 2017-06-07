@@ -4,7 +4,7 @@
 
 - Added replicateWithTranslations(). #346
 - Added orWhereTranslation and orWhereTranslationLike scopes. #338
-- Added support for laravel auto-discovery
+- Added support for laravel auto-discovery. #359
 
 ### v. 7.1
 
