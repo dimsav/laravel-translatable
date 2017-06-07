@@ -164,17 +164,17 @@ The array `$translatedAttributes` contains the names of the fields being transla
 
 ### Step 4: Configuration
 
+We copy the configuration file to our project.
+
+Laravel 5.*
+```bash
+php artisan vendor:publish --tag=translatable 
+```
+
 Laravel 4.*
 ```bash
 php artisan config:publish dimsav/laravel-translatable
 ```
-
-Laravel 5.*
-```bash
-php artisan vendor:publish 
-```
-
-With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/translatable.php`.
 
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
 

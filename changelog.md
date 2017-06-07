@@ -5,6 +5,7 @@
 - Added replicateWithTranslations(). #346
 - Added orWhereTranslation and orWhereTranslationLike scopes. #338
 - Added support for laravel auto-discovery. #359
+- Added tag for publishing the config file. #360
 
 ### v. 7.1
 
