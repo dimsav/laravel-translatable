@@ -181,7 +181,7 @@ trait Translatable
      *
      * @return mixed
      */
-    public function getAttribute($key)
+    public function getCustomAttribute($key)
     {
         list($attribute, $locale) = $this->getAttributeAndLocale($key);
 
@@ -202,7 +202,7 @@ trait Translatable
             return $this->getAttributeOrFallback($locale, $attribute);
         }
 
-        return parent::getAttribute($key);
+        return parent::getCustomAttribute($key);
     }
 
     /**
@@ -211,14 +211,14 @@ trait Translatable
      *
      * @return $this
      */
-    public function setAttribute($key, $value)
+    public function setCustomAttribute($key, $value)
     {
         list($attribute, $locale) = $this->getAttributeAndLocale($key);
 
         if ($this->isTranslationAttribute($attribute)) {
             $this->getTranslationOrNew($locale)->$attribute = $value;
         } else {
-            return parent::setAttribute($key, $value);
+            return parent::setCustomAttribute($key, $value);
         }
 
         return $this;
