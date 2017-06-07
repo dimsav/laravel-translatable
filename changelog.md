@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 7.2.1
+
+- Fixed delete events not fired for translations. #361
+
 ### v. 7.2
 
 - Added replicateWithTranslations(). #346
