@@ -436,6 +436,24 @@ trait Translatable
     }
 
     /**
+     * @param array
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function replicateWithTranslations(array $except = null)
+    {
+        $newInstance = parent::replicate($except);
+
+        unset($newInstance->translations);
+        foreach ($this->translations as $translation) {
+            $newTranslation = $translation->replicate();
+            $newInstance->translations->add($newTranslation);
+        }
+
+        return  $newInstance;
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Model $translation
      *
      * @return bool
