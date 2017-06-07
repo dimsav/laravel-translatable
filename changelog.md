@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 7.2
+
+- Added replicateWithTranslations(). #346
+
 ### v. 7.1
 
 - Added fallback per attribute. #348

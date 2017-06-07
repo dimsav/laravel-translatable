@@ -313,6 +313,10 @@ $germany->getTranslationsArray();
  'de' => ['name' => 'Deutschland'],
  'fr' => ['name' => 'Allemagne'],
 ];
+
+// Creates a clone and clones the translations
+$replicate = $germany->replicateWithTranslations(); 
+
 ```
 
 ### Available scopes
