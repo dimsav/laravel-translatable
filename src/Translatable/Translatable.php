@@ -21,7 +21,7 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function translate($locale = null, $withFallback = false)
+    public function translate($locale = null, $withFallback = null)
     {
         return $this->getTranslation($locale, $withFallback);
     }
