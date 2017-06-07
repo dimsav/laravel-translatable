@@ -346,8 +346,14 @@ Country::listsTranslations('name')->get()->toArray();
 // Filters countries by checking the translation against the given value 
 Country::whereTranslation('name', 'Greece')->first();
 
+// Or where translation
+Country::whereTranslation('name', 'Greece')->orWhereTranslation('name', 'France')->get();
+
 // Filters countries by checking the translation against the given string with wildcards
 Country::whereTranslationLike('name', '%Gree%')->first();
+
+// Or where translation like
+Country::whereTranslationLike('name', '%eece%')->orWhereTranslationLike('name', '%ance%')->get();
 ```
 
 ### Magic properties

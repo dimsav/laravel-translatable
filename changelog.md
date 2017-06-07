@@ -3,6 +3,7 @@
 ### v. 7.2
 
 - Added replicateWithTranslations(). #346
+- Added orWhereTranslation and orWhereTranslationLike scopes. #338
 
 ### v. 7.1
 
