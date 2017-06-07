@@ -434,6 +434,22 @@ class TranslatableTest extends TestsBase
         $fritesArray = Food::find(1)->toArray();
         $this->assertSame('frites', $fritesArray['name']);
     }
+    
+    public function test_fallback_for_country_based_locales_with_no_base_locale()
+    {
+        $this->app->config->set('translatable.use_fallback', true);
+        $this->app->config->set('translatable.fallback_locale', 'en');
+        $this->app->config->set('translatable.locales', ['pt' => ['PT', 'BR'], 'en']);
+        $this->app->config->set('translatable.locale_separator', '-');
+        $data = [
+            'id' => 1,
+            'en' => ['name' => 'chips'],
+            'pt-PT' => ['name' => 'batatas fritas'],
+        ];
+        Food::create($data);
+        $fries = Food::find(1);
+        $this->assertSame('chips', $fries->getTranslation('pt-BR')->name);
+    }
 
     public function test_it_skips_translations_in_to_array_when_config_is_set()
     {
