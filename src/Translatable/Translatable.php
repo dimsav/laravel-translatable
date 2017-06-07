@@ -725,12 +725,15 @@ trait Translatable
     public function deleteTranslations($locales = null)
     {
         if ($locales === null) {
-            $this->translations()->delete();
+            $translations = $this->translations()->get();
         } else {
             $locales = (array) $locales;
-            $this->translations()->whereIn($this->getLocaleKey(), $locales)->delete();
+            $translations = $this->translations()->whereIn($this->getLocaleKey(), $locales)->get();
         }
-
+        foreach ($translations as $translation) {
+            $translation->delete();
+        }
+        
         // we need to manually "reload" the collection built from the relationship
         // otherwise $this->translations()->get() would NOT be the same as $this->translations
         $this->load('translations');
