@@ -7,7 +7,7 @@ class TestsBase extends TestCase
 {
     protected $queriesCount;
     protected static $db2Setup = false;
-    
+
     const DB_NAME = 'translatable_test';
     const DB_NAME2 = 'translatable_test2';
     const DB_USERNAME = 'homestead';
@@ -16,19 +16,19 @@ class TestsBase extends TestCase
     public function setUp()
     {
         $this->makeSureDatabaseExists(static::DB_NAME);
-        
-        if(!static::$db2Setup) {
+
+        if (! static::$db2Setup) {
             $this->makeSureDatabaseExists(static::DB_NAME2);
         }
-        
+
         parent::setUp();
-        
-        if(!static::$db2Setup) {
+
+        if (! static::$db2Setup) {
             $this->makeSureSchemaIsCreated('mysql2');
             $this->truncateAllTablesButMigrations(static::DB_NAME2);
             static::$db2Setup = true;
         }
-        
+
         $this->makeSureSchemaIsCreated('mysql');
         $this->enableQueryCounter();
         $this->refreshSeedData();
