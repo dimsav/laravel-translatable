@@ -430,7 +430,7 @@ trait Translatable
                 if (! empty($connectionName = $this->getConnectionName())) {
                     $translation->setConnection($connectionName);
                 }
-                
+
                 $translation->setAttribute($this->getRelationKey(), $this->getKey());
                 $saved = $translation->save();
             }
