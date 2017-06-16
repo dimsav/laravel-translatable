@@ -6,53 +6,65 @@ use Dimsav\Translatable\Test\Model\Country;
 class TestsBase extends TestCase
 {
     protected $queriesCount;
+    protected static $db2Setup = false;
 
     const DB_NAME = 'translatable_test';
+    const DB_NAME2 = 'translatable_test2';
     const DB_USERNAME = 'homestead';
     const DB_PASSWORD = 'secret';
 
     public function setUp()
     {
-        $this->makeSureDatabaseExists();
+        $this->makeSureDatabaseExists(static::DB_NAME);
+
+        if (! static::$db2Setup) {
+            $this->makeSureDatabaseExists(static::DB_NAME2);
+        }
 
         parent::setUp();
 
-        $this->makeSureSchemaIsCreated();
+        if (! static::$db2Setup) {
+            $this->makeSureSchemaIsCreated('mysql2');
+            $this->truncateAllTablesButMigrations(static::DB_NAME2);
+            static::$db2Setup = true;
+        }
+
+        $this->makeSureSchemaIsCreated('mysql');
         $this->enableQueryCounter();
         $this->refreshSeedData();
     }
 
     private function refreshSeedData()
     {
-        $this->truncateAllTablesButMigrations();
+        $this->truncateAllTablesButMigrations(static::DB_NAME);
         $seeder = new AddFreshSeeds;
         $seeder->run();
     }
 
-    private function makeSureDatabaseExists()
+    private function makeSureDatabaseExists($dbName)
     {
-        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
+        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.$dbName);
     }
 
-    private function makeSureSchemaIsCreated()
+    private function makeSureSchemaIsCreated($dbConnectionName)
     {
         $migrationsPath = '../../../../tests/migrations';
         $artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
 
         // Makes sure the migrations table is created
         $artisan->call('migrate', [
-            '--database' => 'mysql',
+            '--database' => $dbConnectionName,
             '--path'     => $migrationsPath,
         ]);
     }
 
-    private function truncateAllTablesButMigrations()
+    private function truncateAllTablesButMigrations($dbName)
     {
         $db = $this->app->make('db');
         $db->statement('SET FOREIGN_KEY_CHECKS=0;');
 
         foreach ($tables = $db->select('SHOW TABLES') as $table) {
-            $table = $table->{'Tables_in_'.static::DB_NAME};
+            $table = $table->{'Tables_in_'.$dbName};
             if ($table != 'migrations') {
                 $db->table($table)->truncate();
             }
@@ -95,6 +107,16 @@ class TestsBase extends TestCase
             'driver'   => 'mysql',
             'host' => '127.0.0.1',
             'database' => static::DB_NAME,
+            'username' => static::DB_USERNAME,
+            'password' => static::DB_PASSWORD,
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'strict' => false,
+        ]);
+        $app['config']->set('database.connections.mysql2', [
+            'driver'   => 'mysql',
+            'host' => '127.0.0.1',
+            'database' => static::DB_NAME2,
             'username' => static::DB_USERNAME,
             'password' => static::DB_PASSWORD,
             'charset' => 'utf8',

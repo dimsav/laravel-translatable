@@ -634,4 +634,32 @@ class TranslatableTest extends TestsBase
         $this->app->setLocale('fr');
         $this->assertEquals('Tunisia', $country->name);
     }
+
+    public function test_translation_with_multiconnection()
+    {
+        // Add country & translation in second db
+        $country = new Country();
+        $country->setConnection('mysql2');
+        $country->code = 'sg';
+        $country->{'name:sg'} = 'Singapore';
+        $this->assertTrue($country->save());
+
+        $countryId = $country->id;
+
+        // Verify added country & translation in second db
+        $country = new Country();
+        $country->setConnection('mysql2');
+        $sgCountry = $country->find($countryId);
+        $this->assertEquals('Singapore', $sgCountry->translate('sg')->name);
+
+        // Verify added country not in default db
+        $country = new Country();
+        $sgCountry = $country::where('code', 'sg')->get();
+        $this->assertEmpty($sgCountry);
+
+        // Verify added translation not in default db
+        $country = new Country();
+        $sgCountry = $country->find($countryId);
+        $this->assertEmpty($sgCountry->translate('sg'));
+    }
 }

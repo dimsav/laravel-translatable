@@ -427,6 +427,10 @@ trait Translatable
         $saved = true;
         foreach ($this->translations as $translation) {
             if ($saved && $this->isTranslationDirty($translation)) {
+                if (! empty($connectionName = $this->getConnectionName())) {
+                    $translation->setConnection($connectionName);
+                }
+
                 $translation->setAttribute($this->getRelationKey(), $this->getKey());
                 $saved = $translation->save();
             }
