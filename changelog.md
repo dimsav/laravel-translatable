@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 7.3
+
+- Added compatibility with custom db connections
+
 ### v. 7.2.1
 
 - Fixed delete events not fired for translations. #361
