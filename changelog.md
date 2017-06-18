@@ -2,7 +2,7 @@
 
 ### v. 7.3
 
-- Added compatibility with custom db connections
+- Added compatibility with custom db connections. #366
 
 ### v. 7.2.1
 
