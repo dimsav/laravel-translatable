@@ -97,6 +97,14 @@ trait Translatable
     }
 
     /**
+     * @return array
+     */
+    public function getTranslatedAttributes()
+    {
+        return $this->translatedAttributes ?: [];
+    }
+
+    /**
      * @return string
      */
     public function getTranslationModelName()
@@ -115,12 +123,20 @@ trait Translatable
     }
 
     /**
+     * @return string|null
+     */
+    public function getTranslationForeignKey()
+    {
+        return $this->translationForeignKey ?: null;
+    }
+
+    /**
      * @return string
      */
     public function getRelationKey()
     {
-        if ($this->translationForeignKey) {
-            $key = $this->translationForeignKey;
+        if ($this->getTranslationForeignKey()) {
+            $key = $this->getTranslationForeignKey();
         } elseif ($this->primaryKey !== 'id') {
             $key = $this->primaryKey;
         } else {
@@ -367,7 +383,7 @@ trait Translatable
      */
     public function isTranslationAttribute($key)
     {
-        return in_array($key, $this->translatedAttributes);
+        return in_array($key, $this->getTranslatedAttributes());
     }
 
     /**
@@ -686,7 +702,7 @@ trait Translatable
 
         $hiddenAttributes = $this->getHidden();
 
-        foreach ($this->translatedAttributes as $field) {
+        foreach ($this->getTranslatedAttributes() as $field) {
             if (in_array($field, $hiddenAttributes)) {
                 continue;
             }
