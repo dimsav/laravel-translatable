@@ -2,12 +2,11 @@
 
 namespace Dimsav\Translatable;
 
-use App;
-use Illuminate\Database\Eloquent\Model;
+use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 
 trait Translatable
 {
@@ -232,14 +231,8 @@ trait Translatable
     public function save(array $options = [])
     {
         if ($this->exists) {
-            if (count($this->getDirty()) > 0) {
-                // If $this->exists and dirty, parent::save() has to return true. If not,
-                // an error has occurred. Therefore we shouldn't save the translations.
-                if (parent::save($options)) {
-                    return $this->saveTranslations();
-                }
-
-                return false;
+            if (! empty($this->getDirty())) {
+                return $this->saveTranslations() && parent::save($options);
             } else {
                 // If $this->exists and not dirty, parent::save() skips saving and returns
                 // false. So we have to save the translations
@@ -250,12 +243,9 @@ trait Translatable
 
                 return $saved;
             }
-        } elseif (parent::save($options)) {
-            // We save the translations only if the instance is saved in the database.
-            return $this->saveTranslations();
         }
 
-        return false;
+        return $this->saveTranslations() && parent::save($options);
     }
 
     /**
@@ -464,10 +454,57 @@ trait Translatable
      */
     protected function isTranslationDirty(Model $translation)
     {
-        $dirtyAttributes = $translation->getDirty();
-        unset($dirtyAttributes[$this->getLocaleKey()]);
+        $dirty = $translation->getDirty();
 
-        return count($dirtyAttributes) > 0;
+        unset($dirty[$this->getLocaleKey()]);
+
+        if ($notEmpty = ! empty($dirty)) {
+            $locale   = $translation->{$this->getLocaleKey()};
+            $original = [];
+
+            foreach ($dirty as $key => $value) {
+                $original[$key] = $translation->getOriginal($key);
+            }
+
+            config([
+                static::class.'.'.$this->getKey().'.'.$locale => [
+                    'dirty'    => $dirty,
+                    'original' => $original,
+                ]
+            ]);
+        }
+
+        return $notEmpty;
+    }
+
+    /**
+     * Get the attributes that have been changed since last sync.
+     *
+     * @return array
+     */
+    public function getDirtyWithTranslations()
+    {
+        $dirty = $this->getDirty();
+
+        if ($translations = config(static::class.'.'.$this->getKey())) {
+            foreach ($translations as $locale => $transDirty) {
+                foreach ($transDirty['dirty'] as $key => $value) {
+                    $transDirty[$attribute = $key.':'.$locale] = $value;
+
+                    $this->attributes[$attribute] = $value;
+                }
+
+                foreach ($transDirty['original'] as $key => $value) {
+                    $this->original[$key.':'.$locale] = $value;
+                }
+
+                unset($transDirty['dirty'], $transDirty['original']);
+
+                $dirty += $transDirty;
+            }
+        }
+
+        return $dirty;
     }
 
     /**
