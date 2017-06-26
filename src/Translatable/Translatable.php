@@ -243,9 +243,12 @@ trait Translatable
 
                 return $saved;
             }
+        } elseif (parent::save($options)) {
+            // We save the translations only if the instance is saved in the database.
+            return $this->saveTranslations();
         }
 
-        return $this->saveTranslations() && parent::save($options);
+        return false;
     }
 
     /**
