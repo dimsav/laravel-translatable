@@ -459,7 +459,7 @@ trait Translatable
         unset($dirty[$this->getLocaleKey()]);
 
         if ($notEmpty = ! empty($dirty)) {
-            $locale   = $translation->{$this->getLocaleKey()};
+            $locale = $translation->{$this->getLocaleKey()};
             $original = [];
 
             foreach ($dirty as $key => $value) {
