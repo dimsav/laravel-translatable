@@ -502,12 +502,16 @@ ORDER BY t.name desc
 The corresponding eloquent query would be:
 
 ```php
-Country::join('country_translations as t', 't.country_id', '=', 'countries.id')
-    ->where('locale', 'en')
+Country::join('country_translations as t', function ($join) {
+        $join->on('countries.id', '=', 't.country_id')
+            ->where('t.locale', '=', 'en');
+    }) 
     ->groupBy('countries.id')
     ->orderBy('t.name', 'desc')
     ->with('translations')
     ->get();
+    
+  
 ```
 
 #### How can I select a country by a translated field?
