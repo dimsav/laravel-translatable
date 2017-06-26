@@ -125,6 +125,10 @@ Schema::create('country_translations', function(Blueprint $table)
     $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
 });
 ```
+also we can create the extra table `country_translations` using `translate:table` artisan command like this :
+```
+php artisan translate:table Country
+```
 
 ### Step 3: Models
 
