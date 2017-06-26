@@ -510,8 +510,6 @@ Country::join('country_translations as t', function ($join) {
     ->orderBy('t.name', 'desc')
     ->with('translations')
     ->get();
-    
-  
 ```
 
 #### How can I select a country by a translated field?
