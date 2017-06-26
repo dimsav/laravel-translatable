@@ -2,11 +2,11 @@
 
 namespace Dimsav\Translatable;
 
-use Dimsav\Translatable\Exception\LocalesNotDefinedException;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 
 trait Translatable
 {
@@ -470,7 +470,7 @@ trait Translatable
                 static::class.'.'.$this->getKey().'.'.$locale => [
                     'dirty'    => $dirty,
                     'original' => $original,
-                ]
+                ],
             ]);
         }
 
