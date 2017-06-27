@@ -487,8 +487,6 @@ trait Translatable
      */
     public function getDirtyWithTranslations()
     {
-        $dirty = $this->getDirty();
-
         if ($translations = config(static::class.'.'.$this->getKey())) {
             foreach ($translations as $locale => $transDirty) {
                 foreach ($transDirty['dirty'] as $key => $value) {
@@ -500,14 +498,10 @@ trait Translatable
                 foreach ($transDirty['original'] as $key => $value) {
                     $this->original[$key.':'.$locale] = $value;
                 }
-
-                unset($transDirty['dirty'], $transDirty['original']);
-
-                $dirty += $transDirty;
             }
         }
 
-        return $dirty;
+        return $this->getDirty();
     }
 
     /**
