@@ -462,7 +462,6 @@ trait Translatable
         unset($dirty[$this->getLocaleKey()]);
 
         if ($notEmpty = ! empty($dirty)) {
-            $locale = $translation->{$this->getLocaleKey()};
             $original = [];
 
             foreach ($dirty as $key => $value) {
@@ -470,7 +469,7 @@ trait Translatable
             }
 
             config([
-                static::class.'.'.$this->getKey().'.'.$locale => [
+                static::class.'.'.$this->getKey().'.'.$translation->{$this->getLocaleKey()} => [
                     'dirty'    => $dirty,
                     'original' => $original,
                 ],
