@@ -112,5 +112,4 @@ return [
     |
      */
     'to_array_always_loads_translations' => true,
-
 ];

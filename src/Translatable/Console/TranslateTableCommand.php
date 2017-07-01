@@ -146,5 +146,4 @@ class TranslateTableCommand extends BaseCommand
 
         return parent::getMigrationPath();
     }
-    
 }
