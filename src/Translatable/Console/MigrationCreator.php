@@ -41,7 +41,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
             $forignKey = Str::singular(str_replace('_'.$this->getTranslationSuffix(), '', $table)).'_id';
             $stub = str_replace('DummyForeign', $forignKey, $stub);
         }
-        
+
         return $stub;
     }
 
