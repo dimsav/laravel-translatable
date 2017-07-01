@@ -1,8 +1,11 @@
 <?php
+
 namespace Dimsav\Translatable\Console;
+
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
+
 class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
 {
     /**
@@ -16,6 +19,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         return $this->files->get($this->stubPath().'/translate.stub');
     }
+
     /**
      * Populate the place-holders in the migration stub.
      *
@@ -39,6 +43,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
         }
         return $stub;
     }
+
     /**
      * Defines the default 'Translation' class suffix.
      *
@@ -48,6 +53,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         return Str::snake(Str::plural(App::make('config')->get('translatable.translation_suffix', 'translation')));
     }
+
     /**
      * Get the class name of a migration name.
      *
@@ -58,6 +64,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         return Str::studly($name);
     }
+
     /**
      * Get the full path to the migration.
      *
@@ -69,6 +76,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         return $path.'/'.$this->getDatePrefix().'_'.$name.'.php';
     }
+
     /**
      * Fire the registered post create hooks.
      *
@@ -80,6 +88,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
             call_user_func($callback);
         }
     }
+
     /**
      * Register a post migration create hook.
      *
@@ -90,6 +99,7 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         $this->postCreate[] = $callback;
     }
+
     /**
      * Get the path to the stubs.
      *
@@ -99,4 +109,5 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         return __DIR__.'/stubs';
     }
+    
 }
