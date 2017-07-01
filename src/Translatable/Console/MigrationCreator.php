@@ -110,4 +110,5 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
     {
         return __DIR__.'/stubs';
     }
+
 }
