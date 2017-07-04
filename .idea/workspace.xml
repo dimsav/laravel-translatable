@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ae32ead-10fb-421d-9541-cb8742bd8b46" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Translatable/Translatable.php" afterPath="$PROJECT_DIR$/src/Translatable/Translatable.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Translatable/TranslatableServiceProvider.php" afterPath="$PROJECT_DIR$/src/Translatable/TranslatableServiceProvider.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config/translatable.php" afterPath="$PROJECT_DIR$/src/config/translatable.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -35,7 +33,7 @@
       <file leaf-file-name="MigrationCreator.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Translatable/Console/MigrationCreator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3068">
+            <state relative-caret-position="501">
               <caret line="118" column="0" lean-forward="true" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
               <folding>
                 <element signature="e#47#59#0#PHP" expanded="true" />
@@ -47,8 +45,8 @@
       <file leaf-file-name="TranslateTableCommand.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Translatable/Console/TranslateTableCommand.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3874">
-              <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+            <state relative-caret-position="501">
+              <caret line="157" column="0" lean-forward="true" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
               <folding>
                 <element signature="e#47#74#0#PHP" expanded="true" />
               </folding>
@@ -59,15 +57,19 @@
       <file leaf-file-name="translatable.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/config/translatable.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-              <folding>
-                <marker date="1499208179153" expanded="true" signature="15:4226" ph="..." />
-                <marker date="1499208179153" expanded="true" signature="2681:3104" ph="..." />
-                <marker date="1499208179153" expanded="true" signature="2780:3382" ph="..." />
-                <marker date="1499208179153" expanded="true" signature="3435:3714" ph="..." />
-                <marker date="1499208179153" expanded="true" signature="3754:4173" ph="..." />
-              </folding>
+            <state relative-caret-position="293">
+              <caret line="116" column="18" lean-forward="true" selection-start-line="116" selection-start-column="18" selection-end-line="116" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="78">
+              <caret line="3" column="5" lean-forward="false" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -82,7 +84,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="readme.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readme.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -102,8 +104,8 @@
       <file leaf-file-name="TranslatableArtisanProvider.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Translatable/TranslatableArtisanProvider.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="501">
+              <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding>
                 <element signature="e#39#88#0#PHP" expanded="true" />
               </folding>
@@ -157,6 +159,7 @@
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/src/Translatable/TranslatableServiceProvider.php" />
         <option value="$PROJECT_DIR$/readme.md" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -355,12 +358,12 @@
       <option name="presentableId" value="Default" />
       <updated>1498867603094</updated>
       <workItem from="1498867605779" duration="2676000" />
-      <workItem from="1499207524714" duration="2652000" />
+      <workItem from="1499207524714" duration="3162000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5328000" />
+    <option name="totallyTimeSpent" value="5838000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1378" height="744" extended-state="0" />
@@ -417,13 +420,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2938">
           <caret line="113" column="49" lean-forward="true" selection-start-line="113" selection-start-column="49" selection-end-line="113" selection-end-column="49" />
-          <folding>
-            <marker date="1499208179153" expanded="true" signature="15:4226" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="2681:3104" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="2780:3382" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="3435:3714" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="3754:4173" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -467,20 +464,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/translatable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-          <folding>
-            <marker date="1499208179153" expanded="true" signature="15:4226" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="2681:3104" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="2780:3382" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="3435:3714" ph="..." />
-            <marker date="1499208179153" expanded="true" signature="3754:4173" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
@@ -499,26 +482,6 @@
             <marker date="1499208179100" expanded="true" signature="21718:21825" ph=" Set the default locale on the model. ..." />
             <marker date="1499208179100" expanded="true" signature="21873:21948" ph="{...}" />
             <marker date="1499208179100" expanded="true" signature="21957:22035" ph=" Get the default locale on the model. ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Translatable/Console/MigrationCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3068">
-          <caret line="118" column="0" lean-forward="true" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding>
-            <element signature="e#47#59#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Translatable/Console/TranslateTableCommand.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3874">
-          <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
-          <folding>
-            <element signature="e#47#74#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -546,16 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Translatable/TranslatableArtisanProvider.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#39#88#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/readme.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -568,6 +521,52 @@
             </folding>
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Translatable/Console/MigrationCreator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="118" column="0" lean-forward="true" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <folding>
+            <element signature="e#47#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Translatable/Console/TranslateTableCommand.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="157" column="0" lean-forward="true" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+          <folding>
+            <element signature="e#47#74#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Translatable/TranslatableArtisanProvider.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding>
+            <element signature="e#39#88#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/translatable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="116" column="18" lean-forward="true" selection-start-line="116" selection-start-column="18" selection-end-line="116" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="3" column="5" lean-forward="false" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
