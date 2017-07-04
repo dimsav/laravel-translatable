@@ -125,7 +125,10 @@ Schema::create('country_translations', function(Blueprint $table)
     $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
 });
 ```
-
+also we can create the `country_translations` model and migration using `make:translate` artisan command like this :
+```
+php artisan make:translate Country
+```
 ### Step 3: Models
 
 1. The translatable model `Country` should [use the trait](http://www.sitepoint.com/using-traits-in-php-5-4/) `Dimsav\Translatable\Translatable`. 
