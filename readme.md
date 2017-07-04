@@ -93,7 +93,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 Add the package in your composer.json by executing the command.
 
 ```bash
-composer require dimsav/laravel-translatable
+composer require ahmed-aliraqi/laravel-translatable
 ```
 
 Next, add the service provider to `app/config/app.php`
@@ -125,6 +125,11 @@ Schema::create('country_translations', function(Blueprint $table)
     $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
 });
 ```
+also we can create the `country_translations` migration using `translate:table` artisan command like this :
+```
+php artisan make:translate Country
+```
+
 
 ### Step 3: Models
 
