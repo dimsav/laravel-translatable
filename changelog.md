@@ -1,5 +1,39 @@
 ## Version History
 
+### v. 7.3
+
+- Added compatibility with custom db connections. #366
+
+### v. 7.2.1
+
+- Fixed delete events not fired for translations. #361
+
+### v. 7.2
+
+- Added replicateWithTranslations(). #346
+- Added orWhereTranslation and orWhereTranslationLike scopes. #338
+- Added support for laravel auto-discovery. #359
+- Added tag for publishing the config file. #360
+
+### v. 7.1
+
+- Added fallback per attribute. #348
+- Added getTranslationsArray() #347
+- Fixed filling 'property:locale' format was not validating the locale. #356
+
+### v. 7
+
+- Added compatibility with Laravel v5.4.
+- Added default locale per model. #271
+
+### v. 6.1
+
+- Filling a model now supports using the 'property:locale' format in keys. #314 For example: 
+```
+$country->fill(['name:en' => 'Belgium']);
+```  
+- Added config to skip translations in toArray() for better performance when needed. #315
+
 ### v. 6.0.1
 
 - Fix issue when trying to fetch a translation with a country based locale #264

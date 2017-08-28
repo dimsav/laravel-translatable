@@ -64,8 +64,8 @@ class TestCoreModelExtension extends TestsBase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function ($model) use ($that) {
-            return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
+        $event->listen('eloquent*', function ($event, $models) use ($that) {
+            return get_class(reset($models)) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
         });
 
         $country = Country::find(1);
@@ -78,8 +78,8 @@ class TestCoreModelExtension extends TestsBase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function ($model) use ($that) {
-            return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
+        $event->listen('eloquent*', function ($event, $models) use ($that) {
+            return get_class(reset($models)) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
         });
 
         $continent = new Continent();
@@ -149,7 +149,7 @@ class TestCoreModelExtension extends TestsBase
         $this->assertEquals(0, count($after));
     }
 
-    public function test_to_array_returs_translated_attributes()
+    public function test_to_array_returns_translated_attributes()
     {
         $country = Country::find(1);
         $this->assertArrayHasKey('name', $country->toArray());

@@ -20,11 +20,11 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 
 * [Demo](#demo)
 * [Laravel compatibility](#laravel-compatibility)
-* [Tutorial](#tutorial)
+* [Tutorials](#tutorials)
 * [Installation](#installation-in-4-steps)
 * [Configuration](#configuration)
 * [Features list](#features-list)
-* [Support](#faq)
+* [FAQ / Support](#faq)
 
 ## Demo
 
@@ -72,6 +72,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 
  Laravel  | Translatable
 :---------|:----------
+ 5.4      | 7.*
  5.3      | 6.*
  5.2      | 5.5 - 6.*
  5.1      | 5.0 - 6.*
@@ -80,9 +81,10 @@ This is a Laravel package for translatable models. Its goal is to remove the com
  4.1.x    | 4.4.x
  4.0.x    | 4.3.x
 
-## Tutorial
+## Tutorials
 
-Check the tutorial about laravel-translatable in laravel-news: [*How To Add Multilingual Support to Eloquent*](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/)
+- Check the tutorial about laravel-translatable in laravel-news: [*How To Add Multilingual Support to Eloquent*](https://laravel-news.com/2015/09/how-to-add-multilingual-support-to-eloquent/)
+- [How To Build An Efficient and SEO Friendly Multilingual Architecture For Your Laravel Application](https://mydnic.be/post/how-to-build-an-efficient-and-seo-friendly-multilingual-architecture-for-your-laravel-application)
 
 ## Installation in 4 steps
 
@@ -162,21 +164,25 @@ The array `$translatedAttributes` contains the names of the fields being transla
 
 ### Step 4: Configuration
 
+We copy the configuration file to our project.
+
+Laravel 5.*
+```bash
+php artisan vendor:publish --tag=translatable 
+```
+
 Laravel 4.*
 ```bash
 php artisan config:publish dimsav/laravel-translatable
 ```
 
-Laravel 5.*
-```bash
-php artisan vendor:publish 
-```
-
-With this command, initialize the configuration and modify the created file, located under `app/config/packages/dimsav/laravel-translatable/translatable.php`.
-
 *Note: There isn't any restriction for the format of the locales. Feel free to use whatever suits you better, like "eng" instead of "en", or "el" instead of "gr".  The important is to define your locales and stick to them.*
 
 ## Configuration
+
+### The config file
+
+You can see the options for further customization in the [config file](src/config/translatable.php).
 
 ### The translation model
 
@@ -210,16 +216,27 @@ class Country extends Eloquent
 ### Available methods 
 
 ```php
-// Before we get started, this is how we determine the current locale.
+// Before we get started, this is how we determine the default locale.
 // It is set by laravel or other packages.
 App::getLocale(); // 'fr' 
 
 // To use this package, first we need an instance of our model
 $germany = Country::where('code', 'de')->first();
 
-// This returns an instance of CountryTranslation of using the current locale.
+// This returns an instance of CountryTranslation of using the default locale.
 // So in this case, french. If no french translation is found, it returns null.
 $translation = $germany->translate();
+
+// It is possible to define a default locale per model by overriding the model constructor.
+public function __construct(array $attributes = [])
+{
+    parent::__construct($attributes);
+    
+    $this->defaultLocale = 'de';
+}
+
+// It is also possible to define a default locale for our model on the fly:
+$germany->setDefaultLocale('de');
 
 // If an german translation exists, it returns an instance of 
 // CountryTranslation. Otherwise it returns null.
@@ -232,7 +249,7 @@ $translation = $germany->translate('de', true);
 // Alias of the above.
 $translation = $germany->translateOrDefault('de');
 
-// Returns instance of CountryTranslation of using the current locale.
+// Returns instance of CountryTranslation of using the default locale.
 // If no translation is found, it returns a fallback translation
 // if enabled in the configuration.
 $translation = $germany->getTranslation();
@@ -241,6 +258,28 @@ $translation = $germany->getTranslation();
 // CountryTranslation. Otherwise it returns null.
 // Same as $germany->translate('de');
 $translation = $germany->getTranslation('de', true);
+
+// To set the translation for a field you can either update the translation model.
+// Saving the model will also save all the related translations.
+$germany->translate('en')->name = 'Germany';
+$germany->save();
+
+// Alternatively we can use the shortcut
+$germany->{'name:en'} = 'Germany';
+$germany->save();
+
+// There are two ways of inserting mutliple translations into the database
+// First, using the locale as array key.
+$greece = $country->fill([
+    'en'  => ['name' => 'Greece'],
+    'fr'  => ['name' => 'Grèce'],
+]);
+
+// The second way is to use the following syntax.  
+$greece = $country->fill([
+    'name:en' => 'Greece',
+    'name:fr' => 'Grèce',
+]);
 
 // Returns true/false if the model has translation about the current locale. 
 $germany->hasTranslation();
@@ -265,6 +304,19 @@ $germany->deleteTranslations();
 // Delete one or multiple translations
 $germany->deleteTranslations('de');
 $germany->deleteTranslations(['de', 'en']);
+
+// Gel all the translations as array
+$germany->getTranslationsArray();
+// Returns
+[
+ 'en' => ['name' => 'Germany'],
+ 'de' => ['name' => 'Deutschland'],
+ 'fr' => ['name' => 'Allemagne'],
+];
+
+// Creates a clone and clones the translations
+$replicate = $germany->replicateWithTranslations(); 
+
 ```
 
 ### Available scopes
@@ -294,8 +346,14 @@ Country::listsTranslations('name')->get()->toArray();
 // Filters countries by checking the translation against the given value 
 Country::whereTranslation('name', 'Greece')->first();
 
+// Or where translation
+Country::whereTranslation('name', 'Greece')->orWhereTranslation('name', 'France')->get();
+
 // Filters countries by checking the translation against the given string with wildcards
 Country::whereTranslationLike('name', '%Gree%')->first();
+
+// Or where translation like
+Country::whereTranslationLike('name', '%eece%')->orWhereTranslationLike('name', '%ance%')->get();
 ```
 
 ### Magic properties
@@ -348,6 +406,25 @@ class Country {
 
 }
 ```
+
+#### Fallback per property 
+
+Even though we try having all models nicely translated, some fields might left empty. What's the result? You end up with missing translations for those fields!
+
+The property fallback feature is here to help. When enabled, translatable will return the value of the fallback language 
+for those empty properties. 
+
+The feature is enabled by default on new installations. If your config file was setup before v7.1, make sure to add 
+the following line to enable the feature:
+
+```php
+'use_property_fallback' => true,
+```
+
+Of course the fallback locales must be enabled to use this feature.
+ 
+ If the property fallback is enabled in the configuration, then translatable
+ will return the translation of the fallback locale for the fields where the translation is empty. 
 
 #### Country based fallback
 
@@ -425,8 +502,10 @@ ORDER BY t.name desc
 The corresponding eloquent query would be:
 
 ```php
-Country::join('country_translations as t', 't.country_id', '=', 'countries.id')
-    ->where('locale', 'en')
+Country::join('country_translations as t', function ($join) {
+        $join->on('countries.id', '=', 't.country_id')
+            ->where('t.locale', '=', 'en');
+    }) 
     ->groupBy('countries.id')
     ->orderBy('t.name', 'desc')
     ->with('translations')
