@@ -160,7 +160,7 @@ class TestCoreModelExtension extends TestsBase
     {
         $country = new Country(['code' => 'test']);
         $country->save();
-        $country->toArray();
+        $this->assertArrayHasKey('code', $country->toArray());
     }
 
     // Forms

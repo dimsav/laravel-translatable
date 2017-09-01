@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 8.0
+
+- Added support for Laravel 5.5 #394
+
 ### v. 7.3
 
 - Added compatibility with custom db connections. #366
