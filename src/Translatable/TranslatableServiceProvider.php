@@ -18,6 +18,8 @@ class TranslatableServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(TranslatableArtisanProvider::class);
+
         $this->mergeConfigFrom(
             __DIR__.'/../config/translatable.php', 'translatable'
         );
