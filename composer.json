@@ -1,5 +1,5 @@
 {
-    "name": "jurre88/laravel-translatable",
+    "name": "dimsav/laravel-translatable",
     "description": "A Laravel package for multilingual models",
     "keywords": ["laravel", "translation", "language", "database"],
     "license": "MIT",
