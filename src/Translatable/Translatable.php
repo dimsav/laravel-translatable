@@ -187,7 +187,8 @@ trait Translatable
 
         if ($this->isTranslationAttribute($attribute)) {
             if ($this->getTranslation($locale) === null) {
-                return null;
+	            // When the attribute is not available in current locale, fallback to fallback_locale
+	            $locale = app()->make('config')->get('translatable.fallback_locale');
             }
 
             // If the given $attribute has a mutator, we push it to $attributes and then call getAttributeValue
