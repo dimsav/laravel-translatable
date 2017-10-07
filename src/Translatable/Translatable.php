@@ -678,7 +678,7 @@ trait Translatable
     {
         $attributes = parent::toArray();
 
-        if (!($this->relationLoaded('translations') || $this->toArrayAlwaysLoadsTranslations())) {
+        if (! ($this->relationLoaded('translations') || $this->toArrayAlwaysLoadsTranslations())) {
             return $attributes;
         }
 
