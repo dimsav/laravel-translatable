@@ -187,7 +187,7 @@ trait Translatable
 
         if ($this->isTranslationAttribute($attribute)) {
             if ($this->getTranslation($locale) === null) {
-                return null;
+                return $this->getAttributeValue($attribute);
             }
 
             // If the given $attribute has a mutator, we push it to $attributes and then call getAttributeValue
