@@ -670,13 +670,11 @@ trait Translatable
     /**
      * @return array
      */
-    public function toArray()
+    public function attributesToArray()
     {
-        $attributes = parent::toArray();
+        $attributes = parent::attributesToArray();
 
-        if ($this->relationLoaded('translations') || $this->toArrayAlwaysLoadsTranslations()) {
-            // continue
-        } else {
+        if (! $this->relationLoaded('translations') && ! $this->toArrayAlwaysLoadsTranslations()) {
             return $attributes;
         }
 
