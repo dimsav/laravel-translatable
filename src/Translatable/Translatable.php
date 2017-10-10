@@ -109,9 +109,7 @@ trait Translatable
      */
     public function getTranslationModelNameDefault()
     {
-        $config = app()->make('config');
-
-        return get_class($this).$config->get('translatable.translation_suffix', 'Translation');
+        return get_class($this).config('translatable.translation_suffix', 'Translation');
     }
 
     /**
@@ -135,9 +133,7 @@ trait Translatable
      */
     public function getLocaleKey()
     {
-        $config = app()->make('config');
-
-        return $this->localeKey ?: $config->get('translatable.locale_key', 'locale');
+        return $this->localeKey ?: config('translatable.locale_key', 'locale');
     }
 
     /**
@@ -153,7 +149,7 @@ trait Translatable
      */
     private function usePropertyFallback()
     {
-        return app()->make('config')->get('translatable.use_property_fallback', false);
+        return config('translatable.use_property_fallback', false);
     }
 
     /**
@@ -323,7 +319,7 @@ trait Translatable
             }
         }
 
-        return app()->make('config')->get('translatable.fallback_locale');
+        return config('translatable.fallback_locale');
     }
 
     /**
@@ -357,7 +353,7 @@ trait Translatable
             return $this->useTranslationFallback;
         }
 
-        return app()->make('config')->get('translatable.use_fallback');
+        return config('translatable.use_fallback');
     }
 
     /**
@@ -389,7 +385,7 @@ trait Translatable
      */
     protected function getLocales()
     {
-        $localesConfig = (array) app()->make('config')->get('translatable.locales');
+        $localesConfig = (array) config('translatable.locales');
 
         if (empty($localesConfig)) {
             throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
@@ -416,7 +412,7 @@ trait Translatable
      */
     protected function getLocaleSeparator()
     {
-        return app()->make('config')->get('translatable.locale_separator', '-');
+        return config('translatable.locale_separator', '-');
     }
 
     /**
@@ -732,7 +728,7 @@ trait Translatable
             return $this->defaultLocale;
         }
 
-        return app()->make('config')->get('translatable.locale')
+        return config('translatable.locale')
             ?: app()->make('translator')->getLocale();
     }
 
@@ -802,6 +798,6 @@ trait Translatable
      */
     private function toArrayAlwaysLoadsTranslations()
     {
-        return app()->make('config')->get('translatable.to_array_always_loads_translations', true);
+        return config('translatable.to_array_always_loads_translations', true);
     }
 }
