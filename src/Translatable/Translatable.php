@@ -165,8 +165,8 @@ trait Translatable
         $value = $this->getTranslation($locale)->$attribute;
 
         $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
-        if (empty($value) && $usePropertyFallback) {
-            return $this->getTranslation($this->getFallbackLocale(), true)->$attribute;
+        if (empty($value) && $usePropertyFallback && $fallback = $this->getTranslation($this->getFallbackLocale(), true)) {
+            return $fallback->$attribute;
         }
 
         return $value;
@@ -670,13 +670,11 @@ trait Translatable
     /**
      * @return array
      */
-    public function toArray()
+    public function attributesToArray()
     {
-        $attributes = parent::toArray();
+        $attributes = parent::attributesToArray();
 
-        if ($this->relationLoaded('translations') || $this->toArrayAlwaysLoadsTranslations()) {
-            // continue
-        } else {
+        if (! $this->relationLoaded('translations') && ! $this->toArrayAlwaysLoadsTranslations()) {
             return $attributes;
         }
 
