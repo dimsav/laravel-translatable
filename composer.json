@@ -11,8 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "5.5.*"
+        "php": ">=5.4.0"
     },
     "require-dev": {
         "orchestra/testbench": "3.5.*",
