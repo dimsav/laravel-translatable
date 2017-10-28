@@ -25,6 +25,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 * [Configuration](#configuration)
 * [Features list](#features-list)
 * [FAQ / Support](#faq)
+* [Donations](#donations)
 
 ## Demo
 
@@ -567,3 +568,9 @@ Schema::create('language_translations', function(Blueprint $table){
 ```
 
 The best solution though would be to update your mysql version. And **always make sure you have the same version both in development and production environment!**
+
+## Donations ❤️
+
+This software has been crafted with attention and love.
+
+Show your love and support by sending bitcoin to this address: `167QC4XQ3acgbwVYWAdmS81jARCcVTWBXU`
