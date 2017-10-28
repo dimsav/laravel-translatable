@@ -569,8 +569,10 @@ Schema::create('language_translations', function(Blueprint $table){
 
 The best solution though would be to update your mysql version. And **always make sure you have the same version both in development and production environment!**
 
-## Donations ❤️
+## Donations
 
 This software has been crafted with attention and love.
 
 Show your love and support by sending bitcoin to this address: `167QC4XQ3acgbwVYWAdmS81jARCcVTWBXU`
+
+❤️ Thank you!
