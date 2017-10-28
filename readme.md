@@ -481,7 +481,9 @@ Got any question or suggestion? Feel free to open an [Issue](https://github.com/
 
 #### I want to help!
 
-You are awesome! Watched the repo and reply to the issues. You will help offering a great experience to the users of the package. `#communityWorks`
+You are awesome! Watch the repo and reply to the issues. You will help offering a great experience to the users of the package. `#communityWorks`
+
+Also buy me a beer by making a [donation](#donations). ❤️
 
 #### I am getting collisions with other trait methods!
 
