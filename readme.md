@@ -577,4 +577,6 @@ This software has been crafted with attention and love.
 
 Show your love and support by sending bitcoin to this address: `167QC4XQ3acgbwVYWAdmS81jARCcVTWBXU`
 
+Or by sending to this PayPal address: `ds@dimsav.com`
+
 ❤️ Thank you!
