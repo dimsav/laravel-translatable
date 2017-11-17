@@ -93,7 +93,8 @@ class ScopesTest extends TestsBase
         $this->assertSame('Griechenland', $loadedTranslations[1]['name']);
     }
 
-    public function test_scope_withTranslation_with_country_based_fallback() {
+    public function test_scope_withTranslation_with_country_based_fallback()
+    {
         App::make('config')->set('translatable.fallback_locale', 'en');
         App::make('config')->set('translatable.use_fallback', true);
         App::setLocale('en-GB');
