@@ -53,7 +53,7 @@ class ScopesTest extends TestsBase
             'id'   => '1',
             'name' => 'Griechenland',
         ]];
-        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
+        $this->assertArraySubset($list, Country::listsTranslations('name')->get()->toArray());
     }
 
     public function test_lists_of_translated_fields_with_fallback()
@@ -69,7 +69,7 @@ class ScopesTest extends TestsBase
             'id'   => '2',
             'name' => 'France',
         ]];
-        $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
+        $this->assertArraySubset($list, $country->listsTranslations('name')->get()->toArray());
     }
 
     public function test_scope_withTranslation_without_fallback()
