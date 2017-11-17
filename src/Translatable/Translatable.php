@@ -582,9 +582,9 @@ trait Translatable
                     $locale = $this->locale();
                     $countryFallbackLocale = $this->getFallbackLocale($locale); // e.g. de-DE => de
                     $locales = array_unique([$locale, $countryFallbackLocale, $this->getFallbackLocale()]);
-                    return $query->whereIn($this->getTranslationsTable() . '.' . $this->getLocaleKey(), $locales);
+                    return $query->whereIn($this->getTranslationsTable().'.'.$this->getLocaleKey(), $locales);
                 }
-                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
+                return $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
             },
         ]);
     }

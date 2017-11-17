@@ -1,7 +1,7 @@
 <?php
 
-use Dimsav\Translatable\Test\Model\Vegetable;
 use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\Vegetable;
 
 class ScopesTest extends TestsBase
 {
@@ -103,9 +103,9 @@ class ScopesTest extends TestsBase
         App::setLocale('de-CH');
         $result = Vegetable::withTranslation()->find(1)->toArray();
         $expectedTranslations = [
-            ['name' => 'zucchini', 'locale' => 'en',],
-            ['name' => 'Zucchini', 'locale' => 'de',],
-            ['name' => 'Zucchetti', 'locale' => 'de-CH',],
+            ['name' => 'zucchini', 'locale' => 'en'],
+            ['name' => 'Zucchini', 'locale' => 'de'],
+            ['name' => 'Zucchetti', 'locale' => 'de-CH'],
         ];
         $this->assertArraySubset($expectedTranslations, $result['translations']);
     }
