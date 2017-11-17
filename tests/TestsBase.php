@@ -123,7 +123,8 @@ class TestsBase extends TestCase
             'collation' => 'utf8_unicode_ci',
             'strict' => false,
         ]);
-        $app['config']->set('translatable.locales', ['el', 'en', 'fr', 'de', 'id']);
+        $locales = ['el', 'en', 'fr', 'de', 'id', 'en-GB', 'en-US', 'de-DE', 'de-CH'];
+        $app['config']->set('translatable.locales', $locales);
     }
 
     protected function getPackageAliases($app)

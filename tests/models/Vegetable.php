@@ -9,7 +9,9 @@ class Vegetable extends Eloquent
 {
     use Translatable;
 
-    protected $primaryKey = 'vegetable_identity';
+    protected $primaryKey = 'identity';
+
+    protected $translationForeignKey = 'vegetable_identity';
 
     public $translatedAttributes = ['name'];
 }
