@@ -489,6 +489,22 @@ Also buy me a beer by making a [donation](#donations). ❤️
 
 Translatable is fully compatible with all kinds of Eloquent extensions, including Ardent. If you need help to implement Translatable with these extensions, see this [example](https://gist.github.com/dimsav/9659552).
 
+#### How do I migrate my existing table to use laravel-translatable?
+
+Please see the installation steps to understand how your database should be structured.
+
+If your properties are written in english, we recommend using these commands in your migrations:
+
+```php
+// We insert the translation attributes into the fresh translated table: 
+\DB::statement("insert into country_translations (country_id, name, locale) select id, name, 'en' from countries");
+
+// We drop the translation attributes in our main table: 
+Schema::table('countries', function ($table) {
+    $table->dropColumn('name');
+}); 
+```
+
 #### How do I sort by translations?
 
 A tip here is to make the MySQL query first and then do the Eloquent one.
