@@ -135,7 +135,7 @@ class TestsBase extends TestCase
     protected function enableQueryCounter()
     {
         $that = $this;
-        DB::listen(function($query) use ($that) {
+        DB::listen(function ($query) use ($that) {
             $that->queriesCount++;
             // echo("\n--- Query {$that->queriesCount}--- $query->sql\n");
         });
