@@ -126,6 +126,16 @@ Schema::create('country_translations', function(Blueprint $table)
     $table->unique(['country_id','locale']);
     $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
 });
+
+// code below is applicaple if you already had the countries table populated with data 
+// and you create the country_translations later on and want to move the data over to it
+\DB::statement("insert into country_translations (country_id, name, locale) select id, name, 'en' from countries");
+
+// also drop the translated fields from your initial table sicne we moved data over
+Schema::table('countries', function (Blueprint $table) {
+    $table->dropColumn('name');
+});
+        
 ```
 
 ### Step 3: Models
