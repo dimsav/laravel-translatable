@@ -135,13 +135,9 @@ class TestsBase extends TestCase
     protected function enableQueryCounter()
     {
         $that = $this;
-        $event = App::make('events');
-        $event->listen('illuminate.query', function ($query, $bindings) use ($that) {
+        DB::listen(function($query) use ($that) {
             $that->queriesCount++;
-            $bindings = $this->formatBindingsForSqlInjection($bindings);
-            $query = $this->insertBindingsIntoQuery($query, $bindings);
-            $query = $this->beautifyQuery($query);
-            // echo("\n--- Query {$that->queriesCount}--- $query\n");
+            // echo("\n--- Query {$that->queriesCount}--- $query->sql\n");
         });
     }
 
