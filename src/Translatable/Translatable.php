@@ -165,8 +165,12 @@ trait Translatable
         $value = $this->getTranslation($locale)->$attribute;
 
         $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
-        if (empty($value) && $usePropertyFallback) {
-            return $this->getTranslation($this->getFallbackLocale(), true)->$attribute;
+        if (
+            empty($value) &&
+            $usePropertyFallback &&
+            ($fallback = $this->getTranslation($this->getFallbackLocale(), true))
+        ) {
+            return $fallback->$attribute;
         }
 
         return $value;

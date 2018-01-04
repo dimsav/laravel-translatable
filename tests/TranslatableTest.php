@@ -635,6 +635,26 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Tunisia', $country->name);
     }
 
+    public function test_it_always_uses_value_when_fallback_not_available()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'it');
+        App::make('config')->set('translatable.use_fallback', true);
+
+        $country = new Country();
+        $country->fill([
+            'code' => 'gr',
+            'en' => ['name' => ''],
+            'de' => ['name' => 'Griechenland'],
+        ]);
+
+        // verify translated attributed is correctly returned when empty (non-existing fallback is ignored)
+        $this->app->setLocale('en');
+        $this->assertEquals('', $country->getAttribute('name'));
+
+        $this->app->setLocale('de');
+        $this->assertEquals('Griechenland', $country->getAttribute('name'));
+    }
+
     public function test_translation_with_multiconnection()
     {
         // Add country & translation in second db
