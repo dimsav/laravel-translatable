@@ -49,6 +49,8 @@ class ScopesTest extends TestsBase
     public function test_lists_of_translated_fields()
     {
         App::setLocale('de');
+        App::make('config')->set('translatable.to_array_always_loads_translations', false);
+
         $list = [[
             'id'   => '1',
             'name' => 'Griechenland',
@@ -59,14 +61,15 @@ class ScopesTest extends TestsBase
     public function test_lists_of_translated_fields_with_fallback()
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
+        App::make('config')->set('translatable.to_array_always_loads_translations', false);
         App::setLocale('de');
         $country = new Country();
         $country->useTranslationFallback = true;
         $list = [[
-            'id'   => '1',
+            'id'   => 1,
             'name' => 'Griechenland',
         ], [
-            'id'   => '2',
+            'id'   => 2,
             'name' => 'France',
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
