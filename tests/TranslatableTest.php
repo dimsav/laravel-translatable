@@ -682,4 +682,11 @@ class TranslatableTest extends TestsBase
         $sgCountry = $country->find($countryId);
         $this->assertEmpty($sgCountry->translate('sg'));
     }
+
+    public function test_empty_translated_attribute()
+    {
+        $country = Country::whereCode('gr')->first();
+        $this->app->setLocale('invalid');
+        $this->assertSame(null, $country->name);
+    }
 }
