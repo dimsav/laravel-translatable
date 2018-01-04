@@ -1,6 +1,7 @@
 <?php
 
 use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\Vegetable;
 
 class ScopesTest extends TestsBase
 {
@@ -55,7 +56,7 @@ class ScopesTest extends TestsBase
             'id'   => '1',
             'name' => 'Griechenland',
         ]];
-        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
+        $this->assertArraySubset($list, Country::listsTranslations('name')->get()->toArray());
     }
 
     public function test_lists_of_translated_fields_with_fallback()
@@ -72,7 +73,7 @@ class ScopesTest extends TestsBase
             'id'   => 2,
             'name' => 'France',
         ]];
-        $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
+        $this->assertArraySubset($list, $country->listsTranslations('name')->get()->toArray());
     }
 
     public function test_scope_withTranslation_without_fallback()
@@ -93,6 +94,24 @@ class ScopesTest extends TestsBase
         $this->assertCount(2, $loadedTranslations);
         $this->assertSame('Greece', $loadedTranslations[0]['name']);
         $this->assertSame('Griechenland', $loadedTranslations[1]['name']);
+    }
+
+    public function test_scope_withTranslation_with_country_based_fallback()
+    {
+        App::make('config')->set('translatable.fallback_locale', 'en');
+        App::make('config')->set('translatable.use_fallback', true);
+        App::setLocale('en-GB');
+        $result = Vegetable::withTranslation()->find(1)->toArray();
+        $this->assertSame('courgette', $result['name']);
+
+        App::setLocale('de-CH');
+        $result = Vegetable::withTranslation()->find(1)->toArray();
+        $expectedTranslations = [
+            ['name' => 'zucchini', 'locale' => 'en'],
+            ['name' => 'Zucchini', 'locale' => 'de'],
+            ['name' => 'Zucchetti', 'locale' => 'de-CH'],
+        ];
+        $this->assertArraySubset($expectedTranslations, $result['translations']);
     }
 
     public function test_whereTranslation_filters_by_translation()
