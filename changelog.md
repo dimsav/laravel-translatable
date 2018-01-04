@@ -1,8 +1,11 @@
 ## Version History
 
-### v. 8.0.1
+### v. 8.1
 
 - Fixed error when fallback not available. #422
+- Fixed withTranslation query scope performance #417
+- Fixed fallback for country-based locales #417
+- Fixed empty attribute values #410
 
 ### v. 8.0
 
