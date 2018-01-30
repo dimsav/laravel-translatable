@@ -21,7 +21,9 @@
     "autoload": {
         "psr-4": {
             "Dimsav\\Translatable\\": "src/Translatable/"
-        },
+        }
+    },
+    "autoload-dev": {
         "classmap": [
             "tests"
         ]
