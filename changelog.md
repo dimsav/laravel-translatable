@@ -1,5 +1,9 @@
 ## Version History
 
+### v. 9.0
+
+- Added support for Laravel 5.6 #435
+
 ### v. 8.1
 
 - Fixed error when fallback not available. #422
