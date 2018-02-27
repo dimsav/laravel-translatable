@@ -231,14 +231,8 @@ trait Translatable
     public function save(array $options = [])
     {
         if ($this->exists) {
-            if (count($this->getDirty()) > 0) {
-                // If $this->exists and dirty, parent::save() has to return true. If not,
-                // an error has occurred. Therefore we shouldn't save the translations.
-                if (parent::save($options)) {
-                    return $this->saveTranslations();
-                }
-
-                return false;
+            if (! empty($this->getDirty())) {
+                return $this->saveTranslations() && parent::save($options);
             } else {
                 // If $this->exists and not dirty, parent::save() skips saving and returns
                 // false. So we have to save the translations
@@ -463,10 +457,50 @@ trait Translatable
      */
     protected function isTranslationDirty(Model $translation)
     {
-        $dirtyAttributes = $translation->getDirty();
-        unset($dirtyAttributes[$this->getLocaleKey()]);
+        $dirty = $translation->getDirty();
 
-        return count($dirtyAttributes) > 0;
+        unset($dirty[$this->getLocaleKey()]);
+
+        if ($notEmpty = ! empty($dirty)) {
+            $original = [];
+
+            foreach ($dirty as $key => $value) {
+                $original[$key] = $translation->getOriginal($key);
+            }
+
+            config([
+                static::class.'.'.$this->getKey().'.'.$translation->{$this->getLocaleKey()} => [
+                    'dirty'    => $dirty,
+                    'original' => $original,
+                ],
+            ]);
+        }
+
+        return $notEmpty;
+    }
+
+    /**
+     * Get the attributes that have been changed since last sync.
+     *
+     * @return array
+     */
+    public function getDirtyWithTranslations()
+    {
+        if ($translations = config(static::class.'.'.$this->getKey())) {
+            foreach ($translations as $locale => $transDirty) {
+                foreach ($transDirty['dirty'] as $key => $value) {
+                    $transDirty[$attribute = $key.':'.$locale] = $value;
+
+                    $this->attributes[$attribute] = $value;
+                }
+
+                foreach ($transDirty['original'] as $key => $value) {
+                    $this->original[$key.':'.$locale] = $value;
+                }
+            }
+        }
+
+        return $this->getDirty();
     }
 
     /**
