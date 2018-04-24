@@ -675,6 +675,31 @@ trait Translatable
     }
 
     /**
+     * This scope sorts results by the given translation field.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $key
+     * @param string                                $sortmethod
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeOrderByTranslation(Builder $query, $key, $sortmethod = 'asc')
+    {
+        $translationTable = $this->getTranslationsTable();
+        $localeKey = $this->getLocaleKey();
+        $table = $this->getTable();
+        $keyName = $this->getKeyName();
+
+        return $query->join($translationTable, function($join) use ($translationTable, $localeKey, $table, $keyName) {
+            $join->on($translationTable.'.'.$this->getRelationKey(), '=', $table.'.'.$keyName)
+            ->where($translationTable.'.'.$localeKey, $this->locale());
+        })
+        ->orderBy($translationTable.'.'.$key, $sortmethod)
+        ->select($translationTable.'.*', $table.'.*')
+        ->with('translations');
+    }
+
+    /**
      * @return array
      */
     public function attributesToArray()
