@@ -693,8 +693,7 @@ trait Translatable
         return $query->join($translationTable, function($join) use ($translationTable, $localeKey, $table, $keyName) {
             $join->on($translationTable.'.'.$this->getRelationKey(), '=', $table.'.'.$keyName)
             ->where($translationTable.'.'.$localeKey, $this->locale());
-        })
-        ->orderBy($translationTable.'.'.$key, $sortmethod)
+        })->orderBy($translationTable.'.'.$key, $sortmethod)
         ->select($table.'.*')
         ->with('translations');
     }
