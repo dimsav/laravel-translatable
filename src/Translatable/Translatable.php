@@ -695,7 +695,7 @@ trait Translatable
             ->where($translationTable.'.'.$localeKey, $this->locale());
         })
         ->orderBy($translationTable.'.'.$key, $sortmethod)
-        ->select($translationTable.'.*', $table.'.*')
+        ->select($table.'.*')
         ->with('translations');
     }
 
