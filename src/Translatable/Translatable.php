@@ -231,7 +231,7 @@ trait Translatable
     public function save(array $options = [])
     {
         if ($this->exists) {
-            if (count($this->getDirty()) > 0) {
+            if ($this->isDirty()) {
                 // If $this->exists and dirty, parent::save() has to return true. If not,
                 // an error has occurred. Therefore we shouldn't save the translations.
                 if (parent::save($options)) {
