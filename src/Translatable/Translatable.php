@@ -69,7 +69,7 @@ trait Translatable
             if ($translation = $this->getTranslationByLocaleKey($fallbackLocale)) {
                 return $translation;
             }
-            if ($translation = $this->getTranslationByLocaleKey($configFallbackLocale)) {
+            if ($fallbackLocale !== $configFallbackLocale && $translation = $this->getTranslationByLocaleKey($configFallbackLocale)) {
                 return $translation;
             }
         }
