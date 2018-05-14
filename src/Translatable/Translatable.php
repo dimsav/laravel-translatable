@@ -691,7 +691,7 @@ trait Translatable
             if (in_array($field, $hiddenAttributes)) {
                 continue;
             }
-            
+
             $attributes[$field] = $this->getAttributeOrFallback(null, $field);
         }
 
