@@ -148,7 +148,7 @@ trait Translatable
      */
     private function usePropertyFallback()
     {
-        return config('translatable.use_property_fallback', false);
+        return $this->useFallback() && config('translatable.use_property_fallback', false);
     }
 
     /**
@@ -163,10 +163,9 @@ trait Translatable
     {
         $value = $this->getTranslation($locale)->$attribute;
 
-        $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
         if (
             empty($value) &&
-            $usePropertyFallback &&
+            $this->usePropertyFallback() &&
             ($fallback = $this->getTranslation($this->getFallbackLocale(), true))
         ) {
             return $fallback->$attribute;
