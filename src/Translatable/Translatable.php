@@ -260,7 +260,7 @@ trait Translatable
     /**
      * @param string $locale
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function getTranslationOrNew($locale)
     {
