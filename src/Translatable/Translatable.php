@@ -690,7 +690,7 @@ trait Translatable
         $table = $this->getTable();
         $keyName = $this->getKeyName();
 
-        return $query->join($translationTable, function($join) use ($translationTable, $localeKey, $table, $keyName) {
+        return $query->join($translationTable, function(Builder $join) use ($translationTable, $localeKey, $table, $keyName) {
             $join->on($translationTable.'.'.$this->getRelationKey(), '=', $table.'.'.$keyName)
             ->where($translationTable.'.'.$localeKey, $this->locale());
         })->orderBy($translationTable.'.'.$key, $sortmethod)
