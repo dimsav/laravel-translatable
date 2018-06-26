@@ -137,7 +137,7 @@ class TestsBase extends TestCase
         $that = $this;
         DB::listen(function ($query) use ($that) {
             $that->queriesCount++;
-            // echo("\n--- Query {$that->queriesCount}--- $query->sql\n");
+//             echo("\n--- Query {$that->queriesCount}--- {$this->beautifyQuery($this->insertBindingsIntoQuery($query->sql, $this->formatBindingsForSqlInjection($query->bindings)))}\n");
         });
     }
 
