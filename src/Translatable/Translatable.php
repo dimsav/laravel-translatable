@@ -10,7 +10,7 @@ use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 
 trait Translatable
 {
-    protected static $autoloadTranslations = true;
+    protected static $autoloadTranslations = null;
 
     protected $defaultLocale;
 
@@ -684,8 +684,8 @@ trait Translatable
         $attributes = parent::attributesToArray();
 
         if (
-            (! $this->relationLoaded('translations') && ! $this->toArrayAlwaysLoadsTranslations())
-            || !self::$autoloadTranslations
+            (! $this->relationLoaded('translations') && ! $this->toArrayAlwaysLoadsTranslations() && is_null(self::$autoloadTranslations))
+            || self::$autoloadTranslations === false
         ) {
             return $attributes;
         }
@@ -813,6 +813,10 @@ trait Translatable
 
     public static function enableAutoloadTranslations() {
         self::$autoloadTranslations = true;
+    }
+
+    public static function defaultAutoloadTranslations() {
+        self::$autoloadTranslations = null;
     }
 
     public static function disableAutoloadTranslations() {
