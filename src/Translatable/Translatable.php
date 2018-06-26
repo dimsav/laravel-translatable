@@ -811,15 +811,18 @@ trait Translatable
         return config('translatable.to_array_always_loads_translations', true);
     }
 
-    public static function enableAutoloadTranslations() {
+    public static function enableAutoloadTranslations()
+    {
         self::$autoloadTranslations = true;
     }
 
-    public static function defaultAutoloadTranslations() {
+    public static function defaultAutoloadTranslations()
+    {
         self::$autoloadTranslations = null;
     }
 
-    public static function disableAutoloadTranslations() {
+    public static function disableAutoloadTranslations()
+    {
         self::$autoloadTranslations = false;
     }
 }
