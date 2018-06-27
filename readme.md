@@ -349,6 +349,9 @@ Country::listsTranslations('name')->get()->toArray();
 // Filters countries by checking the translation against the given value 
 Country::whereTranslation('name', 'Greece')->first();
 
+// Filters countries by checking the translation against the given value, only in the specified locale
+Country::whereTranslation('name', 'Greece', 'en')->first();
+
 // Or where translation
 Country::whereTranslation('name', 'Greece')->orWhereTranslation('name', 'France')->get();
 
