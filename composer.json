@@ -34,7 +34,5 @@
                 "Dimsav\\Translatable\\TranslatableServiceProvider"
             ]
         }
-    },
-
-    "minimum-stability": "dev"
+    }
 }
