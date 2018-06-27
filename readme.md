@@ -462,8 +462,16 @@ What applies for the fallback of the locales using the `en-MX` format?
 Let's say our fallback locale is `en`. Now, when we try to fetch from the database the translation for the 
 locale `es-MX` but it doesn't exist,  we won't get as fallback the translation for `en`. Translatable will use as a 
 fallback `es` (the first part of `es-MX`) and only if nothing is found, the translation for `en` is returned.
+
+### Translation Autoloading
+
+If the `toArray()` method is called it's possible to autoload all translations. To control this feature the package comes with a config value `to_array_always_loads_translations` and three static methods in the trait:
+
+* `enableAutoloadTranslations()` - forces to load all translations
+* `disableAutoloadTranslations()` - disables autoload and returns parent attributes
+* `defaultAutoloadTranslations()` - does not change the default behavior logic (*default*)
  
-#### Add ons
+## Add ons
 
 Thanks to the community a few packages have been written to make usage of Translatable easier when working with forms:
 
