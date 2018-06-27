@@ -422,6 +422,7 @@ class TranslatableTest extends TestsBase
 
     public function test_to_array_and_fallback_with_country_based_locales_enabled()
     {
+        $this->app->config->set('translatable.locale', 'en-GB');
         $this->app->config->set('translatable.use_fallback', true);
         $this->app->config->set('translatable.fallback_locale', 'fr');
         $this->app->config->set('translatable.locales', ['en' => ['GB'], 'fr']);
