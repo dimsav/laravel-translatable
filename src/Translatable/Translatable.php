@@ -69,7 +69,7 @@ trait Translatable
             if ($translation = $this->getTranslationByLocaleKey($fallbackLocale)) {
                 return $translation;
             }
-            if ($translation = $this->getTranslationByLocaleKey($configFallbackLocale)) {
+            if ($fallbackLocale !== $configFallbackLocale && $translation = $this->getTranslationByLocaleKey($configFallbackLocale)) {
                 return $translation;
             }
         }
@@ -148,7 +148,7 @@ trait Translatable
      */
     private function usePropertyFallback()
     {
-        return config('translatable.use_property_fallback', false);
+        return $this->useFallback() && config('translatable.use_property_fallback', false);
     }
 
     /**
@@ -163,10 +163,9 @@ trait Translatable
     {
         $value = $this->getTranslation($locale)->$attribute;
 
-        $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
         if (
             empty($value) &&
-            $usePropertyFallback &&
+            $this->usePropertyFallback() &&
             ($fallback = $this->getTranslation($this->getFallbackLocale(), true))
         ) {
             return $fallback->$attribute;
@@ -231,7 +230,7 @@ trait Translatable
     public function save(array $options = [])
     {
         if ($this->exists) {
-            if (count($this->getDirty()) > 0) {
+            if ($this->isDirty()) {
                 // If $this->exists and dirty, parent::save() has to return true. If not,
                 // an error has occurred. Therefore we shouldn't save the translations.
                 if (parent::save($options)) {
@@ -242,6 +241,10 @@ trait Translatable
             } else {
                 // If $this->exists and not dirty, parent::save() skips saving and returns
                 // false. So we have to save the translations
+                if ($this->fireModelEvent('saving') === false) {
+                    return false;
+                }
+                
                 if ($saved = $this->saveTranslations()) {
                     $this->fireModelEvent('saved', false);
                     $this->fireModelEvent('updated', false);
@@ -260,7 +263,7 @@ trait Translatable
     /**
      * @param string $locale
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function getTranslationOrNew($locale)
     {
