@@ -694,7 +694,7 @@ trait Translatable
         $keyName = $this->getKeyName();
 
         return $query
-            ->join($translationTable, function(Builder $join) use ($translationTable, $localeKey, $table, $keyName) {
+            ->join($translationTable, function (Builder $join) use ($translationTable, $localeKey, $table, $keyName) {
                 $join
                     ->on($translationTable.'.'.$this->getRelationKey(), '=', $table.'.'.$keyName)
                     ->where($translationTable.'.'.$localeKey, $this->locale());
