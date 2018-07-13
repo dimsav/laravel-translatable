@@ -344,6 +344,9 @@ class TranslatableTest extends TestsBase
     {
         $country = Country::find(1)->first();
         $this->assertSame('abc', $country->translateOrNew('abc')->locale);
+
+        $this->app->setLocale('xyz');
+        $this->assertSame('xyz', $country->translateOrNew()->locale);
     }
 
     public function test_it_returns_if_attribute_is_translated()

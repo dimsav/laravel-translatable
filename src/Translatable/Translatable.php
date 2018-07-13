@@ -44,7 +44,7 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function translateOrNew($locale)
+    public function translateOrNew($locale = null)
     {
         return $this->getTranslationOrNew($locale);
     }
@@ -265,8 +265,10 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function getTranslationOrNew($locale)
+    protected function getTranslationOrNew($locale = null)
     {
+        $locale = $locale ?: $this->locale();
+
         if (($translation = $this->getTranslation($locale, false)) === null) {
             $translation = $this->getNewTranslation($locale);
         }
