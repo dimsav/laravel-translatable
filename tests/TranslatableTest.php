@@ -215,6 +215,9 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('ch', true)->name, 'Griechenland');
         $this->assertSame($country->translateOrDefault('ch')->name, 'Griechenland');
         $this->assertSame($country->getTranslation('ch', false), null);
+
+        $this->app->setLocale('ch');
+        $this->assertSame($country->translateOrDefault()->name, 'Griechenland');
     }
 
     public function test_fallback_option_in_config_overrides_models_fallback_option()

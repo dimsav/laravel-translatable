@@ -32,7 +32,7 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function translateOrDefault($locale)
+    public function translateOrDefault($locale = null)
     {
         return $this->getTranslation($locale, true);
     }
