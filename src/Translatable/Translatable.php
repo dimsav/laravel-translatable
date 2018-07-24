@@ -143,6 +143,19 @@ trait Translatable
         return $this->hasMany($this->getTranslationModelName(), $this->getRelationKey());
     }
 
+    public function translation()
+    {
+        if($this->useFallback() && !$this->translations()->where('locale', $this->locale())->exists()) {
+            return $this
+                ->hasOne($this->getTranslationModelName(), $this->getRelationKey())
+                ->where('locale', $this->getFallbackLocale());
+        }
+
+        return $this
+            ->hasOne($this->getTranslationModelName(), $this->getRelationKey())
+            ->where('locale', $this->locale());
+    }
+
     /**
      * @return bool
      */
