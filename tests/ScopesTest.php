@@ -76,6 +76,20 @@ class ScopesTest extends TestsBase
         $this->assertArraySubset($list, $country->listsTranslations('name')->get()->toArray());
     }
 
+    public function test_lists_of_translated_fields_disable_autoload_translations()
+    {
+        App::setLocale('de');
+        App::make('config')->set('translatable.to_array_always_loads_translations', true);
+
+        $list = [[
+            'id'   => 1,
+            'name' => 'Griechenland',
+        ]];
+        Country::disableAutoloadTranslations();
+        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
+        Country::defaultAutoloadTranslations();
+    }
+
     public function test_scope_withTranslation_without_fallback()
     {
         $result = Country::withTranslation()->first();
