@@ -165,4 +165,16 @@ class ScopesTest extends TestsBase
         $this->assertSame(1, $result->count());
         $this->assertSame('gr', $result->first()->code);
     }
+
+    public function test_orderByTranslation_sorts_by_key_asc()
+    {
+        $result = Country::orderByTranslation('name')->get();
+        $this->assertSame(2, $result->first()->id);
+    }
+
+    public function test_orderByTranslation_sorts_by_key_desc()
+    {
+        $result = Country::orderByTranslation('name', 'desc')->get();
+        $this->assertSame(1, $result->first()->id);
+    }
 }
