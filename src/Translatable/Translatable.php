@@ -244,7 +244,7 @@ trait Translatable
                 if ($this->fireModelEvent('saving') === false) {
                     return false;
                 }
-                
+
                 if ($saved = $this->saveTranslations()) {
                     $this->fireModelEvent('saved', false);
                     $this->fireModelEvent('updated', false);
