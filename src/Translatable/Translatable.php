@@ -4,10 +4,10 @@ namespace Dimsav\Translatable;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
-use Illuminate\Database\Query\JoinClause;
 
 trait Translatable
 {
