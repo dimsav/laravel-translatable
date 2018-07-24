@@ -165,7 +165,7 @@ trait Translatable
 
         if (
             (
-                !$translation instanceof Model ||
+                ! $translation instanceof Model ||
                 empty($translation->$attribute)
             ) &&
             $this->usePropertyFallback()
