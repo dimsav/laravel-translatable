@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
+use Illuminate\Database\Query\JoinClause;
 
 trait Translatable
 {
@@ -694,7 +695,7 @@ trait Translatable
         $keyName = $this->getKeyName();
 
         return $query
-            ->join($translationTable, function (Builder $join) use ($translationTable, $localeKey, $table, $keyName) {
+            ->join($translationTable, function (JoinClause $join) use ($translationTable, $localeKey, $table, $keyName) {
                 $join
                     ->on($translationTable.'.'.$this->getRelationKey(), '=', $table.'.'.$keyName)
                     ->where($translationTable.'.'.$localeKey, $this->locale());
