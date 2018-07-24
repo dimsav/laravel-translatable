@@ -148,7 +148,7 @@ trait Translatable
      */
     public function translation()
     {
-        if($this->useFallback() && !$this->translations()->where('locale', $this->locale())->exists()) {
+        if ($this->useFallback() && !$this->translations()->where('locale', $this->locale())->exists()) {
             return $this
                 ->hasOne($this->getTranslationModelName(), $this->getRelationKey())
                 ->where('locale', $this->getFallbackLocale());
