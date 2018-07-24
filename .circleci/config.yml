@@ -16,10 +16,6 @@ jobs:
           name: 'Install PHP extensions'
           command: 'sudo docker-php-ext-install pdo_mysql'
 
-      - run:
-          name: 'Install Scrutinizer Ocular'
-          command: 'wget https://scrutinizer-ci.com/ocular.phar'
-
       # Database
       - run:
           name: 'Wait for database'
@@ -60,6 +56,10 @@ jobs:
       - run:
           name: 'PHPUnit'
           command: './vendor/bin/phpunit  --coverage-clover=coverage.clover'
+
+      - run:
+          name: 'Install Scrutinizer Ocular'
+          command: 'wget https://scrutinizer-ci.com/ocular.phar'
 
       - run:
           name: 'Scrutinizer Ocular'
