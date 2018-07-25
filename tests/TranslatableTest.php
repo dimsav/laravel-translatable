@@ -3,6 +3,7 @@
 use Dimsav\Translatable\Test\Model\Food;
 use Dimsav\Translatable\Test\Model\Person;
 use Dimsav\Translatable\Test\Model\Country;
+use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
@@ -688,5 +689,37 @@ class TranslatableTest extends TestsBase
         $country = Country::whereCode('gr')->first();
         $this->app->setLocale('invalid');
         $this->assertSame(null, $country->name);
+    }
+
+    public function test_translation_relation()
+    {
+        $this->app->make('config')->set('translatable.fallback_locale', 'fr');
+        $this->app->make('config')->set('translatable.use_fallback', true);
+        $this->app->setLocale('en');
+
+        $translation = Country::find(1)->translation;
+        $this->assertInstanceOf(CountryTranslation::class, $translation);
+        $this->assertEquals('en', $translation->locale);
+    }
+
+    public function test_translation_relation_fallback()
+    {
+        $this->app->make('config')->set('translatable.fallback_locale', 'fr');
+        $this->app->make('config')->set('translatable.use_fallback', true);
+        $this->app->setLocale('xyz');
+
+        $translation = Country::find(1)->translation;
+        $this->assertInstanceOf(CountryTranslation::class, $translation);
+        $this->assertEquals('fr', $translation->locale);
+    }
+
+    public function test_translation_relation_not_found()
+    {
+        $this->app->make('config')->set('translatable.fallback_locale', 'xyz');
+        $this->app->make('config')->set('translatable.use_fallback', true);
+        $this->app->setLocale('xyz');
+
+        $translation = Country::find(1)->translation;
+        $this->assertNull($translation);
     }
 }
