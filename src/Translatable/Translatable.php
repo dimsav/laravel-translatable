@@ -173,7 +173,7 @@ trait Translatable
             ) &&
             $this->usePropertyFallback()
         ) {
-            $translation = $this->getTranslation($this->getFallbackLocale(), true);
+            $translation = $this->getTranslation($this->getFallbackLocale(), false);
         }
 
         if ($translation instanceof Model) {
