@@ -55,7 +55,7 @@ jobs:
       # Tests
       - run:
           name: 'PHPUnit'
-          command: './vendor/bin/phpunit  --coverage-clover=coverage.clover'
+          command: './vendor/bin/phpunit --coverage-clover=coverage.clover'
 
       - run:
           name: 'Install Scrutinizer Ocular'
