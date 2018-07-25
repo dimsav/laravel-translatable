@@ -215,6 +215,9 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('ch', true)->name, 'Griechenland');
         $this->assertSame($country->translateOrDefault('ch')->name, 'Griechenland');
         $this->assertSame($country->getTranslation('ch', false), null);
+
+        $this->app->setLocale('ch');
+        $this->assertSame($country->translateOrDefault()->name, 'Griechenland');
     }
 
     public function test_fallback_option_in_config_overrides_models_fallback_option()
@@ -341,6 +344,9 @@ class TranslatableTest extends TestsBase
     {
         $country = Country::find(1)->first();
         $this->assertSame('abc', $country->translateOrNew('abc')->locale);
+
+        $this->app->setLocale('xyz');
+        $this->assertSame('xyz', $country->translateOrNew()->locale);
     }
 
     public function test_it_returns_if_attribute_is_translated()
@@ -422,6 +428,7 @@ class TranslatableTest extends TestsBase
 
     public function test_to_array_and_fallback_with_country_based_locales_enabled()
     {
+        $this->app->config->set('translatable.locale', 'en-GB');
         $this->app->config->set('translatable.use_fallback', true);
         $this->app->config->set('translatable.fallback_locale', 'fr');
         $this->app->config->set('translatable.locales', ['en' => ['GB'], 'fr']);

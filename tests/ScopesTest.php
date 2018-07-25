@@ -76,6 +76,20 @@ class ScopesTest extends TestsBase
         $this->assertArraySubset($list, $country->listsTranslations('name')->get()->toArray());
     }
 
+    public function test_lists_of_translated_fields_disable_autoload_translations()
+    {
+        App::setLocale('de');
+        App::make('config')->set('translatable.to_array_always_loads_translations', true);
+
+        $list = [[
+            'id'   => 1,
+            'name' => 'Griechenland',
+        ]];
+        Country::disableAutoloadTranslations();
+        $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
+        Country::defaultAutoloadTranslations();
+    }
+
     public function test_scope_withTranslation_without_fallback()
     {
         $result = Country::withTranslation()->first();
@@ -164,5 +178,17 @@ class ScopesTest extends TestsBase
         $result = Country::whereTranslationLike('name', '%riechenlan%', 'de')->get();
         $this->assertSame(1, $result->count());
         $this->assertSame('gr', $result->first()->code);
+    }
+
+    public function test_orderByTranslation_sorts_by_key_asc()
+    {
+        $result = Country::orderByTranslation('name')->get();
+        $this->assertSame(2, $result->first()->id);
+    }
+
+    public function test_orderByTranslation_sorts_by_key_desc()
+    {
+        $result = Country::orderByTranslation('name', 'desc')->get();
+        $this->assertSame(1, $result->first()->id);
     }
 }
