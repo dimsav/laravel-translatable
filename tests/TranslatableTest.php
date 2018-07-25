@@ -3,8 +3,8 @@
 use Dimsav\Translatable\Test\Model\Food;
 use Dimsav\Translatable\Test\Model\Person;
 use Dimsav\Translatable\Test\Model\Country;
-use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\CountryStrict;
+use Dimsav\Translatable\Test\Model\CountryTranslation;
 use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
 
 class TranslatableTest extends TestsBase
