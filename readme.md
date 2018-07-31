@@ -524,7 +524,7 @@ A tip here is to make the MySQL query first and then do the Eloquent one.
 To fetch a list of records ordered by a translated field, you can do this: 
 
 ```mysql
-SELECT * from countries
+SELECT countries.*, t.name from countries
 JOIN country_translations as t on t.country_id = countries.id 
 WHERE locale = 'en'
 GROUP BY countries.id
@@ -534,7 +534,8 @@ ORDER BY t.name desc
 The corresponding eloquent query would be:
 
 ```php
-Country::join('country_translations as t', function ($join) {
+Country::select(['countries.*', 't.name'])
+    ->join('country_translations as t', function ($join) {
         $join->on('countries.id', '=', 't.country_id')
             ->where('t.locale', '=', 'en');
     }) 
