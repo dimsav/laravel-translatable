@@ -16,6 +16,15 @@ class TranslatableTest extends TestsBase
             $country->getTranslationModelNameDefault());
     }
 
+    public function test_it_finds_the_translation_class_with_namespace_set()
+    {
+        App::make('config')->set('translatable.translation_model_namespace', 'App\Models\Translations');
+        $country = new Country();
+        $this->assertEquals(
+            'App\Models\Translations\CountryTranslation',
+            $country->getTranslationModelNameDefault());
+    }
+
     public function test_it_finds_the_translation_class_with_suffix_set()
     {
         App::make('config')->set('translatable.translation_suffix', 'Trans');

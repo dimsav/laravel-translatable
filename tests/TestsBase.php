@@ -23,6 +23,8 @@ class TestsBase extends TestCase
 
         parent::setUp();
 
+        App::make('config')->set('translatable.translation_model_namespace', 'Dimsav\Translatable\Test\Model');
+
         if (! static::$db2Setup) {
             $this->makeSureSchemaIsCreated('mysql2');
             $this->truncateAllTablesButMigrations(static::DB_NAME2);

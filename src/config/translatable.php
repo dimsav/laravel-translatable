@@ -84,6 +84,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Translation Model Namespace
+    |--------------------------------------------------------------------------
+    |
+    | Defines the default 'Translation' class namespace. For example, if
+    | you want to use App\Translations\CountryTranslation instead of App\CountryTranslation
+    | application, set this to 'App\Translations'.
+    |
+    */
+    'translation_model_namespace' => 'App',
+
+    /*
+    |--------------------------------------------------------------------------
     | Translation Suffix
     |--------------------------------------------------------------------------
     |
