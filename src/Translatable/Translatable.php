@@ -113,7 +113,6 @@ trait Translatable
     {
         $fullModelName = $this->getTranslationModelNamespace().'\\'.class_basename(get_class($this));
 
-
         return $fullModelName.config('translatable.translation_suffix', 'Translation');
     }
 
