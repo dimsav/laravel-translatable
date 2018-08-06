@@ -1,5 +1,14 @@
 # Changelog
 
+## v9.1.0
+- do not call get translation with fallback locale and fallback enabled [#502](https://github.com/dimsav/laravel-translatable/pull/502)
+- Allow `translateOrDefault()` and `translateOrNew()` to default to user app locale [#500](https://github.com/dimsav/laravel-translatable/pull/500)
+- Change autoload translations behavior on runtime [#501](https://github.com/dimsav/laravel-translatable/pull/501)
+- use fallback in `attributesToArray()` [#503](https://github.com/dimsav/laravel-translatable/pull/503)
+- added `orderByTranslation()` scope [#504](https://github.com/dimsav/laravel-translatable/pull/504)
+- example in doc for locale filtering in `whereTranslation()` scope [#487](https://github.com/dimsav/laravel-translatable/pull/487)
+- fire saving event in every case [#457](https://github.com/dimsav/laravel-translatable/pull/457)
+
 ## v9.0.0
 - Added support for Laravel 5.6 [#435](https://github.com/dimsav/laravel-translatable/pull/435)
 
