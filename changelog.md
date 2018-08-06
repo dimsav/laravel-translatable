@@ -19,14 +19,14 @@
 - Fixed delete events not fired for translations. [#361](https://github.com/dimsav/laravel-translatable/pull/361)
 
 ## v7.2.0
-- Added replicateWithTranslations(). [#346](https://github.com/dimsav/laravel-translatable/pull/346)
-- Added orWhereTranslation and orWhereTranslationLike scopes. [#338](https://github.com/dimsav/laravel-translatable/pull/338)
+- Added `replicateWithTranslations()`. [#346](https://github.com/dimsav/laravel-translatable/pull/346)
+- Added `orWhereTranslation()` and `orWhereTranslationLike()` scopes. [#338](https://github.com/dimsav/laravel-translatable/pull/338)
 - Added support for laravel auto-discovery. [#359](https://github.com/dimsav/laravel-translatable/pull/359)
 - Added tag for publishing the config file. [#360](https://github.com/dimsav/laravel-translatable/pull/360)
 
 ## v7.1.0
 - Added fallback per attribute. [#348](https://github.com/dimsav/laravel-translatable/pull/348)
-- Added getTranslationsArray() [#347](https://github.com/dimsav/laravel-translatable/pull/347)
+- Added `getTranslationsArray()` [#347](https://github.com/dimsav/laravel-translatable/pull/347)
 - Fixed filling 'property:locale' format was not validating the locale. [#356](https://github.com/dimsav/laravel-translatable/pull/356)
 
 ## v7.0.0
@@ -35,7 +35,7 @@
 
 ## v6.1.0
 - Filling a model now supports using the 'property:locale' format in keys. [#314](https://github.com/dimsav/laravel-translatable/pull/314) For example: `$country->fill(['name:en' => 'Belgium'])`  
-- Added config to skip translations in toArray() for better performance when needed. [#315](https://github.com/dimsav/laravel-translatable/pull/315)
+- Added config to skip translations in `toArray()` for better performance when needed. [#315](https://github.com/dimsav/laravel-translatable/pull/315)
 
 ## v6.0.1
 - Fix issue when trying to fetch a translation with a country based locale [#264](https://github.com/dimsav/laravel-translatable/pull/264)
@@ -51,7 +51,7 @@
 - Updated code style and added [styleci](https://styleci.io/) to enforce it
 
 ## v5.6.0
-- Added scope notTranslatedIn() [#235](https://github.com/dimsav/laravel-translatable/pull/235)
+- Added scope `notTranslatedIn()` [#235](https://github.com/dimsav/laravel-translatable/pull/235)
 
 ## v5.5.1
 - Fixed a bug in locale fallback on `toArray()`
@@ -59,7 +59,7 @@
 ## v5.5.0
 - Added Laravel 5.2 support
 - Dropped Laravel 5.0 support
-- Added scope whereTranslationLike() [#183](https://github.com/dimsav/laravel-translatable/pull/183)
+- Added scope `whereTranslationLike()` [#183](https://github.com/dimsav/laravel-translatable/pull/183)
 - Fire 'updated' event when saving translations. [#190](https://github.com/dimsav/laravel-translatable/pull/190)
 - `setAttribute()` returns the model itself, which is now the default in eloquent. [#201](https://github.com/dimsav/laravel-translatable/issues/201)
 
@@ -76,7 +76,7 @@
 - Added [documentation](https://github.com/dimsav/laravel-translatable/blob/0715f46613769570b65b97ac9ffec10f9bf06d8d/readme.md#available-scopes) about scopes.
 
 ## v5.1.2
-- Fixed db in tests is dropped and recreated to make tests more stable (https://github.com/dimsav/laravel-translatable/commit/3cc29a21c27726a2d14463b3ec0d55c26487eb58)
+- Fixed db in tests is dropped and recreated to make tests more stable
 - Fixed bug when using syntax `$country->{'name:en'}` and locale doesn't exist [#150](https://github.com/dimsav/laravel-translatable/issues/150)
 - Method isTranslationAttribute() is now public [#151](https://github.com/dimsav/laravel-translatable/issues/151)
 
@@ -85,7 +85,7 @@
 - Fixed making an attribute on a translatable model hidden does not hide it [#133](https://github.com/dimsav/laravel-translatable/issues/133)
 
 ## v5.1.0
-- Added mutator/accessor translations using the format `$country->{'name:de'}` thanks to @barryvdh 
+- Added mutator/accessor translations using the format `$country->{'name:de'}` thanks to [@barryvdh](https://github.com/barryvdh)
 - Added documentation in readme file
 
 ## v5.0.1
