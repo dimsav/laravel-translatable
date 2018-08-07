@@ -8,6 +8,7 @@
 - added `orderByTranslation()` scope [#504](https://github.com/dimsav/laravel-translatable/pull/504)
 - example in doc for locale filtering in `whereTranslation()` scope [#487](https://github.com/dimsav/laravel-translatable/pull/487)
 - fire saving event in every case [#457](https://github.com/dimsav/laravel-translatable/pull/457)
+- Allow to change default translation model namespace from config file [#508](https://github.com/dimsav/laravel-translatable/pull/508)
 
 ## v9.0.0
 - Added support for Laravel 5.6 [#435](https://github.com/dimsav/laravel-translatable/pull/435)
