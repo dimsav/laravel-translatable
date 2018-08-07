@@ -111,7 +111,21 @@ trait Translatable
      */
     public function getTranslationModelNameDefault()
     {
-        return get_class($this).config('translatable.translation_suffix', 'Translation');
+        $modelName = get_class($this);
+
+        if ($namespace = $this->getTranslationModelNamespace()) {
+            $modelName = $namespace.'\\'.class_basename(get_class($this));
+        }
+
+        return $modelName.config('translatable.translation_suffix', 'Translation');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTranslationModelNamespace()
+    {
+        return config('translatable.translation_model_namespace');
     }
 
     /**
