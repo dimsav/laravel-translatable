@@ -37,7 +37,7 @@ jobs:
       # Composer
       - run:
           name: 'Composer self-update'
-          command: 'composer self-update'
+          command: 'sudo composer self-update'
 
       - restore_cache:
           keys:
