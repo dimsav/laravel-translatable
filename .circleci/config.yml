@@ -98,3 +98,11 @@ jobs:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: true
     <<: *defaults
+
+workflows:
+  version: 2
+  build_all:
+    jobs:
+      - build
+      - build-php71-laravel57
+      - build-php71-laravel56
