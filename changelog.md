@@ -1,5 +1,8 @@
 # Changelog
 
+## v9.2.0
+- Add support for Laravel 5.7 [#518](https://github.com/dimsav/laravel-translatable/pull/518)
+
 ## v9.1.0
 - Do not call get translation with fallback locale and fallback enabled [#502](https://github.com/dimsav/laravel-translatable/pull/502)
 - Allow `translateOrDefault()` and `translateOrNew()` to default to user app locale [#500](https://github.com/dimsav/laravel-translatable/pull/500)
