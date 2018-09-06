@@ -73,6 +73,7 @@ This is a Laravel package for translatable models. Its goal is to remove the com
 
  Laravel  | Translatable
 :---------|:----------
+ 5.7      | 9.*
  5.6      | 9.*
  5.5      | 8.*
  5.4      | 7.*
