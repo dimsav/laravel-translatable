@@ -34,5 +34,8 @@
                 "Dimsav\\Translatable\\TranslatableServiceProvider"
             ]
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
