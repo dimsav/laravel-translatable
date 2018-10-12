@@ -11,7 +11,6 @@ class CountryWithCustomLocaleKey extends Eloquent
 
     public $table = 'countries';
     public $translatedAttributes = ['name'];
-    public $translationModel = 'Dimsav\Translatable\Test\Model\CountryTranslation';
 
     /*
      * You can customize per model, which attribute will
