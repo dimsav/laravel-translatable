@@ -3,7 +3,6 @@
 namespace Dimsav\Translatable\Test\Model;
 
 use Dimsav\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class CountryWithCustomTranslationModel extends Country
 {
