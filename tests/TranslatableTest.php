@@ -5,6 +5,7 @@ use Dimsav\Translatable\Test\Model\Person;
 use Dimsav\Translatable\Test\Model\Country;
 use Dimsav\Translatable\Test\Model\CountryStrict;
 use Dimsav\Translatable\Test\Model\CountryWithCustomLocaleKey;
+use Dimsav\Translatable\Test\Model\CountryWithCustomTranslationModel;
 
 class TranslatableTest extends TestsBase
 {
@@ -315,6 +316,18 @@ class TranslatableTest extends TestsBase
     {
         $country = CountryWithCustomLocaleKey::find(1);
         $this->assertEquals($country->getLocaleKey(), 'language_id');
+    }
+
+    public function test_the_translation_model_can_be_customized()
+    {
+        $country = CountryWithCustomTranslationModel::create([
+            'code' => 'es',
+            'name:en' => 'Spain',
+            'name:de' => 'Spanien',
+        ]);
+        $this->assertTrue($country->exists());
+        $this->assertEquals($country->translate('en')->name, 'Spain');
+        $this->assertEquals($country->translate('de')->name, 'Spanien');
     }
 
     public function test_it_reads_the_configuration()
