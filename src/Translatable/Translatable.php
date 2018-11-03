@@ -252,31 +252,23 @@ trait Translatable
      */
     public function save(array $options = [])
     {
-        if ($this->exists) {
-            if ($this->isDirty()) {
-                // If $this->exists and dirty, parent::save() has to return true. If not,
-                // an error has occurred. Therefore we shouldn't save the translations.
-                if (parent::save($options)) {
-                    return $this->saveTranslations();
-                }
-
+        if ($this->exists && ! $this->isDirty()) {
+            // If $this->exists and not dirty, parent::save() skips saving and returns
+            // false. So we have to save the translations
+            if ($this->fireModelEvent('saving') === false) {
                 return false;
-            } else {
-                // If $this->exists and not dirty, parent::save() skips saving and returns
-                // false. So we have to save the translations
-                if ($this->fireModelEvent('saving') === false) {
-                    return false;
-                }
-
-                if ($saved = $this->saveTranslations()) {
-                    $this->fireModelEvent('saved', false);
-                    $this->fireModelEvent('updated', false);
-                }
-
-                return $saved;
             }
-        } elseif (parent::save($options)) {
-            // We save the translations only if the instance is saved in the database.
+
+            if ($saved = $this->saveTranslations()) {
+                $this->fireModelEvent('saved', false);
+                $this->fireModelEvent('updated', false);
+            }
+
+            return $saved;
+        }
+
+        // We save the translations only if the instance is saved in the database.
+        if (parent::save($options)) {
             return $this->saveTranslations();
         }
 
