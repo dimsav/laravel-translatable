@@ -452,6 +452,11 @@ trait Translatable
     protected function saveTranslations()
     {
         $saved = true;
+
+        if (! $this->relationLoaded('translations')) {
+            return $saved;
+        }
+
         foreach ($this->translations as $translation) {
             if ($saved && $this->isTranslationDirty($translation)) {
                 if (! empty($connectionName = $this->getConnectionName())) {

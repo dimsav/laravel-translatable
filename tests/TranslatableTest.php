@@ -127,6 +127,29 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('5678', $translation->name);
     }
 
+    public function test_it_does_not_lazy_load_translations_when_updating_non_translated_attributes()
+    {
+        DB::enableQueryLog();
+
+        $country = Country::create(['code' => 'be']);
+        $this->assertFalse($country->relationLoaded('translations'));
+        $this->assertCount(1, DB::getQueryLog());
+
+        DB::flushQueryLog();
+
+        $country->update(['code' => 'de']);
+        $this->assertFalse($country->relationLoaded('translations'));
+        $this->assertCount(1, DB::getQueryLog());
+
+        DB::flushQueryLog();
+
+        $country->update(['name' => 'Germany']);
+        $this->assertTrue($country->relationLoaded('translations'));
+        $this->assertCount(2, DB::getQueryLog());
+
+        DB::disableQueryLog();
+    }
+
     public function test_it_uses_default_locale_to_return_translations()
     {
         $country = Country::whereCode('gr')->first();
