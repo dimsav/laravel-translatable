@@ -121,7 +121,7 @@ Schema::create('countries', function(Blueprint $table)
 Schema::create('country_translations', function(Blueprint $table)
 {
     $table->increments('id');
-    $table->integer('country_id')->unsigned();
+    $table->unsignedInteger('country_id');
     $table->string('name');
     $table->string('locale')->index();
 
