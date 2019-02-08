@@ -65,6 +65,30 @@ version: 2
 jobs:
   build:
     docker:
+      - image: 'circleci/php:7.3'
+        environment:
+          LARAVEL_VERSION: '5.7.*'
+      - image: 'circleci/mysql:5.7'
+        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
+        environment:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+    <<: *defaults
+
+  build-php73-laravel57:
+    docker:
+      - image: 'circleci/php:7.3'
+        environment:
+          LARAVEL_VERSION: '5.7.*'
+      - image: 'circleci/mysql:5.7'
+        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
+        environment:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+    <<: *defaults
+
+  build-php72-laravel57:
+    docker:
       - image: 'circleci/php:7.2'
         environment:
           LARAVEL_VERSION: '5.7.*'
@@ -80,6 +104,30 @@ jobs:
       - image: 'circleci/php:7.1'
         environment:
           LARAVEL_VERSION: '5.7.*'
+      - image: 'circleci/mysql:5.7'
+        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
+        environment:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+    <<: *defaults
+
+  build-php73-laravel56:
+    docker:
+      - image: 'circleci/php:7.3'
+        environment:
+          LARAVEL_VERSION: '5.6.*'
+      - image: 'circleci/mysql:5.7'
+        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
+        environment:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+    <<: *defaults
+
+  build-php72-laravel56:
+    docker:
+      - image: 'circleci/php:7.2'
+        environment:
+          LARAVEL_VERSION: '5.6.*'
       - image: 'circleci/mysql:5.7'
         command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
         environment:
@@ -103,6 +151,9 @@ workflows:
   version: 2
   build_all:
     jobs:
-      - build
+      - build-php73-laravel57
+      - build-php72-laravel57
       - build-php71-laravel57
+      - build-php73-laravel56
+      - build-php72-laravel56
       - build-php71-laravel56
