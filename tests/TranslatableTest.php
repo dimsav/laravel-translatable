@@ -220,7 +220,6 @@ class TranslatableTest extends TestsBase
     public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
         $this->expectException(Illuminate\Database\Eloquent\MassAssignmentException::class);
-        
         $data = [
             'code' => 'be',
             'en'   => ['name' => 'Belgium'],
