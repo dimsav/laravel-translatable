@@ -1,156 +1,159 @@
-defaults: &defaults
-  steps:
-    # PHP
-    - run:
-        name: 'Install PHP extensions'
-        command: 'sudo docker-php-ext-install pdo_mysql'
+version: 2.1
 
-    # Database
-    - run:
-        name: 'Wait for database'
-        command: 'dockerize -wait tcp://localhost:3306 -timeout 1m'
-    - run:
-        name: 'Install MySQL-Client'
-        command: 'sudo apt install -y mysql-client'
+executors:
+  php-mysql:
+    parameters:
+      php:
+        type: 'string'
+        default: 'latest'
+    docker:
+      - image: 'circleci/php:<< parameters.php >>'
+      - image: 'circleci/mysql:5.7'
+        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
+        environment:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
 
-    - run:
-        name: 'MySQL Database'
-        command: 'mysql -h 127.0.0.1 -u root -e "CREATE DATABASE translatable_test; CREATE DATABASE translatable_test2;"'
+commands:
+  php:
+    description: 'Setup PHP'
+    steps:
+      - run:
+          name: 'Install PHP extensions'
+          command: 'sudo docker-php-ext-install pdo_mysql'
 
-    - run:
-        name: 'MySQL User'
-        command: 'mysql -h 127.0.0.1 -u root -e "CREATE USER ''homestead''@''%'' IDENTIFIED BY ''secret''; GRANT ALL PRIVILEGES ON *.* TO ''homestead''@''%''; FLUSH PRIVILEGES;"'
+  database:
+    description: 'Setup Database'
+    steps:
+      - run:
+          name: 'Wait for database'
+          command: 'dockerize -wait tcp://localhost:3306 -timeout 1m'
+      - run:
+          name: 'Install MySQL-Client'
+          command: 'sudo apt install -y mysql-client'
+      - run:
+          name: 'MySQL Database'
+          command: 'mysql -h 127.0.0.1 -u root -e "CREATE DATABASE translatable_test; CREATE DATABASE translatable_test2;"'
+      - run:
+          name: 'MySQL User'
+          command: mysql -h 127.0.0.1 -u root -e "CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret'; GRANT ALL PRIVILEGES ON *.* TO 'homestead'@'%'; FLUSH PRIVILEGES;"
 
-    - checkout
+  composer:
+    description: 'Setup Composer'
+    parameters:
+      version:
+        type: 'string'
+        default: "@stable"
+    steps:
+      - run:
+          name: 'Composer self-update'
+          command: 'sudo composer self-update'
+      - restore_cache:
+          keys:
+            - 'composer-v1-{{ checksum "composer.json" }}'
+      - run:
+          name: 'Composer set laravel-version'
+          command: 'composer require laravel/framework:<< parameters.version >> --dev --no-update --no-interaction'
+      - run:
+          name: 'Composer install'
+          command: 'composer update -n --prefer-dist --no-suggest --no-interaction'
+      - save_cache:
+          paths:
+            - './vendor'
+          key: 'composer-v1-{{ checksum "composer.json" }}'
 
-    # Composer
-    - run:
-        name: 'Composer self-update'
-        command: 'sudo composer self-update'
-
-    - restore_cache:
-        keys:
-          - 'composer-v1-{{ checksum "composer.json" }}'
-
-    - run:
-        name: 'Composer set laravel-version'
-        command: |
-          composer require laravel/framework:$LARAVEL_VERSION --dev --no-update --no-interaction
-
-    - run:
-        name: 'Composer install'
-        command: 'composer update -n --prefer-dist --no-suggest --no-interaction'
-
-    - save_cache:
-        paths:
-          - './vendor'
-        key: 'composer-v1-{{ checksum "composer.json" }}'
-
-    # Tests
-    - run:
-        name: 'PHPUnit'
-        command: './vendor/bin/phpunit --coverage-clover=coverage.clover'
-
-    - run:
-        name: 'Install Scrutinizer Ocular'
-        command: 'wget https://scrutinizer-ci.com/ocular.phar'
-
-    - run:
-        name: 'Scrutinizer Ocular'
-        command: 'php ocular.phar code-coverage:upload --format=php-clover coverage.clover'
-
-
-version: 2
+  tests:
+    description: 'Run Tests'
+    steps:
+      - run:
+          name: 'PHPUnit'
+          command: './vendor/bin/phpunit --coverage-clover=coverage.clover'
+      - run:
+          name: 'Install Scrutinizer Ocular'
+          command: 'wget https://scrutinizer-ci.com/ocular.phar'
+      - run:
+          name: 'Scrutinizer Ocular'
+          command: 'php ocular.phar code-coverage:upload --format=php-clover coverage.clover'
 
 jobs:
   build:
-    docker:
-      - image: 'circleci/php:7.3'
-        environment:
-          LARAVEL_VERSION: '5.7.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor: 'php-mysql'
+    steps:
+      - php
+      - database
+      - composer
+      - tests
 
   build-php73-laravel57:
-    docker:
-      - image: 'circleci/php:7.3'
-        environment:
-          LARAVEL_VERSION: '5.7.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor:
+      name: 'php-mysql'
+      php: '7.3'
+    steps:
+      - php
+      - database
+      - composer:
+          version: '5.7.*'
+      - tests
 
   build-php72-laravel57:
-    docker:
-      - image: 'circleci/php:7.2'
-        environment:
-          LARAVEL_VERSION: '5.7.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor:
+      name: 'php-mysql'
+      php: '7.2'
+    steps:
+      - php
+      - database
+      - composer:
+          version: '5.7.*'
+      - tests
 
   build-php71-laravel57:
-    docker:
-      - image: 'circleci/php:7.1'
-        environment:
-          LARAVEL_VERSION: '5.7.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor:
+      name: 'php-mysql'
+      php: '7.1'
+    steps:
+      - php
+      - database
+      - composer:
+          version: '5.7.*'
+      - tests
 
   build-php73-laravel56:
-    docker:
-      - image: 'circleci/php:7.3'
-        environment:
-          LARAVEL_VERSION: '5.6.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor:
+      name: 'php-mysql'
+      php: '7.3'
+    steps:
+      - php
+      - database
+      - composer:
+          version: '5.6.*'
+      - tests
 
   build-php72-laravel56:
-    docker:
-      - image: 'circleci/php:7.2'
-        environment:
-          LARAVEL_VERSION: '5.6.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor:
+      name: 'php-mysql'
+      php: '7.2'
+    steps:
+      - php
+      - database
+      - composer:
+          version: '5.6.*'
+      - tests
 
   build-php71-laravel56:
-    docker:
-      - image: 'circleci/php:7.1'
-        environment:
-          LARAVEL_VERSION: '5.6.*'
-      - image: 'circleci/mysql:5.7'
-        command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda'
-        environment:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-    <<: *defaults
+    executor:
+      name: 'php-mysql'
+      php: '7.1'
+    steps:
+      - php
+      - database
+      - composer:
+          version: '5.6.*'
+      - tests
 
 workflows:
-  version: 2
   build_all:
     jobs:
+      - build
       - build-php73-laravel57
       - build-php72-laravel57
       - build-php71-laravel57
