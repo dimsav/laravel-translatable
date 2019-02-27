@@ -38,22 +38,20 @@ class TestCoreModelExtension extends TestsBase
 
     // Failing saving
 
-    /**
-     * @expectedException \Exception
-     */
     public function test_it_throws_query_exception_if_code_is_null()
     {
+        $this->expectException('\Exception');
+
         $country = new Country();
         $country->name = 'Belgium';
         $country->code = null;
         $country->save();
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function test_it_throws_query_exception_if_saving_and_name_is_null()
     {
+        $this->expectException('\Exception');
+
         $country = new Country();
         $country->code = 'be';
         $country->name = null;
@@ -88,21 +86,19 @@ class TestCoreModelExtension extends TestsBase
 
     // Filling
 
-    /**
-     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
-     */
     public function test_it_throws_exception_if_filling_a_protected_property()
     {
+        $this->expectException(Illuminate\Database\Eloquent\MassAssignmentException::class);
+
         $country = new CountryGuarded();
         $this->assertTrue($country->totallyGuarded());
         $country->fill(['code' => 'it', 'en' => ['name' => 'Italy']]);
     }
 
-    /**
-     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
-     */
     public function test_translation_throws_exception_if_filling_a_protected_property()
     {
+        $this->expectException(Illuminate\Database\Eloquent\MassAssignmentException::class);
+
         $country = new Country();
         $country->translationModel = Model\CountryTranslationGuarded::class;
         $country->fill(['code' => 'it', 'en' => ['name' => 'Italy']]);

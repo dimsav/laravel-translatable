@@ -13,7 +13,7 @@ class TestsBase extends TestCase
     const DB_USERNAME = 'homestead';
     const DB_PASSWORD = 'secret';
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->makeSureDatabaseExists(static::DB_NAME);
 

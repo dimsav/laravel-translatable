@@ -217,11 +217,9 @@ class TranslatableTest extends TestsBase
         $this->assertEquals('Belgique', $country->translate('fr')->name);
     }
 
-    /**
-     * @expectedException Illuminate\Database\Eloquent\MassAssignmentException
-     */
     public function test_it_skips_mass_assignment_if_attributes_non_fillable()
     {
+        $this->expectException(Illuminate\Database\Eloquent\MassAssignmentException::class);
         $data = [
             'code' => 'be',
             'en'   => ['name' => 'Belgium'],
@@ -376,11 +374,10 @@ class TranslatableTest extends TestsBase
         $this->assertSame($country->getTranslation('en'), null);
     }
 
-    /**
-     * @expectedException Dimsav\Translatable\Exception\LocalesNotDefinedException
-     */
     public function test_if_locales_are_not_defined_throw_exception()
     {
+        $this->expectException(Dimsav\Translatable\Exception\LocalesNotDefinedException::class);
+
         $this->app->config->set('translatable.locales', []);
         new Country(['code' => 'pl']);
     }
