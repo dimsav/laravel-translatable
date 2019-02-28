@@ -542,7 +542,7 @@ trait Translatable
             ?: app()->make('translator')->getLocale();
     }
 
-    public function setDefaultLocale(string $locale)
+    public function setDefaultLocale(?string $locale)
     {
         $this->defaultLocale = $locale;
 
