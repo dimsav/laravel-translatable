@@ -2,16 +2,16 @@
 
 namespace Dimsav\Translatable;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 /**
  * @property-read Collection|Model[] $translations
@@ -362,7 +362,7 @@ trait Translatable
         $dirtyAttributes = $translation->getDirty();
         unset($dirtyAttributes[$this->getLocaleKey()]);
 
-        return !empty($dirtyAttributes);
+        return ! empty($dirtyAttributes);
     }
 
     public function getNewTranslation(?string $locale): Model
