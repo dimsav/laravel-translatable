@@ -7,15 +7,24 @@
         {
             "name": "Dimitrios Savvopoulos",
             "email": "ds@dimsav.com",
-            "homepage": "http://dimsav.com"
+            "homepage": "http://dimsav.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Tom Witkowski",
+            "email": "dev.gummibeer@gmail.com",
+            "homepage": "https://gummibeer.de",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/dimsav/laravel-translatable/issues"
+    },
     "require": {
         "php": ">=7.1.3",
         "illuminate/support": "5.6.*|5.7.*|5.8.*"
     },
     "require-dev": {
-        "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "orchestra/testbench": "3.6.*|3.7.*|3.8.*"
     },
     "autoload": {

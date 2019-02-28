@@ -706,6 +706,8 @@ class TranslatableTest extends TestsBase
 
     public function test_translation_with_multiconnection()
     {
+        $this->migrate('mysql2');
+
         // Add country & translation in second db
         $country = new Country();
         $country->setConnection('mysql2');
@@ -718,18 +720,20 @@ class TranslatableTest extends TestsBase
         // Verify added country & translation in second db
         $country = new Country();
         $country->setConnection('mysql2');
-        $sgCountry = $country->find($countryId);
-        $this->assertEquals('Singapore', $sgCountry->translate('sg')->name);
+        $sgCountry2 = $country->newQuery()->find($countryId);
+        $this->assertEquals('Singapore', $sgCountry2->translate('sg')->name);
 
         // Verify added country not in default db
         $country = new Country();
-        $sgCountry = $country::where('code', 'sg')->get();
-        $this->assertEmpty($sgCountry);
+        $country->setConnection('mysql');
+        $sgCountry1 = $country->newQuery()->where('code', 'sg')->get();
+        $this->assertEmpty($sgCountry1);
 
         // Verify added translation not in default db
         $country = new Country();
-        $sgCountry = $country->find($countryId);
-        $this->assertEmpty($sgCountry->translate('sg'));
+        $country->setConnection('mysql');
+        $sgCountry1 = $country->newQuery()->find($countryId);
+        $this->assertEmpty($sgCountry1->translate('sg'));
     }
 
     public function test_empty_translated_attribute()
