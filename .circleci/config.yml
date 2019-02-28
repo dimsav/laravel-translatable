@@ -189,6 +189,5 @@ workflows:
     jobs:
       - build-php73-laravel58
       - build-php72-laravel58
-      - build-php71-laravel58
-      - build-php71-laravel57
-      - build-php71-laravel56
+      - build-php72-laravel57
+      - build-php72-laravel56
