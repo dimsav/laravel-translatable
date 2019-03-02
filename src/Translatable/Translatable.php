@@ -896,6 +896,8 @@ trait Translatable
     {
         $attributes = parent::attributesToArray();
         $this->addHidden(['translation']);
+        $fallbackTrans = false;
+
         foreach ($this->translatedAttributes as $field) {
             if (in_array($field, $this->getHidden())) {
                 continue;
@@ -906,11 +908,15 @@ trait Translatable
                 continue;
             }
 
-            if ($this->usePropertyFallback() && ($trans = $this->translation($this->getFallbackLocale())->first())) {
-                $attributes[$field] = $trans->$field;
-                continue;
+            if ($this->usePropertyFallback()) {
+                if ($fallbackTrans === false) {
+                    $fallbackTrans = $this->translation($this->getFallbackLocale())->limit(1)->first();
+                }
+                if ($fallbackTrans) {
+                    $attributes[$field] = $fallbackTrans->$field;
+                    continue;
+                }
             }
-
             $attributes[$field] = null;
         }
 
