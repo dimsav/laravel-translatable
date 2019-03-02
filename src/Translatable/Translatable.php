@@ -895,13 +895,23 @@ trait Translatable
     private function attributesToArrayForCurrentTranslation()
     {
         $attributes = parent::attributesToArray();
-        $this->addHidden(['translation']); // we don't need this
+        $this->addHidden(['translation']);
         foreach ($this->translatedAttributes as $field) {
             if (in_array($field, $this->getHidden())) {
                 continue;
             }
 
-            $attributes[$field] = $this->translation->$field;
+            if (!empty($this->translation->$field)) {
+                $attributes[$field] = $this->translation->$field;
+                continue;
+            }
+
+            if ($this->usePropertyFallback() && ($trans = $this->translation($this->getFallbackLocale())->first())) {
+                $attributes[$field] = $trans->$field;
+                continue;
+            }
+
+            $attributes[$field] = null;
         }
 
         return $attributes;
