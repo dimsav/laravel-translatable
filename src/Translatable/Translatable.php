@@ -8,6 +8,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait Translatable
 {
@@ -152,6 +153,19 @@ trait Translatable
         return $this->localeKey ?: config('translatable.locale_key', 'locale');
     }
 
+    /**
+     * @return HasOne
+     */
+    public function translation($locale = null)
+    {
+        if (!$locale) {
+            $locale = $this->locale();
+        }
+
+        return $this->hasOne($this->getTranslationModelName(), $this->getRelationKey())
+            ->where($this->getLocaleKey(), $locale);
+    }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -731,6 +745,10 @@ trait Translatable
      */
     public function attributesToArray()
     {
+        if (config('translatable.to_array_always_loads_translation', false)) {
+            return $this->attributesToArrayForCurrentTranslation();
+        }
+        
         $attributes = parent::attributesToArray();
 
         if (
@@ -872,5 +890,20 @@ trait Translatable
     public static function disableAutoloadTranslations()
     {
         self::$autoloadTranslations = false;
+    }
+    
+    private function attributesToArrayForCurrentTranslation()
+    {
+        $attributes = parent::attributesToArray();
+        $this->addHidden(['translation']); // we don't need this
+        foreach ($this->translatedAttributes as $field) {
+            if (in_array($field, $this->getHidden())) {
+                continue;
+            }
+
+            $attributes[$field] = $this->translation->$field;
+        }
+
+        return $attributes;
     }
 }
