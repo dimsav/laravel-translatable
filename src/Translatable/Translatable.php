@@ -18,7 +18,7 @@ trait Translatable
     public static function bootTranslatable(): void
     {
         static::saved(function (Model $model) {
-            /** @var Translatable $model */
+            /* @var Translatable $model */
             return $model->saveTranslations();
         });
     }
