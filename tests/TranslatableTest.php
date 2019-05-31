@@ -742,4 +742,34 @@ class TranslatableTest extends TestsBase
         $this->app->setLocale('invalid');
         $this->assertSame(null, $country->name);
     }
+
+    public function test_numeric_translated_attribute()
+    {
+        $this->app->config->set('translatable.fallback_locale', 'de');
+        $this->app->config->set('translatable.use_fallback', true);
+
+        $country = new class extends Country {
+            protected function isEmptyTranslatableAttribute(string $key, $value): bool
+            {
+                if($key === 'name') {
+                    return is_null($value);
+                }
+
+                return empty($value);
+            }
+        };
+        $country->fill([
+            'code' => 'gr',
+            'en' => ['name' => '0'],
+            'de' => ['name' => '1'],
+            'fr' => ['name' => null],
+        ]);
+        $country->save();
+
+        $this->app->setLocale('en');
+        $this->assertSame('0', $country->name);
+
+        $this->app->setLocale('fr');
+        $this->assertSame('1', $country->name);
+    }
 }
