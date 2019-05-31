@@ -183,7 +183,7 @@ trait Translatable
         if (
             (
                 ! $translation instanceof Model ||
-                empty($translation->$attribute)
+                $this->isEmptyTranslatableAttribute($attribute, $translation->$attribute)
             ) &&
             $this->usePropertyFallback()
         ) {
@@ -195,6 +195,11 @@ trait Translatable
         }
 
         return null;
+    }
+
+    protected function isEmptyTranslatableAttribute(string $key, $value): bool
+    {
+        return empty($value);
     }
 
     /**
