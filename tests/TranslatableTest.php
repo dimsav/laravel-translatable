@@ -428,8 +428,8 @@ class TranslatableTest extends TestsBase
     public function test_locale_separator_can_be_configured()
     {
         $this->app->config->set('translatable.locales', ['en' => ['GB']]);
-        $this->app->make('translatable.locales')->load();
         $this->app->config->set('translatable.locale_separator', '_');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'en_GB' => ['name' => 'Chips'],
         ];
