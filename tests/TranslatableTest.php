@@ -428,6 +428,7 @@ class TranslatableTest extends TestsBase
     public function test_locale_separator_can_be_configured()
     {
         $this->app->config->set('translatable.locales', ['en' => ['GB']]);
+        $this->app->make('translatable.locales')->load();
         $this->app->config->set('translatable.locale_separator', '_');
         $data = [
             'en_GB' => ['name' => 'Chips'],
@@ -443,6 +444,7 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'fr');
         $this->app->config->set('translatable.locales', ['en' => ['US', 'GB'], 'fr']);
         $this->app->config->set('translatable.locale_separator', '-');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'id'    => 1,
             'fr'    => ['name' => 'frites'],
@@ -460,6 +462,7 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'en');
         $this->app->config->set('translatable.locales', ['pt' => ['PT', 'BR'], 'en']);
         $this->app->config->set('translatable.locale_separator', '-');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'id'    => 1,
             'en'    => ['name' => 'chips'],
@@ -477,6 +480,7 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'fr');
         $this->app->config->set('translatable.locales', ['en' => ['GB'], 'fr']);
         $this->app->config->set('translatable.locale_separator', '-');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'id' => 1,
             'fr' => ['name' => 'frites'],
