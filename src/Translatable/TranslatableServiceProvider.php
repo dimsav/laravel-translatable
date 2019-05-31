@@ -32,6 +32,7 @@ class TranslatableServiceProvider extends ServiceProvider
     {
         return [
             'translatable.helper',
+            Locales::class,
         ];
     }
 }
