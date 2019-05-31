@@ -748,10 +748,10 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'de');
         $this->app->config->set('translatable.use_fallback', true);
 
-        $country = new class extends Country {
+        $city = new class extends City {
             protected $table = 'countries';
-            public $translationModel = \Dimsav\Translatable\Test\Model\CountryTranslation::class;
-            public $translationForeignKey = 'country_id';
+            public $translationModel = \Dimsav\Translatable\Test\Model\CityTranslation::class;
+            public $translationForeignKey = 'city_id';
 
             protected function isEmptyTranslatableAttribute(string $key, $value): bool
             {
@@ -762,18 +762,18 @@ class TranslatableTest extends TestsBase
                 return empty($value);
             }
         };
-        $country->fill([
+        $city->fill([
             'code' => 'gr',
-            'en' => ['name' => '0'],
-            'de' => ['name' => '1'],
+            'en' => ['name' => 0],
+            'de' => ['name' => 1],
             'fr' => ['name' => null],
         ]);
-        $country->save();
+        $city->save();
 
         $this->app->setLocale('en');
-        $this->assertSame('0', $country->name);
+        $this->assertSame('0', $city->name);
 
         $this->app->setLocale('fr');
-        $this->assertSame('1', $country->name);
+        $this->assertSame('1', $city->name);
     }
 }
