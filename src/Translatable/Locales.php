@@ -3,9 +3,9 @@
 namespace Dimsav\Translatable;
 
 use ArrayAccess;
+use Illuminate\Contracts\Support\Arrayable;
 use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 use Illuminate\Contracts\Config\Repository as ConfigContract;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
 class Locales implements Arrayable, ArrayAccess
@@ -92,7 +92,7 @@ class Locales implements Arrayable, ArrayAccess
 
     public function getCountryLocale(string $locale, string $country): string
     {
-        return $locale . $this->getLocaleSeparator() . $country;
+        return $locale.$this->getLocaleSeparator().$country;
     }
 
     public function isLocaleCountryBased(string $locale): bool
