@@ -16,6 +16,7 @@ class LocalesTest extends TestsBase
         $this->app['config']->set('translatable.locales', [
             'de',
         ]);
+        $this->app->make('translatable.locales')->load();
         $this->assertEquals(['de'], $this->app->make('translatable.locales')->all());
 
         $this->app['config']->set('translatable.locales', [
