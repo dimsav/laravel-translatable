@@ -763,6 +763,7 @@ class TranslatableTest extends TestsBase
             }
         };
         $city->fill([
+            'country_id' => Country::first()->getKey(),
             'en' => ['name' => 0],
             'de' => ['name' => 1],
             'fr' => ['name' => null],
