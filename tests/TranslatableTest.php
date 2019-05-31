@@ -379,6 +379,8 @@ class TranslatableTest extends TestsBase
         $this->expectException(Dimsav\Translatable\Exception\LocalesNotDefinedException::class);
 
         $this->app->config->set('translatable.locales', []);
+        $this->app->make('translatable.locales')->load();
+
         new Country(['code' => 'pl']);
     }
 
