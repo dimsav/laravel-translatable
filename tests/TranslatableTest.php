@@ -749,6 +749,9 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.use_fallback', true);
 
         $city = new class extends \Dimsav\Translatable\Test\Model\City {
+            protected $fillable = [
+                'country_id',
+            ];
             protected $table = 'countries';
             public $translationModel = \Dimsav\Translatable\Test\Model\CityTranslation::class;
             public $translationForeignKey = 'city_id';
