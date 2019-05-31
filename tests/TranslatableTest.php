@@ -749,9 +749,11 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.use_fallback', true);
 
         $country = new class extends Country {
+            protected $table = 'countries';
+
             protected function isEmptyTranslatableAttribute(string $key, $value): bool
             {
-                if($key === 'name') {
+                if ($key === 'name') {
                     return is_null($value);
                 }
 
