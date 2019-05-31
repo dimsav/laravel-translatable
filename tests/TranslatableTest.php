@@ -750,7 +750,7 @@ class TranslatableTest extends TestsBase
 
         $country = new class extends Country {
             protected $table = 'countries';
-            protected $translationModel = \Dimsav\Translatable\Test\Model\CountryTranslation::class;
+            public $translationModel = \Dimsav\Translatable\Test\Model\CountryTranslation::class;
 
             protected function isEmptyTranslatableAttribute(string $key, $value): bool
             {
