@@ -763,7 +763,6 @@ class TranslatableTest extends TestsBase
             }
         };
         $city->fill([
-            'code' => 'gr',
             'en' => ['name' => 0],
             'de' => ['name' => 1],
             'fr' => ['name' => null],
