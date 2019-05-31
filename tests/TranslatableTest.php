@@ -752,7 +752,7 @@ class TranslatableTest extends TestsBase
             protected $fillable = [
                 'country_id',
             ];
-            protected $table = 'countries';
+            protected $table = 'cities';
             public $translationModel = \Dimsav\Translatable\Test\Model\CityTranslation::class;
             public $translationForeignKey = 'city_id';
 
