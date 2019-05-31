@@ -200,7 +200,7 @@ trait Translatable
      */
     public function getAttribute($key)
     {
-        list($attribute, $locale) = $this->getAttributeAndLocale($key);
+        [$attribute, $locale] = $this->getAttributeAndLocale($key);
 
         if ($this->isTranslationAttribute($attribute)) {
             if ($this->getTranslation($locale) === null) {
@@ -230,7 +230,7 @@ trait Translatable
      */
     public function setAttribute($key, $value)
     {
-        list($attribute, $locale) = $this->getAttributeAndLocale($key);
+        [$attribute, $locale] = $this->getAttributeAndLocale($key);
 
         if ($this->isTranslationAttribute($attribute)) {
             $this->getTranslationOrNew($locale)->$attribute = $value;
@@ -300,7 +300,7 @@ trait Translatable
                 $this->getTranslationOrNew($key)->fill($values);
                 unset($attributes[$key]);
             } else {
-                list($attribute, $locale) = $this->getAttributeAndLocale($key);
+                [$attribute, $locale] = $this->getAttributeAndLocale($key);
                 if ($this->isTranslationAttribute($attribute) and $this->isKeyALocale($locale)) {
                     $this->getTranslationOrNew($locale)->fill([$attribute => $values]);
                     unset($attributes[$key]);
