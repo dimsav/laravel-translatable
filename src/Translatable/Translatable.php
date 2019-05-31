@@ -2,10 +2,8 @@
 
 namespace Dimsav\Translatable;
 
-use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -23,7 +21,7 @@ trait Translatable
      * @param string|null $locale
      * @param bool        $withFallback
      *
-     * @return Model|null
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translate($locale = null, $withFallback = false)
     {
@@ -35,7 +33,7 @@ trait Translatable
      *
      * @param string $locale
      *
-     * @return Model|null
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translateOrDefault($locale = null)
     {
@@ -47,7 +45,7 @@ trait Translatable
      *
      * @param string $locale
      *
-     * @return Model|null
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translateOrNew($locale = null)
     {
@@ -58,7 +56,7 @@ trait Translatable
      * @param string|null $locale
      * @param bool        $withFallback
      *
-     * @return Model|null
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function getTranslation($locale = null, $withFallback = null)
     {
@@ -151,7 +149,7 @@ trait Translatable
     }
 
     /**
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function translations()
     {
@@ -276,7 +274,7 @@ trait Translatable
     /**
      * @param string $locale
      *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function getTranslationOrNew($locale = null)
     {
@@ -292,7 +290,7 @@ trait Translatable
     /**
      * @param array $attributes
      *
-     * @throws MassAssignmentException
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @return $this
      */
     public function fill(array $attributes)
@@ -390,8 +388,8 @@ trait Translatable
     /**
      * @param string $key
      *
+     * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
      * @return bool
-     * @throws LocalesNotDefinedException
      */
     protected function isKeyALocale($key)
     {
@@ -401,8 +399,8 @@ trait Translatable
     }
 
     /**
+     * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
      * @return array
-     * @throws LocalesNotDefinedException
      */
     protected function getLocales()
     {
@@ -464,7 +462,7 @@ trait Translatable
     /**
      * @param array
      *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function replicateWithTranslations(array $except = null)
     {
@@ -480,7 +478,7 @@ trait Translatable
     }
 
     /**
-     * @param Model $translation
+     * @param \Illuminate\Database\Eloquent\Model $translation
      *
      * @return bool
      */
@@ -495,7 +493,7 @@ trait Translatable
     /**
      * @param string $locale
      *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getNewTranslation($locale)
     {
@@ -518,10 +516,10 @@ trait Translatable
     }
 
     /**
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $locale
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeTranslatedIn(Builder $query, $locale = null)
     {
@@ -533,10 +531,10 @@ trait Translatable
     }
 
     /**
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $locale
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeNotTranslatedIn(Builder $query, $locale = null)
     {
@@ -548,9 +546,9 @@ trait Translatable
     }
 
     /**
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeTranslated(Builder $query)
     {
@@ -566,7 +564,7 @@ trait Translatable
      *      'name' => 'Griechenland'    // The translated name
      *  ].
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $translationField
      */
     public function scopeListsTranslations(Builder $query, $translationField)
@@ -620,12 +618,12 @@ trait Translatable
     /**
      * This scope filters results by checking the translation fields.
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $key
      * @param string                                $value
      * @param string                                $locale
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeWhereTranslation(Builder $query, $key, $value, $locale = null)
     {
@@ -640,12 +638,12 @@ trait Translatable
     /**
      * This scope filters results by checking the translation fields.
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $key
      * @param string                                $value
      * @param string                                $locale
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeOrWhereTranslation(Builder $query, $key, $value, $locale = null)
     {
@@ -660,12 +658,12 @@ trait Translatable
     /**
      * This scope filters results by checking the translation fields.
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $key
      * @param string                                $value
      * @param string                                $locale
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeWhereTranslationLike(Builder $query, $key, $value, $locale = null)
     {
@@ -680,12 +678,12 @@ trait Translatable
     /**
      * This scope filters results by checking the translation fields.
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $key
      * @param string                                $value
      * @param string                                $locale
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeOrWhereTranslationLike(Builder $query, $key, $value, $locale = null)
     {
@@ -700,11 +698,11 @@ trait Translatable
     /**
      * This scope sorts results by the given translation field.
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string                                $key
      * @param string                                $sortmethod
      *
-     * @return Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeOrderByTranslation(Builder $query, $key, $sortmethod = 'asc')
     {
