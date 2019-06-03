@@ -14,6 +14,14 @@ trait Translatable
 
     protected $defaultLocale;
 
+    public static function bootTranslatable(): void
+    {
+        static::saved(function (Model $model) {
+            /* @var Translatable $model */
+            return $model->saveTranslations();
+        });
+    }
+
     /**
      * Alias for getTranslation().
      *
@@ -243,36 +251,6 @@ trait Translatable
         }
 
         return $this;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return bool
-     */
-    public function save(array $options = [])
-    {
-        if ($this->exists && ! $this->isDirty()) {
-            // If $this->exists and not dirty, parent::save() skips saving and returns
-            // false. So we have to save the translations
-            if ($this->fireModelEvent('saving') === false) {
-                return false;
-            }
-
-            if ($saved = $this->saveTranslations()) {
-                $this->fireModelEvent('saved', false);
-                $this->fireModelEvent('updated', false);
-            }
-
-            return $saved;
-        }
-
-        // We save the translations only if the instance is saved in the database.
-        if (parent::save($options)) {
-            return $this->saveTranslations();
-        }
-
-        return false;
     }
 
     /**
