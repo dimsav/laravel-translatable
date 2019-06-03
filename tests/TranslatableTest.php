@@ -379,6 +379,8 @@ class TranslatableTest extends TestsBase
         $this->expectException(Dimsav\Translatable\Exception\LocalesNotDefinedException::class);
 
         $this->app->config->set('translatable.locales', []);
+        $this->app->make('translatable.locales')->load();
+
         new Country(['code' => 'pl']);
     }
 
@@ -427,6 +429,7 @@ class TranslatableTest extends TestsBase
     {
         $this->app->config->set('translatable.locales', ['en' => ['GB']]);
         $this->app->config->set('translatable.locale_separator', '_');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'en_GB' => ['name' => 'Chips'],
         ];
@@ -441,6 +444,7 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'fr');
         $this->app->config->set('translatable.locales', ['en' => ['US', 'GB'], 'fr']);
         $this->app->config->set('translatable.locale_separator', '-');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'id'    => 1,
             'fr'    => ['name' => 'frites'],
@@ -458,6 +462,7 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'en');
         $this->app->config->set('translatable.locales', ['pt' => ['PT', 'BR'], 'en']);
         $this->app->config->set('translatable.locale_separator', '-');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'id'    => 1,
             'en'    => ['name' => 'chips'],
@@ -475,6 +480,7 @@ class TranslatableTest extends TestsBase
         $this->app->config->set('translatable.fallback_locale', 'fr');
         $this->app->config->set('translatable.locales', ['en' => ['GB'], 'fr']);
         $this->app->config->set('translatable.locale_separator', '-');
+        $this->app->make('translatable.locales')->load();
         $data = [
             'id' => 1,
             'fr' => ['name' => 'frites'],

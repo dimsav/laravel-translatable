@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Dimsav\Translatable\Exception\LocalesNotDefinedException;
 
 trait Translatable
 {
@@ -346,26 +345,14 @@ trait Translatable
         return config('translatable.fallback_locale');
     }
 
-    /**
-     * @param $locale
-     *
-     * @return bool
-     */
-    private function isLocaleCountryBased($locale)
+    private function isLocaleCountryBased(string $locale): bool
     {
-        return strpos($locale, $this->getLocaleSeparator()) !== false;
+        return $this->getLocalesHelper()->isLocaleCountryBased($locale);
     }
 
-    /**
-     * @param $locale
-     *
-     * @return string
-     */
-    private function getLanguageFromCountryBasedLocale($locale)
+    private function getLanguageFromCountryBasedLocale(string $locale): string
     {
-        $parts = explode($this->getLocaleSeparator(), $locale);
-
-        return array_get($parts, 0);
+        return $this->getLocalesHelper()->getLanguageFromCountryBasedLocale($locale);
     }
 
     /**
@@ -390,53 +377,19 @@ trait Translatable
         return in_array($key, $this->translatedAttributes);
     }
 
-    /**
-     * @param string $key
-     *
-     * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
-     * @return bool
-     */
-    protected function isKeyALocale($key)
+    protected function isKeyALocale(string $key): bool
     {
-        $locales = $this->getLocales();
-
-        return in_array($key, $locales);
+        return $this->getLocalesHelper()->has($key);
     }
 
-    /**
-     * @throws \Dimsav\Translatable\Exception\LocalesNotDefinedException
-     * @return array
-     */
-    protected function getLocales()
+    protected function getLocales(): array
     {
-        $localesConfig = (array) config('translatable.locales');
-
-        if (empty($localesConfig)) {
-            throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
-                ' and that the locales configuration is defined.');
-        }
-
-        $locales = [];
-        foreach ($localesConfig as $key => $locale) {
-            if (is_array($locale)) {
-                $locales[] = $key;
-                foreach ($locale as $countryLocale) {
-                    $locales[] = $key.$this->getLocaleSeparator().$countryLocale;
-                }
-            } else {
-                $locales[] = $locale;
-            }
-        }
-
-        return $locales;
+        return $this->getLocalesHelper()->all();
     }
 
-    /**
-     * @return string
-     */
-    protected function getLocaleSeparator()
+    protected function getLocaleSeparator(): string
     {
-        return config('translatable.locale_separator', '-');
+        return $this->getLocalesHelper()->getLocaleSeparator();
     }
 
     /**
@@ -778,17 +731,13 @@ trait Translatable
         return app()->make($this->getTranslationModelName())->getTable();
     }
 
-    /**
-     * @return string
-     */
-    protected function locale()
+    protected function locale(): string
     {
         if ($this->defaultLocale) {
             return $this->defaultLocale;
         }
 
-        return config('translatable.locale')
-            ?: app()->make('translator')->getLocale();
+        return $this->getLocalesHelper()->current();
     }
 
     /**
@@ -873,5 +822,10 @@ trait Translatable
     public static function disableAutoloadTranslations()
     {
         self::$autoloadTranslations = false;
+    }
+
+    protected function getLocalesHelper(): Locales
+    {
+        return app(Locales::class);
     }
 }

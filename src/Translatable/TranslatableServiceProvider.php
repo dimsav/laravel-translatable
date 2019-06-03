@@ -13,13 +13,26 @@ class TranslatableServiceProvider extends ServiceProvider
         ], 'translatable');
     }
 
-    /**
-     * Register the service provider.
-     */
     public function register()
     {
         $this->mergeConfigFrom(
             __DIR__.'/../config/translatable.php', 'translatable'
         );
+
+        $this->registerTranslatableHelper();
+    }
+
+    public function registerTranslatableHelper()
+    {
+        $this->app->singleton('translatable.locales', Locales::class);
+        $this->app->singleton(Locales::class);
+    }
+
+    public function provides()
+    {
+        return [
+            'translatable.helper',
+            Locales::class,
+        ];
     }
 }

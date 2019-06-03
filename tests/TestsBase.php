@@ -79,9 +79,4 @@ class TestsBase extends TestCase
         $locales = ['el', 'en', 'fr', 'de', 'id', 'en-GB', 'en-US', 'de-DE', 'de-CH'];
         $app['config']->set('translatable.locales', $locales);
     }
-
-    protected function getPackageAliases($app)
-    {
-        return ['Eloquent' => \Illuminate\Database\Eloquent\Model::class];
-    }
 }
