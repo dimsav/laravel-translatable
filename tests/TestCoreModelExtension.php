@@ -50,7 +50,7 @@ class TestCoreModelExtension extends TestsBase
 
     public function test_it_throws_query_exception_if_saving_and_name_is_null()
     {
-        $this->expectException('\Exception');
+        $this->expectException(\Exception::class);
 
         $country = new Country();
         $country->code = 'be';

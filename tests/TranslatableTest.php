@@ -742,4 +742,41 @@ class TranslatableTest extends TestsBase
         $this->app->setLocale('invalid');
         $this->assertSame(null, $country->name);
     }
+
+    public function test_numeric_translated_attribute()
+    {
+        $this->app->config->set('translatable.fallback_locale', 'de');
+        $this->app->config->set('translatable.use_fallback', true);
+
+        $city = new class extends \Dimsav\Translatable\Test\Model\City {
+            protected $fillable = [
+                'country_id',
+            ];
+            protected $table = 'cities';
+            public $translationModel = \Dimsav\Translatable\Test\Model\CityTranslation::class;
+            public $translationForeignKey = 'city_id';
+
+            protected function isEmptyTranslatableAttribute(string $key, $value): bool
+            {
+                if ($key === 'name') {
+                    return is_null($value);
+                }
+
+                return empty($value);
+            }
+        };
+        $city->fill([
+            'country_id' => Country::first()->getKey(),
+            'en' => ['name' => '0'],
+            'de' => ['name' => '1'],
+            'fr' => ['name' => null],
+        ]);
+        $city->save();
+
+        $this->app->setLocale('en');
+        $this->assertSame('0', $city->name);
+
+        $this->app->setLocale('fr');
+        $this->assertSame('1', $city->name);
+    }
 }

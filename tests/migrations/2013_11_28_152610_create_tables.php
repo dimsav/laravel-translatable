@@ -38,7 +38,7 @@ class CreateTables extends Migration
         Schema::create('city_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('city_id')->unsigned();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('locale')->index();
 
             $table->unique(['city_id', 'locale']);

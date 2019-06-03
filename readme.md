@@ -390,7 +390,9 @@ $germany->name; // 'Germany'
 $germany->{'name:de'} // 'Deutschland'
 ```
 
-### Fallback locales
+### Fallback
+
+#### Fallback locales
 
 If you want to fallback to a default translation when a translation has not been found, enable this in the configuration
 using the `use_fallback` key. And to select the default locale, use the `fallback_locale` key.
@@ -433,6 +435,24 @@ Of course the fallback locales must be enabled to use this feature.
  
  If the property fallback is enabled in the configuration, then translatable
  will return the translation of the fallback locale for the fields where the translation is empty. 
+ 
+##### customize empty translation property detection
+
+This package is made to translate strings, but in general it's also able to translate numbers, bools or whatever you want to. By default a simple `empty()` call is used to detect if the translation value is empty or not. If you want to customize this or use different logic per property you can override `isEmptyTranslatableAttribute()` in your main model. 
+
+```php
+protected function isEmptyTranslatableAttribute(string $key, $value): bool
+{
+    switch($key) {
+        case 'name':
+            return empty($value);
+        case 'price':
+            return !is_number($value);
+        default:
+            return is_null($value);
+    }
+}
+```
 
 #### Country based fallback
 
