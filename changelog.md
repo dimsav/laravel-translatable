@@ -1,7 +1,15 @@
 # Changelog
 
+## v10.0.0
+- Add `Dimsav\Translatable\Locales` helper class [#574](https://github.com/dimsav/laravel-translatable/pull/574)
+- Fix `getRelationKey()` [#575](https://github.com/dimsav/laravel-translatable/pull/575)
+- drop custom save method in favor of saved event listener [#567](https://github.com/dimsav/laravel-translatable/pull/575)
+
+## v9.5.0
+- Add `isEmptyTranslatableAttribute()` method to allow custom empty attribute decision logic [#576](https://github.com/dimsav/laravel-translatable/pull/576)
+
 ## v9.4.0
-- add Laravel 5.8 support [#550](https://github.com/dimsav/laravel-translatable/pull/550) & [#556](https://github.com/dimsav/laravel-translatable/pull/556)
+- Add Laravel 5.8 support [#550](https://github.com/dimsav/laravel-translatable/pull/550) & [#556](https://github.com/dimsav/laravel-translatable/pull/556)
 
 ## v9.3.0
 - Fix n+1 queries when updating non-translated model attributes [#533](https://github.com/dimsav/laravel-translatable/pull/533)
