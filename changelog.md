@@ -1,5 +1,8 @@
 # Changelog
 
+## next release
+- Add PHP7 type-hints [#557](https://github.com/dimsav/laravel-translatable/pull/557)
+
 ## v10.0.0
 - Add `Dimsav\Translatable\Locales` helper class [#574](https://github.com/dimsav/laravel-translatable/pull/574)
 - Fix `getRelationKey()` [#575](https://github.com/dimsav/laravel-translatable/pull/575)
