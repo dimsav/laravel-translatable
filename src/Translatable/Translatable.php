@@ -514,7 +514,7 @@ trait Translatable
         return $this->getLocalesHelper()->current();
     }
 
-    public function setDefaultLocale(string $locale)
+    public function setDefaultLocale(?string $locale)
     {
         $this->defaultLocale = $locale;
 
