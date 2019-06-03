@@ -155,7 +155,7 @@ trait Translatable
         return empty($value);
     }
 
-    public function getAttribute(string $key)
+    public function getAttribute($key)
     {
         [$attribute, $locale] = $this->getAttributeAndLocale($key);
 
@@ -179,7 +179,7 @@ trait Translatable
         return parent::getAttribute($key);
     }
 
-    public function setAttribute(string $key, $value)
+    public function setAttribute($key, $value)
     {
         [$attribute, $locale] = $this->getAttributeAndLocale($key);
 
