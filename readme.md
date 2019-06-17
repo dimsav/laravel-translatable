@@ -1,3 +1,7 @@
+**This package has been deprecated. But worry not. You can use [Astrotomic/laravel-translatable](https://github.com/Astrotomic/laravel-translatable)**.
+
+---
+
 Laravel-Translatable
 ====================
 
