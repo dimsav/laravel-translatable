@@ -1,4 +1,4 @@
-**This package has been deprecated. But worry not. You can use [Astrotomic/laravel-translatable](https://github.com/Astrotomic/laravel-translatable)**.
+**This package [has been deprecated](https://twitter.com/dimsav/status/1140750099875860481). But worry not. You can use [Astrotomic/laravel-translatable](https://github.com/Astrotomic/laravel-translatable)**.
 
 ---
 
